@@ -70,28 +70,36 @@
 
 <script>
 
-/* =========================================
-   URL GOOGLE APPS SCRIPT
-   GANTI DENGAN URL WEB APP ANDA
-========================================= */
+/******************************************************
+ * URL GOOGLE APPS SCRIPT
+ ******************************************************/
 
-const API_URL = "https://script.google.com/macros/s/AKfycbz0XX732CsLWe3txcUMgBiNBpHTzA1pdOhnpyE9spv656Pi6tDT4yz2fIDxDtldRQnu/exec";
+const API_URL =
+    "https://script.google.com/macros/s/AKfycbz0XX732CsLWe3txcUMgBiNBpHTzA1pdOhnpyE9spv656Pi6tDT4yz2fIDxDtldRQnu/exec";
 
 
-/* =========================================
-   LOGIN
-========================================= */
+/******************************************************
+ * LOGIN
+ ******************************************************/
 
 function login() {
 
     const password =
-        document.getElementById("password").value.trim();
+        document.getElementById(
+            "password"
+        ).value.trim();
+
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
+
 
     const button =
-        document.getElementById("btnMasuk");
+        document.getElementById(
+            "btnMasuk"
+        );
 
 
     if (!password) {
@@ -107,12 +115,17 @@ function login() {
     message.textContent =
         "Memeriksa password...";
 
+
     button.disabled = true;
 
 
     const callbackName =
         "loginCallback_" +
-        Date.now();
+        Date.now() +
+        "_" +
+        Math.floor(
+            Math.random() * 10000
+        );
 
 
     window[callbackName] =
@@ -123,14 +136,14 @@ function login() {
 
             if (result.success) {
 
-                message.textContent =
-                    "Login berhasil. Membuka form...";
-
-
                 sessionStorage.setItem(
                     "donatur_token",
                     result.token
                 );
+
+
+                message.textContent =
+                    "Login berhasil.";
 
 
                 setTimeout(
@@ -140,14 +153,16 @@ function login() {
                             "form.html";
 
                     },
-                    500
+                    300
                 );
 
 
             } else {
 
                 message.textContent =
-                    result.message;
+                    result.message ||
+                    "Login gagal.";
+
 
                 document.getElementById(
                     "password"
@@ -158,18 +173,35 @@ function login() {
 
             delete window[callbackName];
 
+            const oldScript =
+                document.getElementById(
+                    callbackName
+                );
+
+            if (oldScript) {
+                oldScript.remove();
+            }
+
         };
 
 
     const script =
-        document.createElement("script");
+        document.createElement(
+            "script"
+        );
+
+
+    script.id =
+        callbackName;
 
 
     script.src =
         API_URL +
         "?action=login" +
         "&password=" +
-        encodeURIComponent(password) +
+        encodeURIComponent(
+            password
+        ) +
         "&callback=" +
         callbackName;
 
@@ -179,17 +211,45 @@ function login() {
 
             button.disabled = false;
 
+
             message.textContent =
                 "Tidak dapat terhubung ke Google Apps Script.";
 
+
             delete window[callbackName];
+
+            script.remove();
 
         };
 
 
-    document.body.appendChild(script);
+    document.body.appendChild(
+        script
+    );
 
 }
+
+
+/******************************************************
+ * ENTER UNTUK LOGIN
+ ******************************************************/
+
+document
+    .getElementById("password")
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key === "Enter"
+            ) {
+
+                login();
+
+            }
+
+        }
+    );
 
 </script>
 
