@@ -3,8 +3,7 @@
  * GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT
  ******************************************************/
 
-const API_URL ="https://script.google.com/macros/s/AKfycbz0XX732CsLWe3txcUMgBiNBpHTzA1pdOhnpyE9spv656Pi6tDT4yz2fIDxDtldRQnu/exec
-";
+const API_URL ="https://script.google.com/macros/s/AKfycbz0XX732CsLWe3txcUMgBiNBpHTzA1pdOhnpyE9spv656Pi6tDT4yz2fIDxDtldRQnu/exec";
 
 
 /* =========================================
