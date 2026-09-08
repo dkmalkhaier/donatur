@@ -1,4 +1,4 @@
-```javascript
+
 /******************************************************
  * GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT
  ******************************************************/
@@ -776,4 +776,4 @@ function loadDisplayData() {
     );
 
 }
-```
+
