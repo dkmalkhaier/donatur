@@ -1,0 +1,169 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0,
+               user-scalable=no">
+
+<title>Form Donatur</title>
+
+<link rel="stylesheet"
+      href="style.css">
+
+</head>
+
+<body>
+
+<div class="page-container">
+
+    <div class="form-header">
+
+        <button
+            class="small-back"
+            onclick="logout()">
+
+            ← Keluar
+
+        </button>
+
+        <h1>
+            FORM DONATUR
+        </h1>
+
+        <div class="live-total">
+
+            <small>
+                TOTAL TERKUMPUL
+            </small>
+
+            <strong id="formTotal">
+                Rp 0
+            </strong>
+
+        </div>
+
+    </div>
+
+
+    <div class="card form-card">
+
+        <label>
+            No. Urut
+        </label>
+
+        <input
+            type="text"
+            id="nomor"
+            class="input readonly"
+            value="Otomatis"
+            readonly>
+
+
+        <label>
+            Tanggal
+        </label>
+
+        <input
+            type="text"
+            id="tanggal"
+            class="input readonly"
+            readonly>
+
+
+        <label>
+            Nama Donatur
+        </label>
+
+        <input
+            type="text"
+            id="nama"
+            class="input"
+            placeholder="Masukkan nama donatur"
+            autocomplete="off">
+
+
+        <label>
+            RT
+        </label>
+
+        <div class="rt-buttons">
+
+            <button onclick="pilihRT('01')"
+                    id="rt01">01</button>
+
+            <button onclick="pilihRT('02')"
+                    id="rt02">02</button>
+
+            <button onclick="pilihRT('03')"
+                    id="rt03">03</button>
+
+            <button onclick="pilihRT('04')"
+                    id="rt04">04</button>
+
+            <button onclick="pilihRT('05')"
+                    id="rt05">05</button>
+
+            <button onclick="pilihRT('06')"
+                    id="rt06">06</button>
+
+        </div>
+
+
+        <label>
+            Jumlah Rupiah
+        </label>
+
+        <input
+            type="text"
+            id="jumlah"
+            class="input money-input"
+            inputmode="numeric"
+            placeholder="Rp 0"
+            autocomplete="off"
+            oninput="formatInputRupiah(this)">
+
+
+        <button
+            class="save-btn"
+            onclick="simpan()">
+
+            💾 SIMPAN DONASI
+
+        </button>
+
+        <div
+            id="formMessage"
+            class="message">
+        </div>
+
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        tampilkanTanggal();
+
+        ambilTotal();
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
