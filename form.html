@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 
@@ -95,23 +94,47 @@
 
         <div class="rt-buttons">
 
-            <button onclick="pilihRT('01')"
-                    id="rt01">01</button>
+            <button
+                type="button"
+                onclick="pilihRT('01')"
+                id="rt01">
+                01
+            </button>
 
-            <button onclick="pilihRT('02')"
-                    id="rt02">02</button>
+            <button
+                type="button"
+                onclick="pilihRT('02')"
+                id="rt02">
+                02
+            </button>
 
-            <button onclick="pilihRT('03')"
-                    id="rt03">03</button>
+            <button
+                type="button"
+                onclick="pilihRT('03')"
+                id="rt03">
+                03
+            </button>
 
-            <button onclick="pilihRT('04')"
-                    id="rt04">04</button>
+            <button
+                type="button"
+                onclick="pilihRT('04')"
+                id="rt04">
+                04
+            </button>
 
-            <button onclick="pilihRT('05')"
-                    id="rt05">05</button>
+            <button
+                type="button"
+                onclick="pilihRT('05')"
+                id="rt05">
+                05
+            </button>
 
-            <button onclick="pilihRT('06')"
-                    id="rt06">06</button>
+            <button
+                type="button"
+                onclick="pilihRT('06')"
+                id="rt06">
+                06
+            </button>
 
         </div>
 
@@ -132,11 +155,13 @@
 
         <button
             class="save-btn"
+            type="button"
             onclick="simpan()">
 
             💾 SIMPAN DONASI
 
         </button>
+
 
         <div
             id="formMessage"
@@ -147,6 +172,7 @@
 
 </div>
 
+
 <script src="script.js"></script>
 
 <script>
@@ -154,6 +180,8 @@
 document.addEventListener(
     "DOMContentLoaded",
     function() {
+
+        checkLogin();
 
         tampilkanTanggal();
 
@@ -165,5 +193,5 @@ document.addEventListener(
 </script>
 
 </body>
-</html>
 
+</html>
