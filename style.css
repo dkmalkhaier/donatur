@@ -1,0 +1,437 @@
+```css
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f2f5f3;
+    color: #173b2c;
+}
+
+
+/* =========================================
+   HALAMAN UTAMA
+========================================= */
+
+.home {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #e8f0eb;
+}
+
+.home-container {
+    width: 92%;
+    max-width: 480px;
+    text-align: center;
+}
+
+.logo-symbol {
+    font-size: 70px;
+}
+
+.home h1 {
+    margin: 10px 0 5px;
+    font-size: 30px;
+}
+
+.subtitle {
+    margin-bottom: 35px;
+    font-size: 18px;
+}
+
+.menu-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.menu-btn {
+    width: 100%;
+    min-height: 145px;
+    border: none;
+    border-radius: 25px;
+    padding: 20px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 6px 15px rgba(0,0,0,.15);
+}
+
+.menu-btn small {
+    display: block;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: normal;
+}
+
+.form-btn {
+    background: #174f35;
+    color: white;
+}
+
+.display-btn {
+    background: #d9a441;
+    color: white;
+}
+
+.menu-icon {
+    display: block;
+    font-size: 40px;
+    margin-bottom: 8px;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.page-container {
+    width: 100%;
+    max-width: 520px;
+    min-height: 100vh;
+    margin: auto;
+    padding: 18px;
+}
+
+
+/* =========================================
+   CARD
+========================================= */
+
+.card {
+    background: white;
+    border-radius: 25px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0,0,0,.10);
+}
+
+.login-card {
+    margin-top: 15vh;
+    text-align: center;
+}
+
+.big-icon {
+    font-size: 55px;
+}
+
+.login-card h1 {
+    font-size: 26px;
+}
+
+
+/* =========================================
+   INPUT
+========================================= */
+
+label {
+    display: block;
+    margin-top: 18px;
+    margin-bottom: 7px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.input {
+    width: 100%;
+    height: 58px;
+    padding: 0 17px;
+    border: 2px solid #d4ddd7;
+    border-radius: 14px;
+    font-size: 18px;
+    outline: none;
+    background: white;
+}
+
+.input:focus {
+    border-color: #174f35;
+}
+
+.readonly {
+    background: #edf1ee;
+}
+
+.money-input {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+/* =========================================
+   RT
+========================================= */
+
+.rt-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.rt-buttons button {
+    height: 58px;
+    border: 2px solid #174f35;
+    background: white;
+    color: #174f35;
+    border-radius: 14px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.rt-buttons button.selected {
+    background: #174f35;
+    color: white;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.primary-btn,
+.save-btn {
+    width: 100%;
+    height: 62px;
+    border: none;
+    border-radius: 15px;
+    background: #174f35;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 25px;
+}
+
+.save-btn {
+    font-size: 21px;
+}
+
+.back-btn {
+    width: 100%;
+    height: 50px;
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.small-back {
+    border: none;
+    background: transparent;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+/* =========================================
+   MESSAGE
+========================================= */
+
+.message {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    min-height: 22px;
+}
+
+
+/* =========================================
+   FORM HEADER
+========================================= */
+
+.form-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.form-header h1 {
+    margin: 5px 0;
+    font-size: 25px;
+}
+
+.live-total {
+    margin-top: 10px;
+}
+
+.live-total small {
+    display: block;
+    font-size: 12px;
+}
+
+.live-total strong {
+    display: block;
+    font-size: 23px;
+}
+
+
+/* =========================================
+   DISPLAY
+========================================= */
+
+.display-body {
+    background: #101713;
+    color: white;
+    overflow: hidden;
+}
+
+.display-container {
+    min-height: 100vh;
+    width: 100%;
+    max-width: 600px;
+    margin: auto;
+    padding: 15px;
+    position: relative;
+}
+
+.display-title {
+    text-align: center;
+}
+
+.display-title div {
+    font-size: 35px;
+}
+
+.display-title h1 {
+    font-size: 23px;
+    margin: 5px 0 15px;
+}
+
+.total-box {
+    text-align: center;
+    padding: 15px 5px;
+}
+
+.total-number {
+    font-size: clamp(38px, 10vw, 75px);
+    font-weight: 900;
+    letter-spacing: -1px;
+    word-break: break-word;
+}
+
+.date-time {
+    font-size: 13px;
+    line-height: 1.7;
+    opacity: .8;
+}
+
+.donatur-area {
+    position: relative;
+    margin-top: 15px;
+    height: 52vh;
+    overflow: hidden;
+}
+
+.donatur-title {
+    text-align: center;
+    font-size: 14px;
+    opacity: .7;
+    margin-bottom: 10px;
+}
+
+#donaturList {
+    position: relative;
+    height: 100%;
+}
+
+.donatur-item {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    padding: 13px 15px;
+    border-radius: 15px;
+    background: rgba(255,255,255,.09);
+    animation: turun 8s linear forwards;
+}
+
+.donatur-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 14px;
+}
+
+.donatur-name {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+.donatur-money {
+    margin-top: 5px;
+    font-size: 17px;
+    font-weight: bold;
+}
+
+@keyframes turun {
+
+    0% {
+        transform: translateY(-80px);
+        opacity: 0;
+    }
+
+    10% {
+        opacity: 1;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(600px);
+        opacity: 0;
+    }
+}
+
+.display-back {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    border: none;
+    background: rgba(255,255,255,.08);
+    color: white;
+    border-radius: 10px;
+    padding: 7px 12px;
+    font-size: 12px;
+}
+
+
+/* =========================================
+   HP
+========================================= */
+
+@media screen and (max-width: 480px) {
+
+    .page-container {
+        padding: 12px;
+    }
+
+    .card {
+        padding: 20px;
+    }
+
+    .home h1 {
+        font-size: 27px;
+    }
+
+    .menu-btn {
+        min-height: 135px;
+    }
+
+    .total-number {
+        font-size: 42px;
+    }
+
+}
+```
