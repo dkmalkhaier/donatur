@@ -1,13 +1,14 @@
 /******************************************************
- * GANTI URL DI BAWAH DENGAN URL WEB APP APPS SCRIPT
+ * URL GOOGLE APPS SCRIPT
  ******************************************************/
 
-const API_URL = "https://script.google.com/macros/s/AKfycbz0XX732CsLWe3txcUMgBiNBpHTzA1pdOhnpyE9spv656Pi6tDT4yz2fIDxDtldRQnu/exec";
+const API_URL =
+    "https://script.google.com/macros/s/AKfycbz0XX732CsLWe3txcUMgBiNBpHTzA1pdOhnpyE9spv656Pi6tDT4yz2fIDxDtldRQnu/exec";
 
 
-/* =========================================
-   JSONP
-========================================= */
+/******************************************************
+ * JSONP API REQUEST
+ ******************************************************/
 
 function apiRequest(params, callback) {
 
@@ -15,68 +16,122 @@ function apiRequest(params, callback) {
         "jsonp_" +
         Date.now() +
         "_" +
-        Math.floor(Math.random() * 10000);
+        Math.floor(
+            Math.random() * 10000
+        );
 
-    window[callbackName] = function(data) {
 
-        delete window[callbackName];
+    window[callbackName] =
+        function(data) {
 
-        const script =
-            document.getElementById(callbackName);
+            delete window[callbackName];
 
-        if (script) {
-            script.remove();
-        }
 
-        callback(data);
+            const oldScript =
+                document.getElementById(
+                    callbackName
+                );
 
-    };
+
+            if (oldScript) {
+                oldScript.remove();
+            }
+
+
+            callback(data);
+
+        };
+
 
     const query =
         new URLSearchParams(params);
+
 
     query.set(
         "callback",
         callbackName
     );
 
-    const script =
-        document.createElement("script");
 
-    script.id = callbackName;
+    const script =
+        document.createElement(
+            "script"
+        );
+
+
+    script.id =
+        callbackName;
+
 
     script.src =
-        API_URL + "?" + query.toString();
+        API_URL +
+        "?" +
+        query.toString();
 
-    script.onerror = function() {
 
-        delete window[callbackName];
+    script.onerror =
+        function() {
 
-        const message =
-            document.getElementById("message");
+            delete window[callbackName];
 
-        if (message) {
-            message.textContent =
-                "Gagal terhubung ke server.";
-        }
 
-    };
+            const message =
+                document.getElementById(
+                    "message"
+                );
 
-    document.body.appendChild(script);
+
+            const formMessage =
+                document.getElementById(
+                    "formMessage"
+                );
+
+
+            const text =
+                "Tidak dapat terhubung ke Google Apps Script.";
+
+
+            if (message) {
+                message.textContent =
+                    text;
+            }
+
+
+            if (formMessage) {
+                formMessage.textContent =
+                    text;
+            }
+
+
+            script.remove();
+
+        };
+
+
+    document.body.appendChild(
+        script
+    );
+
 }
 
 
-/* =========================================
-   LOGIN
-========================================= */
+/******************************************************
+ * LOGIN
+ ******************************************************/
 
 function login() {
 
     const password =
-        document.getElementById("password").value;
+        document.getElementById(
+            "password"
+        ).value.trim();
+
 
     const message =
-        document.getElementById("message");
+        document.getElementById(
+            "message"
+        );
+
 
     if (!password) {
 
@@ -87,31 +142,57 @@ function login() {
 
     }
 
+
     message.textContent =
         "Memeriksa password...";
 
+
     apiRequest(
         {
+
             action: "login",
-            password: password
+
+            password:
+                password
+
         },
 
         function(result) {
 
-            if (result.success) {
+            if (
+                result &&
+                result.success
+            ) {
 
                 sessionStorage.setItem(
                     "donatur_token",
                     result.token
                 );
 
-                location.href =
-                    "form.html";
+
+                message.textContent =
+                    "Login berhasil.";
+
+
+                setTimeout(
+                    function() {
+
+                        location.href =
+                            "form.html";
+
+                    },
+                    300
+                );
+
 
             } else {
 
                 message.textContent =
-                    result.message;
+                    result &&
+                    result.message
+                        ? result.message
+                        : "Login gagal.";
+
 
                 document.getElementById(
                     "password"
@@ -121,12 +202,13 @@ function login() {
 
         }
     );
+
 }
 
 
-/* =========================================
-   LOGOUT
-========================================= */
+/******************************************************
+ * LOGOUT
+ ******************************************************/
 
 function logout() {
 
@@ -134,14 +216,16 @@ function logout() {
         "donatur_token"
     );
 
+
     location.href =
         "index.html";
+
 }
 
 
-/* =========================================
-   CEK LOGIN
-========================================= */
+/******************************************************
+ * CEK LOGIN
+ ******************************************************/
 
 function checkLogin() {
 
@@ -150,48 +234,61 @@ function checkLogin() {
             "donatur_token"
         );
 
+
     if (!token) {
 
         location.href =
             "login.html";
 
+        return false;
+
     }
+
+
+    return true;
 
 }
 
 
-/* =========================================
-   TANGGAL
-========================================= */
+/******************************************************
+ * TANGGAL
+ ******************************************************/
 
 function tampilkanTanggal() {
 
     const sekarang =
         new Date();
 
+
     const hari =
         String(
             sekarang.getDate()
         ).padStart(2, "0");
+
 
     const bulan =
         String(
             sekarang.getMonth() + 1
         ).padStart(2, "0");
 
+
     const tahun =
         sekarang.getFullYear();
+
 
     const el =
         document.getElementById(
             "tanggal"
         );
 
+
     if (el) {
 
         el.value =
-            hari + "/" +
-            bulan + "/" +
+            hari +
+            "/" +
+            bulan +
+            "/" +
             tahun;
 
     }
@@ -199,15 +296,18 @@ function tampilkanTanggal() {
 }
 
 
-/* =========================================
-   RT
-========================================= */
+/******************************************************
+ * RT
+ ******************************************************/
 
 let selectedRT = "";
 
+
 function pilihRT(rt) {
 
-    selectedRT = rt;
+    selectedRT =
+        String(rt);
+
 
     for (
         let i = 1;
@@ -215,31 +315,51 @@ function pilihRT(rt) {
         i++
     ) {
 
-        const el =
-            document.getElementById(
-                "rt" +
-                String(i).padStart(2, "0")
+        const id =
+            "rt" +
+            String(i).padStart(
+                2,
+                "0"
             );
 
+
+        const el =
+            document.getElementById(
+                id
+            );
+
+
         if (el) {
+
             el.classList.remove(
                 "selected"
             );
+
         }
 
     }
 
-    document.getElementById(
-        "rt" + rt
-    ).classList.add(
-        "selected"
-    );
+
+    const selected =
+        document.getElementById(
+            "rt" + rt
+        );
+
+
+    if (selected) {
+
+        selected.classList.add(
+            "selected"
+        );
+
+    }
+
 }
 
 
-/* =========================================
-   FORMAT RUPIAH INPUT
-========================================= */
+/******************************************************
+ * FORMAT RUPIAH INPUT
+ ******************************************************/
 
 function formatInputRupiah(input) {
 
@@ -249,6 +369,7 @@ function formatInputRupiah(input) {
             ""
         );
 
+
     if (!value) {
 
         input.value = "";
@@ -256,6 +377,7 @@ function formatInputRupiah(input) {
         return;
 
     }
+
 
     value =
         parseInt(
@@ -265,45 +387,58 @@ function formatInputRupiah(input) {
             "id-ID"
         );
 
+
     input.value =
         "Rp " + value;
+
 }
 
+
+/******************************************************
+ * AMBIL NOMINAL
+ ******************************************************/
 
 function getNominal(input) {
 
     return Number(
-        input.replace(
-            /[^0-9]/g,
-            ""
-        )
+        String(input || "")
+            .replace(
+                /[^0-9]/g,
+                ""
+            )
     ) || 0;
 
 }
 
 
-/* =========================================
-   SIMPAN
-========================================= */
+/******************************************************
+ * SIMPAN DONASI
+ ******************************************************/
 
 function simpan() {
 
-    checkLogin();
+    if (!checkLogin()) {
+        return;
+    }
+
 
     const nama =
         document.getElementById(
             "nama"
         ).value.trim();
 
+
     const jumlahText =
         document.getElementById(
             "jumlah"
         ).value;
 
+
     const jumlah =
         getNominal(
             jumlahText
         );
+
 
     const message =
         document.getElementById(
@@ -311,14 +446,23 @@ function simpan() {
         );
 
 
+    /**************************************************
+     * VALIDASI
+     **************************************************/
+
     if (!nama) {
 
         message.textContent =
             "Nama donatur belum diisi.";
 
+        document.getElementById(
+            "nama"
+        ).focus();
+
         return;
 
     }
+
 
     if (!selectedRT) {
 
@@ -329,7 +473,11 @@ function simpan() {
 
     }
 
-    if (!jumlah || jumlah <= 0) {
+
+    if (
+        !jumlah ||
+        jumlah <= 0
+    ) {
 
         message.textContent =
             "Jumlah donasi belum diisi.";
@@ -351,34 +499,53 @@ function simpan() {
 
     apiRequest(
         {
-            action: "save",
-            token: token,
-            nama: nama,
-            rt: selectedRT,
-            jumlah: jumlah
+
+            action:
+                "save",
+
+            token:
+                token,
+
+            nama:
+                nama,
+
+            rt:
+                selectedRT,
+
+            jumlah:
+                jumlah
+
         },
 
         function(result) {
 
-            if (result.success) {
+            if (
+                result &&
+                result.success
+            ) {
 
                 document.getElementById(
                     "nomor"
                 ).value =
                     result.nomor;
 
+
                 message.textContent =
                     result.message;
+
 
                 document.getElementById(
                     "nama"
                 ).value = "";
 
+
                 document.getElementById(
                     "jumlah"
                 ).value = "";
 
+
                 selectedRT = "";
+
 
                 for (
                     let i = 1;
@@ -389,16 +556,23 @@ function simpan() {
                     const el =
                         document.getElementById(
                             "rt" +
-                            String(i).padStart(2, "0")
+                            String(i).padStart(
+                                2,
+                                "0"
+                            )
                         );
 
+
                     if (el) {
+
                         el.classList.remove(
                             "selected"
                         );
+
                     }
 
                 }
+
 
                 document.getElementById(
                     "formTotal"
@@ -407,33 +581,45 @@ function simpan() {
                         result.total
                     );
 
+
                 tampilkanTanggal();
+
 
                 document.getElementById(
                     "nama"
                 ).focus();
 
+
             } else {
 
                 message.textContent =
-                    result.message;
+                    result &&
+                    result.message
+                        ? result.message
+                        : "Gagal menyimpan data.";
+
 
                 if (
-                    result.message.includes(
-                        "sesi"
-                    )
+                    result &&
+                    result.message &&
+                    result.message
+                        .toLowerCase()
+                        .includes("sesi")
                 ) {
 
                     sessionStorage.removeItem(
                         "donatur_token"
                     );
 
+
                     setTimeout(
                         function() {
+
                             location.href =
                                 "login.html";
+
                         },
-                        1500
+                        1000
                     );
 
                 }
@@ -442,28 +628,36 @@ function simpan() {
 
         }
     );
+
 }
 
 
-/* =========================================
-   TOTAL DANA
-========================================= */
+/******************************************************
+ * TOTAL DANA
+ ******************************************************/
 
 function ambilTotal() {
 
     apiRequest(
         {
-            action: "total"
+
+            action:
+                "total"
+
         },
 
         function(result) {
 
-            if (result.success) {
+            if (
+                result &&
+                result.success
+            ) {
 
                 const el =
                     document.getElementById(
                         "formTotal"
                     );
+
 
                 if (el) {
 
@@ -478,12 +672,13 @@ function ambilTotal() {
 
         }
     );
+
 }
 
 
-/* =========================================
-   FORMAT RUPIAH
-========================================= */
+/******************************************************
+ * FORMAT RUPIAH
+ ******************************************************/
 
 function formatRupiah(angka) {
 
@@ -497,21 +692,27 @@ function formatRupiah(angka) {
 }
 
 
-/* =========================================
-   JAM DISPLAY
-========================================= */
+/******************************************************
+ * JAM
+ ******************************************************/
 
 function updateClock() {
 
     const now =
         new Date();
 
+
     const hari =
         String(
             now.getDate()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
+
 
     const bulanNama = [
+
         "Januari",
         "Februari",
         "Maret",
@@ -524,36 +725,52 @@ function updateClock() {
         "Oktober",
         "November",
         "Desember"
+
     ];
+
 
     const bulan =
         bulanNama[
             now.getMonth()
         ];
 
+
     const tahun =
         now.getFullYear();
 
-    let jam =
+
+    const jam =
         String(
             now.getHours()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
-    let menit =
+
+    const menit =
         String(
             now.getMinutes()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
-    let detik =
+
+    const detik =
         String(
             now.getSeconds()
-        ).padStart(2, "0");
+        ).padStart(
+            2,
+            "0"
+        );
 
 
     const dateEl =
         document.getElementById(
             "displayDate"
         );
+
 
     const timeEl =
         document.getElementById(
@@ -564,17 +781,22 @@ function updateClock() {
     if (dateEl) {
 
         dateEl.textContent =
-            hari + " " +
-            bulan + " " +
+            hari +
+            " " +
+            bulan +
+            " " +
             tahun;
 
     }
 
+
     if (timeEl) {
 
         timeEl.textContent =
-            jam + ":" +
-            menit + ":" +
+            jam +
+            ":" +
+            menit +
+            ":" +
             detik +
             " WIB";
 
@@ -583,21 +805,29 @@ function updateClock() {
 }
 
 
-/* =========================================
-   DISPLAY DATA DONATUR
-========================================= */
+/******************************************************
+ * LOAD DATA DONATUR
+ ******************************************************/
 
 function loadDisplayData() {
 
     apiRequest(
         {
-            action: "data"
+
+            action:
+                "data"
+
         },
 
         function(result) {
 
-            if (!result.success) {
+            if (
+                !result ||
+                !result.success
+            ) {
+
                 return;
+
             }
 
 
@@ -605,6 +835,7 @@ function loadDisplayData() {
                 document.getElementById(
                     "displayTotal"
                 );
+
 
             if (totalEl) {
 
@@ -617,7 +848,7 @@ function loadDisplayData() {
 
 
             tampilkanDonatur(
-                result.data
+                result.data || []
             );
 
         }
@@ -626,9 +857,9 @@ function loadDisplayData() {
 }
 
 
-/* =========================================
-   ANIMASI DONATUR
-========================================= */
+/******************************************************
+ * TAMPILKAN DONATUR
+ ******************************************************/
 
 function tampilkanDonatur(data) {
 
@@ -637,20 +868,21 @@ function tampilkanDonatur(data) {
             "donaturList"
         );
 
-    if (!container) return;
+
+    if (!container) {
+        return;
+    }
 
 
     container.innerHTML = "";
 
 
-    // Data terbaru diutamakan
     const terbaru =
         data
-        .slice()
-        .reverse();
+            .slice()
+            .reverse();
 
 
-    // Batasi data agar tidak terlalu berat
     const daftar =
         terbaru.slice(
             0,
@@ -666,12 +898,14 @@ function tampilkanDonatur(data) {
                     "div"
                 );
 
+
             div.className =
                 "donatur-item";
 
 
             div.style.animationDelay =
-                (index * 1.2) + "s";
+                (index * 1.2) +
+                "s";
 
 
             div.innerHTML = `
@@ -679,28 +913,46 @@ function tampilkanDonatur(data) {
                 <div class="donatur-line">
 
                     <span>
-                        #${item.nomor}
+                        #${escapeHTML(
+                            String(
+                                item.nomor || ""
+                            )
+                        )}
                     </span>
 
                     <span>
-                        ${item.tanggal}
+                        ${escapeHTML(
+                            String(
+                                item.tanggal || ""
+                            )
+                        )}
                     </span>
 
                     <span>
-                        RT ${item.rt}
+                        RT ${escapeHTML(
+                            String(
+                                item.rt || ""
+                            )
+                        )}
                     </span>
 
                 </div>
 
                 <div class="donatur-name">
 
-                    ${escapeHTML(item.nama)}
+                    ${escapeHTML(
+                        String(
+                            item.nama || ""
+                        )
+                    )}
 
                 </div>
 
                 <div class="donatur-money">
 
-                    ${formatRupiah(item.jumlah)}
+                    ${formatRupiah(
+                        item.jumlah
+                    )}
 
                 </div>
 
@@ -717,9 +969,9 @@ function tampilkanDonatur(data) {
 }
 
 
-/* =========================================
-   KEAMANAN TAMPILAN NAMA
-========================================= */
+/******************************************************
+ * ESCAPE HTML
+ ******************************************************/
 
 function escapeHTML(text) {
 
@@ -728,51 +980,31 @@ function escapeHTML(text) {
             "div"
         );
 
+
     div.textContent =
         text;
+
 
     return div.innerHTML;
 
 }
 
 
-/* =========================================
-   DISPLAY DATA
-========================================= */
+/******************************************************
+ * JAM BERJALAN
+ ******************************************************/
 
-function loadDisplayData() {
+setInterval(
+    updateClock,
+    1000
+);
 
-    apiRequest(
-        {
-            action: "data"
-        },
 
-        function(result) {
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
 
-            if (!result.success) {
-                return;
-            }
+        updateClock();
 
-            const totalEl =
-                document.getElementById(
-                    "displayTotal"
-                );
-
-            if (totalEl) {
-
-                totalEl.textContent =
-                    formatRupiah(
-                        result.total
-                    );
-
-            }
-
-            tampilkanDonatur(
-                result.data
-            );
-
-        }
-    );
-
-}
-
+    }
+);
