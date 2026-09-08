@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="id">
 
@@ -29,9 +28,7 @@
             🔐
         </div>
 
-        <h1>
-            FORM DONATUR
-        </h1>
+        <h1>FORM DONATUR</h1>
 
         <p>
             Masukkan password petugas
@@ -46,6 +43,7 @@
 
         <button
             class="primary-btn"
+            id="btnMasuk"
             onclick="login()">
 
             MASUK
@@ -69,8 +67,132 @@
 
 </div>
 
-<script src="script.js"></script>
+
+<script>
+
+/* =========================================
+   URL GOOGLE APPS SCRIPT
+   GANTI DENGAN URL WEB APP ANDA
+========================================= */
+
+const API_URL =
+    "GANTI_DENGAN_URL_APPS_SCRIPT_ANDA";
+
+
+/* =========================================
+   LOGIN
+========================================= */
+
+function login() {
+
+    const password =
+        document.getElementById("password").value.trim();
+
+    const message =
+        document.getElementById("message");
+
+    const button =
+        document.getElementById("btnMasuk");
+
+
+    if (!password) {
+
+        message.textContent =
+            "Password belum diisi.";
+
+        return;
+
+    }
+
+
+    message.textContent =
+        "Memeriksa password...";
+
+    button.disabled = true;
+
+
+    const callbackName =
+        "loginCallback_" +
+        Date.now();
+
+
+    window[callbackName] =
+        function(result) {
+
+            button.disabled = false;
+
+
+            if (result.success) {
+
+                message.textContent =
+                    "Login berhasil. Membuka form...";
+
+
+                sessionStorage.setItem(
+                    "donatur_token",
+                    result.token
+                );
+
+
+                setTimeout(
+                    function() {
+
+                        window.location.href =
+                            "form.html";
+
+                    },
+                    500
+                );
+
+
+            } else {
+
+                message.textContent =
+                    result.message;
+
+                document.getElementById(
+                    "password"
+                ).value = "";
+
+            }
+
+
+            delete window[callbackName];
+
+        };
+
+
+    const script =
+        document.createElement("script");
+
+
+    script.src =
+        API_URL +
+        "?action=login" +
+        "&password=" +
+        encodeURIComponent(password) +
+        "&callback=" +
+        callbackName;
+
+
+    script.onerror =
+        function() {
+
+            button.disabled = false;
+
+            message.textContent =
+                "Tidak dapat terhubung ke Google Apps Script.";
+
+            delete window[callbackName];
+
+        };
+
+
+    document.body.appendChild(script);
+
+}
+
+</script>
 
 </body>
 </html>
-```
