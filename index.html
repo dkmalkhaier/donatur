@@ -4,76 +4,1726 @@
 
 <head>
 
-<meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-<meta name="viewport"
-      content="width=device-width,
-               initial-scale=1.0,
-               maximum-scale=1.0,
-               user-scalable=no">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
-<title>Data Donatur</title>
+  <meta name="theme-color"
+        content="#1f6b52">
 
-<link rel="stylesheet"
-      href="style.css">
+  <title>Data Donatur DKM Al-Khaier</title>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+      background: #f4f8f6;
+      color: #263a33;
+    }
+
+
+    /* ======================================
+       HALAMAN UTAMA
+       ====================================== */
+
+    .page {
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+
+    /* ======================================
+       HEADER
+       ====================================== */
+
+    .header {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 20px 15px 10px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5ece9;
+      position: relative;
+      z-index: 20;
+    }
+
+
+    .header-title {
+      margin: 0;
+      font-size: 25px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      color: #205f4b;
+    }
+
+
+    .header-subtitle {
+      margin-top: 5px;
+      font-size: 13px;
+      color: #7a8983;
+    }
+
+
+    /* ======================================
+       TANGGAL & JAM
+       ====================================== */
+
+    .datetime {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 9px 10px 3px;
+      font-size: 13px;
+      color: #778780;
+      background: #ffffff;
+      position: relative;
+      z-index: 20;
+    }
+
+
+    /* ======================================
+       TOTAL DONASI
+       ====================================== */
+
+    .summary {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 7px 15px 8px;
+      background: #ffffff;
+      position: relative;
+      z-index: 20;
+    }
+
+
+    .total-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #7d8d86;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+
+    .total-value {
+      margin-top: 2px;
+      font-size: 38px;
+      line-height: 1.15;
+      font-weight: 800;
+      color: #267458;
+      word-break: break-word;
+    }
+
+
+    .donor-count {
+      margin-top: 4px;
+      font-size: 14px;
+      color: #64766e;
+    }
+
+
+    /* ======================================
+       AREA DONATUR BERJALAN
+       ====================================== */
+
+    .donor-area {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      margin-top: 3px;
+      background:
+        linear-gradient(
+          to bottom,
+          #f4f8f6 0%,
+          #f8faf9 50%,
+          #f4f8f6 100%
+        );
+    }
+
+
+    /* Garis dekorasi atas */
+
+    .donor-area::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 12%;
+      right: 12%;
+      height: 1px;
+      background: #dce7e2;
+      z-index: 5;
+    }
+
+
+    /* Gradasi bagian atas */
+
+    .donor-area::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 65px;
+      background:
+        linear-gradient(
+          to bottom,
+          #f4f8f6,
+          rgba(244,248,246,0)
+        );
+      pointer-events: none;
+      z-index: 10;
+    }
+
+
+    .donor-title {
+      position: absolute;
+      top: 12px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #9aa7a2;
+      letter-spacing: 1.5px;
+      z-index: 15;
+    }
+
+
+    /* ======================================
+       LIST ANIMASI
+       ====================================== */
+
+    .scroll-wrapper {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 42px;
+      bottom: 0;
+      overflow: hidden;
+    }
+
+
+    .donor-list {
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 100%;
+      text-align: center;
+      animation:
+        scrollDonor
+        30s
+        linear
+        infinite;
+    }
+
+
+    .donor-list.paused {
+      animation-play-state: paused;
+    }
+
+
+    /* ======================================
+       ITEM DONATUR
+       ====================================== */
+
+    .donor-item {
+      width: min(92%, 500px);
+      margin: 0 auto 28px;
+      padding: 16px 18px;
+      border-radius: 17px;
+      background: rgba(255,255,255,0.92);
+      border: 1px solid #e1ebe6;
+      box-shadow:
+        0 4px 15px rgba(43,76,64,0.06);
+    }
+
+
+    .donor-name {
+      font-size: 20px;
+      line-height: 1.25;
+      font-weight: 700;
+      color: #2f4b40;
+    }
+
+
+    .donor-info {
+      margin-top: 6px;
+      font-size: 13px;
+      color: #829089;
+    }
+
+
+    .donor-amount {
+      margin-top: 8px;
+      font-size: 20px;
+      font-weight: 800;
+      color: #2b795d;
+    }
+
+
+    /* ======================================
+       DATA KOSONG
+       ====================================== */
+
+    .empty-data {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      color: #87958f;
+      font-size: 14px;
+      display: none;
+    }
+
+
+    .empty-icon {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+
+    /* ======================================
+       LOADING
+       ====================================== */
+
+    .loading {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      color: #87958f;
+      font-size: 13px;
+      z-index: 8;
+    }
+
+
+    .spinner {
+      width: 22px;
+      height: 22px;
+      margin: 0 auto 9px;
+      border-radius: 50%;
+      border: 2px solid #dce8e3;
+      border-top-color: #3c816a;
+      animation: spin 0.8s linear infinite;
+    }
+
+
+    @keyframes spin {
+
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+
+    }
+
+
+    /* ======================================
+       ERROR
+       ====================================== */
+
+    .error-box {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      text-align: center;
+      display: none;
+      color: #a95b5b;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+
+    /* ======================================
+       TOMBOL DETAIL
+       ====================================== */
+
+    .bottom-bar {
+      position: absolute;
+      right: 13px;
+      bottom: 12px;
+      z-index: 50;
+    }
+
+
+    .detail-button {
+      border: 1px solid #d5e1dc;
+      background: rgba(255,255,255,0.92);
+      color: #5e7169;
+      padding: 7px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow:
+        0 3px 12px rgba(0,0,0,0.07);
+      transition: all 0.2s ease;
+    }
+
+
+    .detail-button:hover {
+      background: #ffffff;
+      color: #2f765b;
+    }
+
+
+    .detail-button:active {
+      transform: scale(0.96);
+    }
+
+
+    /* ======================================
+       MODAL DETAIL
+       ====================================== */
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(30,45,39,0.45);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 100;
+    }
+
+
+    .modal.show {
+      display: flex;
+    }
+
+
+    .modal-content {
+      width: 100%;
+      max-width: 850px;
+      max-height: 88vh;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow:
+        0 15px 45px rgba(0,0,0,0.18);
+      display: flex;
+      flex-direction: column;
+    }
+
+
+    .modal-header {
+      flex-shrink: 0;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #e6ece9;
+    }
+
+
+    .modal-title {
+      margin: 0;
+      font-size: 18px;
+      color: #315247;
+    }
+
+
+    .close-button {
+      width: 34px;
+      height: 34px;
+      border: none;
+      border-radius: 50%;
+      background: #f0f4f2;
+      color: #65746e;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+
+    .modal-body {
+      overflow: auto;
+      padding: 0;
+    }
+
+
+    /* ======================================
+       TABEL DETAIL
+       ====================================== */
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+
+    thead {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      background: #f1f7f4;
+    }
+
+
+    th {
+      padding: 12px 10px;
+      text-align: left;
+      color: #52655d;
+      font-weight: 700;
+      border-bottom: 1px solid #dfe9e4;
+      white-space: nowrap;
+    }
+
+
+    td {
+      padding: 11px 10px;
+      color: #42554d;
+      border-bottom: 1px solid #edf1ef;
+    }
+
+
+    td:nth-child(1),
+    th:nth-child(1) {
+      text-align: center;
+      width: 55px;
+    }
+
+
+    td:nth-child(2),
+    th:nth-child(2) {
+      white-space: nowrap;
+    }
+
+
+    td:nth-child(4),
+    th:nth-child(4) {
+      text-align: center;
+    }
+
+
+    td:nth-child(5),
+    th:nth-child(5) {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+
+    .modal-loading {
+      padding: 35px;
+      text-align: center;
+      color: #829089;
+      font-size: 13px;
+    }
+
+
+    /* ======================================
+       RESPONSIVE DESKTOP
+       ====================================== */
+
+    @media screen and (min-width: 769px) {
+
+      .page {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #ffffff;
+        box-shadow:
+          0 0 35px rgba(0,0,0,0.05);
+      }
+
+
+      .header-title {
+        font-size: 28px;
+      }
+
+
+      .total-value {
+        font-size: 45px;
+      }
+
+
+      .donor-item {
+        padding: 19px 25px;
+      }
+
+
+      .donor-name {
+        font-size: 22px;
+      }
+
+
+      .donor-amount {
+        font-size: 22px;
+      }
+
+    }
+
+
+    /* ======================================
+       RESPONSIVE HP
+       ====================================== */
+
+    @media screen and (max-width: 768px) {
+
+      .header {
+        padding-top: 17px;
+        padding-bottom: 8px;
+      }
+
+
+      .header-title {
+        font-size: 22px;
+      }
+
+
+      .header-subtitle {
+        font-size: 12px;
+      }
+
+
+      .datetime {
+        padding-top: 8px;
+        font-size: 12px;
+      }
+
+
+      .summary {
+        padding-top: 5px;
+        padding-bottom: 7px;
+      }
+
+
+      .total-label {
+        font-size: 11px;
+      }
+
+
+      .total-value {
+        font-size: 34px;
+      }
+
+
+      .donor-count {
+        font-size: 13px;
+      }
+
+
+      .donor-item {
+        width: 88%;
+        margin-bottom: 24px;
+        padding: 14px 15px;
+      }
+
+
+      .donor-name {
+        font-size: 18px;
+      }
+
+
+      .donor-amount {
+        font-size: 18px;
+      }
+
+
+      .donor-info {
+        font-size: 12px;
+      }
+
+
+      .bottom-bar {
+        right: 10px;
+        bottom: 9px;
+      }
+
+
+      .detail-button {
+        padding: 6px 10px;
+        font-size: 10px;
+      }
+
+
+      .modal {
+        padding: 10px;
+      }
+
+
+      .modal-content {
+        max-height: 92vh;
+        border-radius: 15px;
+      }
+
+
+      .modal-header {
+        padding: 14px 15px;
+      }
+
+
+      .modal-title {
+        font-size: 16px;
+      }
+
+
+      table {
+        font-size: 12px;
+      }
+
+
+      th,
+      td {
+        padding: 9px 7px;
+      }
+
+    }
+
+
+    /* ======================================
+       HP SANGAT KECIL
+       ====================================== */
+
+    @media screen and (max-width: 380px) {
+
+      .header-title {
+        font-size: 20px;
+      }
+
+
+      .total-value {
+        font-size: 30px;
+      }
+
+
+      .donor-name {
+        font-size: 17px;
+      }
+
+
+      .donor-amount {
+        font-size: 17px;
+      }
+
+    }
+
+
+    /* ======================================
+       ANIMASI
+       ====================================== */
+
+    @keyframes scrollDonor {
+
+      0% {
+        transform: translateY(0);
+      }
+
+      100% {
+        transform: translateY(-100%);
+      }
+
+    }
+
+
+  </style>
 
 </head>
 
-<body class="home">
 
-<div class="home-container">
+<body>
 
-    <div class="logo-symbol">
-        💰
-    </div>
 
-    <h1>
-        DATA DONATUR
+<div class="page">
+
+
+  <!-- ====================================
+       HEADER
+       ==================================== -->
+
+  <header class="header">
+
+    <h1 class="header-title">
+      🕌 DKM Al-Khaier
     </h1>
 
-    <p class="subtitle">
-        Masjid Jami Al-Khaier
-    </p>
+    <div class="header-subtitle">
+      Data Donatur
+    </div>
 
-    <div class="menu-buttons">
-
-        <button
-            class="menu-btn form-btn"
-            onclick="location.href='login.html'">
-
-            <span class="menu-icon">🔐</span>
-
-            <span>
-                FORM DONATUR
-            </span>
-
-            <small>
-                Khusus petugas
-            </small>
-
-        </button>
+  </header>
 
 
-        <button
-            class="menu-btn display-btn"
-            onclick="location.href='display.html'">
+  <!-- ====================================
+       TANGGAL & JAM
+       ==================================== -->
 
-            <span class="menu-icon">💰</span>
+  <div
+    class="datetime"
+    id="datetime"
+  >
+    00/00/0000 : 00:00:00
+  </div>
 
-            <span>
-                DANA TERKUMPUL
-            </span>
 
-            <small>
-                Informasi donasi
-            </small>
+  <!-- ====================================
+       RINGKASAN
+       ==================================== -->
 
-        </button>
+  <section class="summary">
+
+    <div class="total-label">
+      Total Donasi Terkumpul
+    </div>
+
+    <div
+      class="total-value"
+      id="totalDonasi"
+    >
+      Rp 0
+    </div>
+
+    <div
+      class="donor-count"
+      id="jumlahDonatur"
+    >
+      0 Donatur
+    </div>
+
+  </section>
+
+
+  <!-- ====================================
+       DATA DONATUR BERJALAN
+       ==================================== -->
+
+  <main class="donor-area">
+
+
+    <div class="donor-title">
+      DATA DONATUR
+    </div>
+
+
+    <!-- LOADING -->
+
+    <div
+      class="loading"
+      id="loading"
+    >
+
+      <div class="spinner"></div>
+
+      Memuat data donatur...
 
     </div>
+
+
+    <!-- ERROR -->
+
+    <div
+      class="error-box"
+      id="errorBox"
+    >
+
+      Tidak dapat mengambil data donatur.
+
+      <br>
+
+      <small>
+        Silakan coba beberapa saat lagi.
+      </small>
+
+    </div>
+
+
+    <!-- DATA KOSONG -->
+
+    <div
+      class="empty-data"
+      id="emptyData"
+    >
+
+      <div class="empty-icon">
+        📋
+      </div>
+
+      Belum ada data donatur.
+
+    </div>
+
+
+    <!-- AREA SCROLL -->
+
+    <div class="scroll-wrapper">
+
+      <div
+        class="donor-list"
+        id="donorList"
+      ></div>
+
+    </div>
+
+
+  </main>
+
+
+  <!-- ====================================
+       TOMBOL DETAIL
+       ==================================== -->
+
+  <div class="bottom-bar">
+
+    <button
+      class="detail-button"
+      onclick="bukaDetail()"
+    >
+      Lihat Detail
+    </button>
+
+  </div>
+
 
 </div>
 
+
+<!-- ======================================
+     MODAL DETAIL
+     ====================================== -->
+
+<div
+  class="modal"
+  id="detailModal"
+  onclick="klikLuarModal(event)"
+>
+
+
+  <div class="modal-content">
+
+
+    <div class="modal-header">
+
+      <h2 class="modal-title">
+        Detail Data Donatur
+      </h2>
+
+
+      <button
+        class="close-button"
+        onclick="tutupDetail()"
+      >
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="modal-body">
+
+      <div
+        class="modal-loading"
+        id="detailLoading"
+      >
+        Memuat data...
+      </div>
+
+
+      <table
+        id="detailTable"
+        style="display:none;"
+      >
+
+        <thead>
+
+          <tr>
+
+            <th>No.</th>
+
+            <th>Tanggal</th>
+
+            <th>Nama Donatur</th>
+
+            <th>RT</th>
+
+            <th>Jumlah</th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody
+          id="detailBody"
+        ></tbody>
+
+      </table>
+
+    </div>
+
+
+  </div>
+
+
+</div>
+
+
+<script>
+
+
+  /* ======================================
+     URL GOOGLE APPS SCRIPT
+     ====================================== */
+
+  const API_URL =
+    "https://script.google.com/macros/s/AKfycbzmiu9nBn5GbPxYd9RlH3yZYVibQozjBlouhcFE6OeIRy-9U6jTIgDZ-w5Y0MqpJ7bK/exec";
+
+
+  /* ======================================
+     DATA GLOBAL
+     ====================================== */
+
+  let dataDonatur = [];
+
+
+  /* ======================================
+     FORMAT RUPIAH
+     ====================================== */
+
+  function formatRupiah(angka) {
+
+    const nilai =
+      Number(angka) || 0;
+
+    return (
+      "Rp " +
+      nilai.toLocaleString("id-ID")
+    );
+
+  }
+
+
+  /* ======================================
+     FORMAT TANGGAL
+     ====================================== */
+
+  function formatTanggal(value) {
+
+    if (!value) {
+      return "-";
+    }
+
+
+    /*
+     Jika Apps Script mengirim
+     format dd/MM/yyyy langsung.
+    */
+
+    if (
+      typeof value === "string" &&
+      /^\d{2}\/\d{2}\/\d{4}$/.test(value)
+    ) {
+
+      return value;
+
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    if (isNaN(date.getTime())) {
+
+      return value;
+
+    }
+
+
+    const dd =
+      String(date.getDate()).padStart(2, "0");
+
+
+    const mm =
+      String(date.getMonth() + 1).padStart(2, "0");
+
+
+    const yyyy =
+      date.getFullYear();
+
+
+    return (
+      dd +
+      "/" +
+      mm +
+      "/" +
+      yyyy
+    );
+
+  }
+
+
+  /* ======================================
+     TANGGAL & JAM REALTIME
+     ====================================== */
+
+  function updateDateTime() {
+
+    const now =
+      new Date();
+
+
+    const dd =
+      String(
+        now.getDate()
+      ).padStart(2, "0");
+
+
+    const mm =
+      String(
+        now.getMonth() + 1
+      ).padStart(2, "0");
+
+
+    const yyyy =
+      now.getFullYear();
+
+
+    const hh =
+      String(
+        now.getHours()
+      ).padStart(2, "0");
+
+
+    const min =
+      String(
+        now.getMinutes()
+      ).padStart(2, "0");
+
+
+    const sec =
+      String(
+        now.getSeconds()
+      ).padStart(2, "0");
+
+
+    document.getElementById(
+      "datetime"
+    ).textContent =
+      dd +
+      "/" +
+      mm +
+      "/" +
+      yyyy +
+      " : " +
+      hh +
+      ":" +
+      min +
+      ":" +
+      sec;
+
+  }
+
+
+  /* ======================================
+     JSONP
+     ====================================== */
+
+  let jsonpCounter = 0;
+
+
+  function jsonpRequest(action) {
+
+    return new Promise(
+      function(resolve, reject) {
+
+        const callbackName =
+          "jsonpCallback_" +
+          Date.now() +
+          "_" +
+          (++jsonpCounter);
+
+
+        const script =
+          document.createElement("script");
+
+
+        const timeout =
+          setTimeout(
+            function() {
+
+              cleanup();
+
+              reject(
+                new Error(
+                  "Request timeout"
+                )
+              );
+
+            },
+            15000
+          );
+
+
+        function cleanup() {
+
+          clearTimeout(timeout);
+
+          if (script.parentNode) {
+            script.parentNode.removeChild(script);
+          }
+
+          try {
+            delete window[callbackName];
+          } catch (e) {
+            window[callbackName] = undefined;
+          }
+
+        }
+
+
+        window[callbackName] =
+          function(data) {
+
+            cleanup();
+
+            resolve(data);
+
+          };
+
+
+        script.onerror =
+          function() {
+
+            cleanup();
+
+            reject(
+              new Error(
+                "Gagal terhubung ke Apps Script"
+              )
+            );
+
+          };
+
+
+        script.src =
+          API_URL +
+          "?action=" +
+          encodeURIComponent(action) +
+          "&callback=" +
+          encodeURIComponent(callbackName) +
+          "&t=" +
+          Date.now();
+
+
+        document.body.appendChild(script);
+
+      }
+    );
+
+  }
+
+
+  /* ======================================
+     AMBIL DATA
+     ====================================== */
+
+  async function loadData() {
+
+    try {
+
+      const result =
+        await jsonpRequest("data");
+
+
+      if (
+        !result ||
+        result.success !== true
+      ) {
+
+        throw new Error(
+          result && result.message
+            ? result.message
+            : "Data tidak tersedia"
+        );
+
+      }
+
+
+      dataDonatur =
+        Array.isArray(result.data)
+          ? result.data
+          : [];
+
+
+      tampilkanRingkasan();
+
+      tampilkanDonatur();
+
+
+      document.getElementById(
+        "loading"
+      ).style.display = "none";
+
+
+    } catch (error) {
+
+      console.error(error);
+
+
+      document.getElementById(
+        "loading"
+      ).style.display = "none";
+
+
+      document.getElementById(
+        "errorBox"
+      ).style.display = "block";
+
+    }
+
+  }
+
+
+  /* ======================================
+     TAMPILKAN RINGKASAN
+     ====================================== */
+
+  function tampilkanRingkasan() {
+
+    let total = 0;
+
+
+    dataDonatur.forEach(
+      function(item) {
+
+        total +=
+          Number(item.jumlah) || 0;
+
+      }
+    );
+
+
+    document.getElementById(
+      "totalDonasi"
+    ).textContent =
+      formatRupiah(total);
+
+
+    document.getElementById(
+      "jumlahDonatur"
+    ).textContent =
+      dataDonatur.length +
+      " Donatur";
+
+  }
+
+
+  /* ======================================
+     TAMPILKAN DONATUR
+     ====================================== */
+
+  function tampilkanDonatur() {
+
+    const list =
+      document.getElementById(
+        "donorList"
+      );
+
+
+    const empty =
+      document.getElementById(
+        "emptyData"
+      );
+
+
+    list.innerHTML = "";
+
+
+    if (
+      !dataDonatur ||
+      dataDonatur.length === 0
+    ) {
+
+      empty.style.display = "block";
+
+      return;
+
+    }
+
+
+    empty.style.display = "none";
+
+
+    /*
+     Duplikasi data supaya animasi
+     terlihat terus menerus.
+    */
+
+    const semuaData =
+      dataDonatur.concat(dataDonatur);
+
+
+    semuaData.forEach(
+      function(item) {
+
+        const div =
+          document.createElement("div");
+
+
+        div.className =
+          "donor-item";
+
+
+        const nama =
+          item.nama || "-";
+
+
+        const rt =
+          item.rt
+            ? "RT " + item.rt
+            : "";
+
+
+        const tanggal =
+          formatTanggal(
+            item.tanggal
+          );
+
+
+        const jumlah =
+          formatRupiah(
+            item.jumlah
+          );
+
+
+        div.innerHTML =
+
+          '<div class="donor-name">' +
+            escapeHtml(nama) +
+          '</div>' +
+
+          '<div class="donor-info">' +
+            escapeHtml(tanggal) +
+            " &nbsp; • &nbsp; " +
+            escapeHtml(rt) +
+          '</div>' +
+
+          '<div class="donor-amount">' +
+            escapeHtml(jumlah) +
+          '</div>';
+
+
+        list.appendChild(div);
+
+      }
+    );
+
+
+    /*
+     Kecepatan animasi disesuaikan
+     dengan jumlah data.
+    */
+
+    const durasi =
+      Math.max(
+        25,
+        dataDonatur.length * 4
+      );
+
+
+    list.style.animationDuration =
+      durasi + "s";
+
+  }
+
+
+  /* ======================================
+     ESCAPE HTML
+     ====================================== */
+
+  function escapeHtml(text) {
+
+    const div =
+      document.createElement("div");
+
+    div.textContent =
+      String(text);
+
+    return div.innerHTML;
+
+  }
+
+
+  /* ======================================
+     BUKA DETAIL
+     ====================================== */
+
+  function bukaDetail() {
+
+    const modal =
+      document.getElementById(
+        "detailModal"
+      );
+
+
+    modal.classList.add("show");
+
+
+    tampilkanDetail();
+
+  }
+
+
+  /* ======================================
+     TUTUP DETAIL
+     ====================================== */
+
+  function tutupDetail() {
+
+    document.getElementById(
+      "detailModal"
+    ).classList.remove("show");
+
+  }
+
+
+  /* ======================================
+     KLIK LUAR MODAL
+     ====================================== */
+
+  function klikLuarModal(event) {
+
+    if (
+      event.target ===
+      document.getElementById(
+        "detailModal"
+      )
+    ) {
+
+      tutupDetail();
+
+    }
+
+  }
+
+
+  /* ======================================
+     ESC UNTUK TUTUP MODAL
+     ====================================== */
+
+  document.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Escape"
+      ) {
+
+        tutupDetail();
+
+      }
+
+    }
+  );
+
+
+  /* ======================================
+     TAMPILKAN DETAIL
+     ====================================== */
+
+  function tampilkanDetail() {
+
+    const loading =
+      document.getElementById(
+        "detailLoading"
+      );
+
+
+    const table =
+      document.getElementById(
+        "detailTable"
+      );
+
+
+    const tbody =
+      document.getElementById(
+        "detailBody"
+      );
+
+
+    loading.style.display =
+      "block";
+
+
+    table.style.display =
+      "none";
+
+
+    tbody.innerHTML = "";
+
+
+    if (
+      !dataDonatur ||
+      dataDonatur.length === 0
+    ) {
+
+      loading.textContent =
+        "Belum ada data donatur.";
+
+      return;
+
+    }
+
+
+    dataDonatur.forEach(
+      function(item) {
+
+        const tr =
+          document.createElement("tr");
+
+
+        tr.innerHTML =
+
+          "<td>" +
+            escapeHtml(
+              item.nomor || ""
+            ) +
+          "</td>" +
+
+          "<td>" +
+            escapeHtml(
+              formatTanggal(
+                item.tanggal
+              )
+            ) +
+          "</td>" +
+
+          "<td>" +
+            escapeHtml(
+              item.nama || ""
+            ) +
+          "</td>" +
+
+          "<td>" +
+            escapeHtml(
+              item.rt || ""
+            ) +
+          "</td>" +
+
+          "<td>" +
+            escapeHtml(
+              formatRupiah(
+                item.jumlah
+              )
+            ) +
+          "</td>";
+
+
+        tbody.appendChild(tr);
+
+      }
+    );
+
+
+    loading.style.display =
+      "none";
+
+
+    table.style.display =
+      "table";
+
+  }
+
+
+  /* ======================================
+     REFRESH OTOMATIS
+     ====================================== */
+
+  function refreshData() {
+
+    jsonpRequest("data")
+
+      .then(
+        function(result) {
+
+          if (
+            result &&
+            result.success === true
+          ) {
+
+            dataDonatur =
+              Array.isArray(result.data)
+                ? result.data
+                : [];
+
+
+            tampilkanRingkasan();
+
+            tampilkanDonatur();
+
+          }
+
+        }
+      )
+
+      .catch(
+        function(error) {
+
+          console.error(error);
+
+        }
+      );
+
+  }
+
+
+  /* ======================================
+     START
+     ====================================== */
+
+  updateDateTime();
+
+
+  setInterval(
+    updateDateTime,
+    1000
+  );
+
+
+  loadData();
+
+
+  /*
+   Refresh data setiap 60 detik
+  */
+
+  setInterval(
+    refreshData,
+    60000
+  );
+
+
+</script>
+
+
 </body>
+
 </html>
 
