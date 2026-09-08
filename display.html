@@ -1,0 +1,114 @@
+```html
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width,
+               initial-scale=1.0,
+               maximum-scale=1.0">
+
+<title>Dana Terkumpul</title>
+
+<link rel="stylesheet"
+      href="style.css">
+
+</head>
+
+<body class="display-body">
+
+<div class="display-container">
+
+    <div class="display-title">
+
+        <div>
+            💰
+        </div>
+
+        <h1>
+            DANA TERKUMPUL
+        </h1>
+
+    </div>
+
+
+    <div class="total-box">
+
+        <div
+            id="displayTotal"
+            class="total-number">
+
+            Rp 0
+
+        </div>
+
+        <div class="date-time">
+
+            <div id="displayDate">
+                08 September 2026
+            </div>
+
+            <div id="displayTime">
+                00:00:00 WIB
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="donatur-area">
+
+        <div class="donatur-title">
+            DONATUR
+        </div>
+
+        <div id="donaturList">
+        </div>
+
+    </div>
+
+
+    <button
+        class="display-back"
+        onclick="location.href='index.html'">
+
+        ← Menu
+
+    </button>
+
+</div>
+
+<script src="script.js"></script>
+
+<script>
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        updateClock();
+
+        setInterval(
+            updateClock,
+            1000
+        );
+
+        loadDisplayData();
+
+        setInterval(
+            loadDisplayData,
+            10000
+        );
+
+    }
+);
+
+</script>
+
+</body>
+</html>
+```
