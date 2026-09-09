@@ -359,23 +359,14 @@ body {
 ===================================================== */
 
 .donor-scroll {
-
   position: absolute;
-
   width: 100%;
-
   left: 0;
-
   top: 0;
-
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
-
   will-change: transform;
-
   transform: translate3d(0, 0, 0);
 }
 
@@ -438,11 +429,6 @@ body {
 
   color: #2e7d32;
 }
-
-
-
-
-
 
 
 /* =====================================================
@@ -901,7 +887,6 @@ tr:nth-child(even) {
   class="datetime">
   Memuat waktu...
 </div>
-==================================
 
   </div>
 
@@ -929,7 +914,7 @@ tr:nth-child(even) {
 
   <div class="donor-info-row">
 
-***
+
 <div class="donor-count">
 
   <span class="donor-count-label">
@@ -952,7 +937,6 @@ tr:nth-child(even) {
   Lihat Detail
 
 </button>
-***
 
   </div>
 
@@ -962,7 +946,7 @@ tr:nth-child(even) {
     id="donorArea"
     class="donor-area">
 
-```
+
 <div
   id="loading"
   class="loading">
@@ -970,7 +954,6 @@ tr:nth-child(even) {
   Memuat data donatur...
 
 </div>
-```
 
   </div>
 
@@ -996,7 +979,7 @@ Memuat data...
 
   <div class="modal-content">
 
-```
+
 <div class="modal-header">
 
   <h2>
@@ -1044,7 +1027,6 @@ Memuat data...
   </table>
 
 </div>
-```
 
   </div>
 
@@ -1064,6 +1046,16 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyTqwptHml5G7UHR291U2VY
 ===================================================== */
 
 let donorData = [];
+
+/* CACHE + ANIMASI DONATUR */
+const CACHE_KEY = "dkm_al_khaier_donatur_cache_v1";
+const CACHE_MAX_AGE = 5 * 60 * 1000;
+const DONOR_SCROLL_SPEED = 28;
+const MAX_SCROLL_CARDS = 30;
+let donorScrollAnimation = null;
+let donorScrollPosition = 0;
+let donorScrollLastTime = null;
+let donorCardIndex = 0;
 
 
 /* =====================================================
@@ -1146,614 +1138,159 @@ updateDateTime();
 ===================================================== */
 
 function ambilData() {
+  const loading = document.getElementById("loading");
+  if (loading && !donorData.length) loading.textContent = "Menghubungkan ke data donatur...";
 
-  const callbackName =
-    "callback_" +
-    Date.now();
+  const callbackName = "callback_" + Date.now() + "_" + Math.random().toString(36).slice(2);
+  const script = document.createElement("script");
+  let selesai = false;
 
-  const script =
-    document.createElement(
-      "script"
-    );
-
-
-  window[callbackName] =
-    function(response) {
-
-      try {
-
-        if (
-          !response ||
-          response.success !== true
-        ) {
-
-          tampilkanError(
-            "Data tidak dapat diambil."
-          );
-
-          return;
-
-        }
-
-
-        donorData =
-          Array.isArray(
-            response.data
-          )
-            ? response.data
-            : [];
-
-
-        tampilkanData(
-          donorData
-        );
-
-
-      } catch (error) {
-
-        tampilkanError(
-          "Terjadi kesalahan membaca data."
-        );
-
+  window[callbackName] = function(response) {
+    if (selesai) return;
+    selesai = true;
+    try {
+      if (!response || response.success !== true) {
+        tampilkanError("Data tidak dapat diambil.");
+        return;
       }
-
-
-      /* bersihkan */
-
-      delete window[
-        callbackName
-      ];
-
+      donorData = Array.isArray(response.data) ? response.data : [];
+      try { localStorage.setItem(CACHE_KEY, JSON.stringify({time: Date.now(), data: donorData})); } catch (e) {}
+      tampilkanData(donorData);
+    } catch (error) {
+      tampilkanError("Terjadi kesalahan membaca data.");
+    } finally {
+      delete window[callbackName];
       script.remove();
+    }
+  };
 
-    };
+  script.onerror = function() {
+    if (selesai) return;
+    selesai = true;
+    if (!donorData.length) tampilkanError("Tidak dapat terhubung ke Google Apps Script.");
+    else document.getElementById("status").textContent = "Data terakhir ditampilkan";
+    delete window[callbackName];
+    script.remove();
+  };
 
-
-  script.onerror =
-    function() {
-
-      tampilkanError(
-        "Tidak dapat terhubung ke Google Apps Script."
-      );
-
-      delete window[
-        callbackName
-      ];
-
-      script.remove();
-
-    };
-
-
-  script.src =
-    API_URL +
-    "?action=data&callback=" +
-    callbackName +
-    "&t=" +
-    Date.now();
-
-
-  document.body.appendChild(
-    script
-  );
-
+  script.src = API_URL + "?action=data&callback=" + encodeURIComponent(callbackName) + "&t=" + Date.now();
+  document.body.appendChild(script);
 }
 
+function tampilkanCache() {
+  try {
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return false;
+    const cached = JSON.parse(raw);
+    if (!cached || !Array.isArray(cached.data)) return false;
+    if (Date.now() - Number(cached.time || 0) > CACHE_MAX_AGE) return false;
+    donorData = cached.data;
+    tampilkanData(donorData, true);
+    return true;
+  } catch (e) { return false; }
+}
 
-/* =====================================================
-   TAMPILKAN DATA
-===================================================== */
+function tampilkanData(data, fromCache = false) {
+  donorData = (Array.isArray(data) ? data : []).filter(function(item) {
+    return item && item.nama && String(item.nama).trim() !== "";
+  });
 
-function tampilkanData(data) {
-
-
-  /* -----------------------------------------------
-     DATA YANG VALID SAJA
-  ------------------------------------------------ */
-
-  donorData =
-    data.filter(function(item) {
-
-      return (
-        item &&
-        item.nama &&
-        String(item.nama).trim() !== ""
-      );
-
-    });
-
-
-  /* -----------------------------------------------
-     JUMLAH DONATUR
-     
-     Data yang diterima API sudah dimulai
-     dari baris 3 spreadsheet.
-  ------------------------------------------------ */
-
-  const jumlah =
-    donorData.length;
-
-
-  document.getElementById(
-    "jumlahDonatur"
-  ).textContent =
-    jumlah;
-
-
-  /* -----------------------------------------------
-     TOTAL DONASI
-  ------------------------------------------------ */
-
+  document.getElementById("jumlahDonatur").textContent = donorData.length;
   let total = 0;
+  donorData.forEach(function(item) { total += Number(item.jumlah) || 0; });
+  document.getElementById("totalDonasi").textContent = formatRupiah(total);
 
-  donorData.forEach(
-    function(item) {
-
-      total +=
-        Number(
-          item.jumlah
-        ) || 0;
-
-    }
-  );
-
-
-  document.getElementById(
-    "totalDonasi"
-  ).textContent =
-    formatRupiah(total);
-
-/* -----------------------------------------------
-   DAFTAR DONATUR BERJALAN
-   KECEPATAN TETAP / KONSTAN
------------------------------------------------- */
-
-let donorScrollAnimation = null;
-
-let donorScrollPosition = 0;
-
-let donorScrollLastTime = null;
-
-let donorScrollFirstHeight = 0;
-
-let donorScrollSpeed = 28;
-
-
-/*
- * Kecepatan scroll:
- *
- * 28 = sedang
- *
- * Jika ingin sedikit lebih lambat:
- * 22
- *
- * Jika ingin sedikit lebih cepat:
- * 35
- *
- * Nilai ini TIDAK dipengaruhi jumlah data.
- */
-
-
-function stopDonorScroll() {
-
-  if (donorScrollAnimation) {
-
-    cancelAnimationFrame(
-      donorScrollAnimation
-    );
-
-    donorScrollAnimation = null;
-
-  }
-
-  donorScrollLastTime = null;
-
-}
-
-
-/* =====================================================
-   MULAI SCROLL
-===================================================== */
-
-function startDonorScroll() {
-
+  const area = document.getElementById("donorArea");
   stopDonorScroll();
-
-
-  const area =
-    document.getElementById(
-      "donorArea"
-    );
-
-
-  const scroll =
-    document.querySelector(
-      ".donor-scroll"
-    );
-
-
-  if (!area || !scroll) {
-
-    return;
-
-  }
-
-
-  /*
-   * Karena data dibuat 2 kali,
-   * tinggi data pertama = setengah
-   * tinggi seluruh wrapper.
-   */
-
-  donorScrollFirstHeight =
-    scroll.scrollHeight / 2;
-
-
-  if (
-    donorScrollFirstHeight <= 0
-  ) {
-
-    return;
-
-  }
-
-
-  /*
-   * Mulai dari bawah area.
-   */
-
-  donorScrollPosition =
-    area.clientHeight;
-
-
-  scroll.style.transform =
-    "translate3d(0, " +
-    donorScrollPosition +
-    "px, 0)";
-
-
-  donorScrollLastTime = null;
-
-
-  function animateScroll(timestamp) {
-
-
-    if (
-      !donorScrollLastTime
-    ) {
-
-      donorScrollLastTime =
-        timestamp;
-
-    }
-
-
-    const deltaTime =
-      (timestamp -
-        donorScrollLastTime) /
-      1000;
-
-
-    donorScrollLastTime =
-      timestamp;
-
-
-    /*
-     * Bergerak dengan kecepatan
-     * PIXEL PER DETIK.
-     *
-     * Jadi jumlah data tidak
-     * mempengaruhi kecepatan.
-     */
-
-    donorScrollPosition -=
-      donorScrollSpeed *
-      deltaTime;
-
-
-    /*
-     * Jika salinan pertama sudah
-     * lewat seluruh area,
-     * langsung geser kembali
-     * sebesar tinggi satu salinan.
-     *
-     * Tidak ada jeda kosong.
-     */
-
-    if (
-      donorScrollPosition <=
-      -donorScrollFirstHeight
-    ) {
-
-      donorScrollPosition +=
-        donorScrollFirstHeight;
-
-    }
-
-
-    scroll.style.transform =
-      "translate3d(0, " +
-      donorScrollPosition +
-      "px, 0)";
-
-
-    donorScrollAnimation =
-      requestAnimationFrame(
-        animateScroll
-      );
-
-  }
-
-
-  donorScrollAnimation =
-    requestAnimationFrame(
-      animateScroll
-    );
-
-}
-
-
-/* =====================================================
-   TAMPILKAN DATA DONATUR
-===================================================== */
-
-function tampilkanData(data) {
-
-
-  /* -----------------------------------------------
-     DATA YANG VALID SAJA
-  ------------------------------------------------ */
-
-  donorData =
-    data.filter(function(item) {
-
-      return (
-        item &&
-        item.nama &&
-        String(item.nama).trim() !== ""
-      );
-
-    });
-
-
-  /* -----------------------------------------------
-     JUMLAH DONATUR
-  ------------------------------------------------ */
-
-  const jumlah =
-    donorData.length;
-
-
-  document.getElementById(
-    "jumlahDonatur"
-  ).textContent =
-    jumlah;
-
-
-  /* -----------------------------------------------
-     TOTAL DONASI
-  ------------------------------------------------ */
-
-  let total = 0;
-
-
-  donorData.forEach(
-    function(item) {
-
-      total +=
-        Number(
-          item.jumlah
-        ) || 0;
-
-    }
-  );
-
-
-  document.getElementById(
-    "totalDonasi"
-  ).textContent =
-    formatRupiah(total);
-
-
-  /* -----------------------------------------------
-     AREA DONATUR
-  ------------------------------------------------ */
-
-  const area =
-    document.getElementById(
-      "donorArea"
-    );
-
-
-  /*
-   * Hentikan animasi lama sebelum
-   * membuat daftar baru.
-   */
-
-  stopDonorScroll();
-
 
   if (donorData.length === 0) {
-
-    area.innerHTML = `
-      <div class="empty-message">
-        Belum ada data donatur.
-      </div>
-    `;
-
-
-    document.getElementById(
-      "status"
-    ).textContent =
-      "Data kosong";
-
-
+    area.innerHTML = '<div class="empty-message">Belum ada data donatur.</div>';
+    document.getElementById("status").textContent = "Data kosong";
     return;
-
   }
 
-
-  /* -----------------------------------------------
-     BUAT WRAPPER
-  ------------------------------------------------ */
-
-  const scroll =
-    document.createElement(
-      "div"
-    );
-
-
-  scroll.className =
-    "donor-scroll";
-
-
-  /*
-   * DATA DIBUAT 2 KALI.
-   *
-   * Salinan kedua harus sama persis
-   * dengan salinan pertama agar
-   * pergantian dapat berlangsung
-   * tanpa terlihat putus.
-   */
-
-  const dataBerulang =
-    donorData.concat(
-      donorData
-    );
-
-
-  dataBerulang.forEach(
-    function(item) {
-
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "donor-card";
-
-
-      card.innerHTML = `
-
-        <div class="donor-name">
-          ${escapeHTML(item.nama)}
-        </div>
-
-        <div class="donor-meta">
-
-          <span>
-            ${escapeHTML(item.tanggal || "")}
-            &nbsp; • &nbsp;
-            RT ${escapeHTML(item.rt || "")}
-          </span>
-
-          <span class="donor-amount">
-            ${formatRupiah(item.jumlah)}
-          </span>
-
-        </div>
-
-      `;
-
-
-      scroll.appendChild(
-        card
-      );
-
-    }
+  /* DOM dibuat sedikit saja. Data lengkap tetap tersedia untuk Detail. */
+  const scroll = document.createElement("div");
+  scroll.className = "donor-scroll";
+  const jumlahKartu = Math.min(
+    Math.max(MAX_SCROLL_CARDS, Math.ceil((area.clientHeight || 500) / 70) + 8),
+    donorData.length
   );
+  const fragment = document.createDocumentFragment();
 
-
-  /*
-   * Masukkan wrapper ke area.
-   */
+  for (let i = 0; i < jumlahKartu; i++) {
+    const item = donorData[i % donorData.length];
+    const card = document.createElement("div");
+    card.className = "donor-card";
+    card.innerHTML = `
+      <div class="donor-name">${escapeHTML(item.nama)}</div>
+      <div class="donor-meta">
+        <span>${escapeHTML(item.tanggal || "")} &nbsp; • &nbsp; RT ${escapeHTML(item.rt || "")}</span>
+        <span class="donor-amount">${formatRupiah(item.jumlah)}</span>
+      </div>`;
+    fragment.appendChild(card);
+  }
 
   area.innerHTML = "";
+  area.appendChild(scroll);
+  scroll.appendChild(fragment);
+  donorCardIndex = jumlahKartu % donorData.length;
+  requestAnimationFrame(startDonorScroll);
 
-  area.appendChild(
-    scroll
-  );
-
-
-  /*
-   * Tunggu browser selesai menghitung
-   * tinggi elemen, baru mulai animasi.
-   */
-
-  requestAnimationFrame(
-    function() {
-
-      startDonorScroll();
-
-    }
-  );
-
-
-  document.getElementById(
-    "status"
-  ).textContent =
-    "Data diperbarui";
-
-
-  setTimeout(
-    function() {
-
-      document.getElementById(
-        "status"
-      ).textContent = "";
-
-    },
-    2500
-  );
-
+  document.getElementById("status").textContent = fromCache ? "Data tersimpan — memperbarui..." : "Data diperbarui";
+  setTimeout(function() {
+    const status = document.getElementById("status");
+    if (status) status.textContent = "";
+  }, 2500);
 }
 
+function stopDonorScroll() {
+  if (donorScrollAnimation) cancelAnimationFrame(donorScrollAnimation);
+  donorScrollAnimation = null;
+  donorScrollLastTime = null;
+}
 
-/* =====================================================
-   JIKA UKURAN LAYAR BERUBAH
-===================================================== */
+function startDonorScroll() {
+  stopDonorScroll();
+  const area = document.getElementById("donorArea");
+  const scroll = document.querySelector(".donor-scroll");
+  if (!area || !scroll || !donorData.length) return;
 
-let donorResizeTimer = null;
+  let lastHeight = scroll.scrollHeight;
+  if (lastHeight <= 0) return;
+  donorScrollPosition = area.clientHeight;
+  scroll.style.transform = "translate3d(0," + donorScrollPosition + "px,0)";
 
+  function animateScroll(timestamp) {
+    if (!donorScrollLastTime) donorScrollLastTime = timestamp;
+    const delta = Math.min(0.05, (timestamp - donorScrollLastTime) / 1000);
+    donorScrollLastTime = timestamp;
+    donorScrollPosition -= DONOR_SCROLL_SPEED * delta;
 
-window.addEventListener(
-  "resize",
-  function() {
-
-    clearTimeout(
-      donorResizeTimer
-    );
-
-
-    donorResizeTimer =
-      setTimeout(
-        function() {
-
-          if (
-            donorData &&
-            donorData.length > 0
-          ) {
-
-            startDonorScroll();
-
-          }
-
-        },
-        200
-      );
-
+    if (donorScrollPosition <= -lastHeight) {
+      donorScrollPosition = area.clientHeight;
+      donorCardIndex = (donorCardIndex + 1) % donorData.length;
+      renderNextDonorCards(scroll);
+      lastHeight = scroll.scrollHeight;
+    }
+    scroll.style.transform = "translate3d(0," + donorScrollPosition + "px,0)";
+    donorScrollAnimation = requestAnimationFrame(animateScroll);
   }
-);
+  donorScrollAnimation = requestAnimationFrame(animateScroll);
+}
 
-     
-
-
-/* =====================================================
-   ESCAPE HTML
-===================================================== */
+function renderNextDonorCards(scroll) {
+  const cards = scroll.querySelectorAll(".donor-card");
+  for (let i = 0; i < cards.length; i++) {
+    const item = donorData[(donorCardIndex + i) % donorData.length];
+    cards[i].innerHTML = `
+      <div class="donor-name">${escapeHTML(item.nama)}</div>
+      <div class="donor-meta">
+        <span>${escapeHTML(item.tanggal || "")} &nbsp; • &nbsp; RT ${escapeHTML(item.rt || "")}</span>
+        <span class="donor-amount">${formatRupiah(item.jumlah)}</span>
+      </div>`;
+  }
+}
 
 function escapeHTML(value) {
 
@@ -1925,7 +1462,16 @@ function tampilkanError(message) {
    JALANKAN
 ===================================================== */
 
+tampilkanCache();
 ambilData();
+
+let resizeTimer = null;
+window.addEventListener("resize", function() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(function() {
+    if (donorData.length) tampilkanData(donorData, true);
+  }, 250);
+});
 
 
 /* =====================================================
