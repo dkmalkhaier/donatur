@@ -366,17 +366,17 @@ body {
 
   left: 0;
 
+  top: 0;
+
   display: flex;
 
   flex-direction: column;
 
   align-items: center;
 
-  animation:
-    scrollDonor
-    30s
-    linear
-    infinite;
+  will-change: transform;
+
+  transform: translate3d(0, 0, 0);
 }
 
 
@@ -440,27 +440,9 @@ body {
 }
 
 
-/* =====================================================
-   ANIMASI
-===================================================== */
 
-@keyframes scrollDonor {
 
-  0% {
 
-    transform:
-      translateY(100%);
-
-  }
-
-  100% {
-
-    transform:
-      translateY(-100%);
-
-  }
-
-}
 
 
 /* =====================================================
@@ -1321,15 +1303,274 @@ function tampilkanData(data) {
   ).textContent =
     formatRupiah(total);
 
+/* -----------------------------------------------
+   DAFTAR DONATUR BERJALAN
+   KECEPATAN TETAP / KONSTAN
+------------------------------------------------ */
+
+let donorScrollAnimation = null;
+
+let donorScrollPosition = 0;
+
+let donorScrollLastTime = null;
+
+let donorScrollFirstHeight = 0;
+
+let donorScrollSpeed = 28;
+
+
+/*
+ * Kecepatan scroll:
+ *
+ * 28 = sedang
+ *
+ * Jika ingin sedikit lebih lambat:
+ * 22
+ *
+ * Jika ingin sedikit lebih cepat:
+ * 35
+ *
+ * Nilai ini TIDAK dipengaruhi jumlah data.
+ */
+
+
+function stopDonorScroll() {
+
+  if (donorScrollAnimation) {
+
+    cancelAnimationFrame(
+      donorScrollAnimation
+    );
+
+    donorScrollAnimation = null;
+
+  }
+
+  donorScrollLastTime = null;
+
+}
+
+
+/* =====================================================
+   MULAI SCROLL
+===================================================== */
+
+function startDonorScroll() {
+
+  stopDonorScroll();
+
+
+  const area =
+    document.getElementById(
+      "donorArea"
+    );
+
+
+  const scroll =
+    document.querySelector(
+      ".donor-scroll"
+    );
+
+
+  if (!area || !scroll) {
+
+    return;
+
+  }
+
+
+  /*
+   * Karena data dibuat 2 kali,
+   * tinggi data pertama = setengah
+   * tinggi seluruh wrapper.
+   */
+
+  donorScrollFirstHeight =
+    scroll.scrollHeight / 2;
+
+
+  if (
+    donorScrollFirstHeight <= 0
+  ) {
+
+    return;
+
+  }
+
+
+  /*
+   * Mulai dari bawah area.
+   */
+
+  donorScrollPosition =
+    area.clientHeight;
+
+
+  scroll.style.transform =
+    "translate3d(0, " +
+    donorScrollPosition +
+    "px, 0)";
+
+
+  donorScrollLastTime = null;
+
+
+  function animateScroll(timestamp) {
+
+
+    if (
+      !donorScrollLastTime
+    ) {
+
+      donorScrollLastTime =
+        timestamp;
+
+    }
+
+
+    const deltaTime =
+      (timestamp -
+        donorScrollLastTime) /
+      1000;
+
+
+    donorScrollLastTime =
+      timestamp;
+
+
+    /*
+     * Bergerak dengan kecepatan
+     * PIXEL PER DETIK.
+     *
+     * Jadi jumlah data tidak
+     * mempengaruhi kecepatan.
+     */
+
+    donorScrollPosition -=
+      donorScrollSpeed *
+      deltaTime;
+
+
+    /*
+     * Jika salinan pertama sudah
+     * lewat seluruh area,
+     * langsung geser kembali
+     * sebesar tinggi satu salinan.
+     *
+     * Tidak ada jeda kosong.
+     */
+
+    if (
+      donorScrollPosition <=
+      -donorScrollFirstHeight
+    ) {
+
+      donorScrollPosition +=
+        donorScrollFirstHeight;
+
+    }
+
+
+    scroll.style.transform =
+      "translate3d(0, " +
+      donorScrollPosition +
+      "px, 0)";
+
+
+    donorScrollAnimation =
+      requestAnimationFrame(
+        animateScroll
+      );
+
+  }
+
+
+  donorScrollAnimation =
+    requestAnimationFrame(
+      animateScroll
+    );
+
+}
+
+
+/* =====================================================
+   TAMPILKAN DATA DONATUR
+===================================================== */
+
+function tampilkanData(data) {
+
 
   /* -----------------------------------------------
-     DAFTAR BERJALAN
+     DATA YANG VALID SAJA
+  ------------------------------------------------ */
+
+  donorData =
+    data.filter(function(item) {
+
+      return (
+        item &&
+        item.nama &&
+        String(item.nama).trim() !== ""
+      );
+
+    });
+
+
+  /* -----------------------------------------------
+     JUMLAH DONATUR
+  ------------------------------------------------ */
+
+  const jumlah =
+    donorData.length;
+
+
+  document.getElementById(
+    "jumlahDonatur"
+  ).textContent =
+    jumlah;
+
+
+  /* -----------------------------------------------
+     TOTAL DONASI
+  ------------------------------------------------ */
+
+  let total = 0;
+
+
+  donorData.forEach(
+    function(item) {
+
+      total +=
+        Number(
+          item.jumlah
+        ) || 0;
+
+    }
+  );
+
+
+  document.getElementById(
+    "totalDonasi"
+  ).textContent =
+    formatRupiah(total);
+
+
+  /* -----------------------------------------------
+     AREA DONATUR
   ------------------------------------------------ */
 
   const area =
     document.getElementById(
       "donorArea"
     );
+
+
+  /*
+   * Hentikan animasi lama sebelum
+   * membuat daftar baru.
+   */
+
+  stopDonorScroll();
 
 
   if (donorData.length === 0) {
@@ -1340,29 +1581,40 @@ function tampilkanData(data) {
       </div>
     `;
 
+
     document.getElementById(
       "status"
     ).textContent =
       "Data kosong";
+
 
     return;
 
   }
 
 
-  /* buat wrapper */
+  /* -----------------------------------------------
+     BUAT WRAPPER
+  ------------------------------------------------ */
 
   const scroll =
     document.createElement(
       "div"
     );
 
+
   scroll.className =
     "donor-scroll";
 
 
-  /* data dibuat 2 kali
-     agar animasi terus berjalan */
+  /*
+   * DATA DIBUAT 2 KALI.
+   *
+   * Salinan kedua harus sama persis
+   * dengan salinan pertama agar
+   * pergantian dapat berlangsung
+   * tanpa terlihat putus.
+   */
 
   const dataBerulang =
     donorData.concat(
@@ -1373,10 +1625,12 @@ function tampilkanData(data) {
   dataBerulang.forEach(
     function(item) {
 
+
       const card =
         document.createElement(
           "div"
         );
+
 
       card.className =
         "donor-card";
@@ -1413,10 +1667,28 @@ function tampilkanData(data) {
   );
 
 
+  /*
+   * Masukkan wrapper ke area.
+   */
+
   area.innerHTML = "";
 
   area.appendChild(
     scroll
+  );
+
+
+  /*
+   * Tunggu browser selesai menghitung
+   * tinggi elemen, baru mulai animasi.
+   */
+
+  requestAnimationFrame(
+    function() {
+
+      startDonorScroll();
+
+    }
   );
 
 
@@ -1425,8 +1697,6 @@ function tampilkanData(data) {
   ).textContent =
     "Data diperbarui";
 
-
-  /* sembunyikan status */
 
   setTimeout(
     function() {
@@ -1440,6 +1710,45 @@ function tampilkanData(data) {
   );
 
 }
+
+
+/* =====================================================
+   JIKA UKURAN LAYAR BERUBAH
+===================================================== */
+
+let donorResizeTimer = null;
+
+
+window.addEventListener(
+  "resize",
+  function() {
+
+    clearTimeout(
+      donorResizeTimer
+    );
+
+
+    donorResizeTimer =
+      setTimeout(
+        function() {
+
+          if (
+            donorData &&
+            donorData.length > 0
+          ) {
+
+            startDonorScroll();
+
+          }
+
+        },
+        200
+      );
+
+  }
+);
+
+     
 
 
 /* =====================================================
