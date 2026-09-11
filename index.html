@@ -439,7 +439,7 @@ body {
   flex-shrink: 0;
 
   margin: 0;
-  padding: 0;
+  padding: 0 0 55px 0;
 }
 
 
@@ -1132,7 +1132,7 @@ tr:nth-child(even) {
 ===================================================== */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbwrnx3Pr9zyEv9ZfUi6e2QuhafgG7L_SkQuvRuOW576Q3yvjXKDht0HvXnSPngHiXaq/exec";
+  "https://script.google.com/macros/s/AKfycby6lxkVyxSosNH4wm8cwH3ZjOjy5zF5qD192kzZdYRk-rExicQosJjrwtkhejMdI0k5/exec";
 
 
 /* =====================================================
@@ -1854,24 +1854,14 @@ function startDonorScroll() {
 
   stopDonorScroll();
 
-
   const area =
-    document.getElementById(
-      "donorArea"
-    );
-
+    document.getElementById("donorArea");
 
   const scroll =
-    document.querySelector(
-      ".donor-scroll"
-    );
-
+    document.querySelector(".donor-scroll");
 
   const list1 =
-    document.querySelector(
-      ".donor-list"
-    );
-
+    document.querySelector(".donor-list");
 
   if (
     !area ||
@@ -1879,139 +1869,66 @@ function startDonorScroll() {
     !list1 ||
     !donorData.length
   ) {
-
     return;
   }
 
+  /*
+     Tunggu browser selesai menghitung tinggi
+     seluruh kartu donatur.
+  */
+  requestAnimationFrame(function () {
 
-  /* ===================================================
-     UKUR TINGGI LIST PERTAMA
-  =================================================== */
+    const listHeight =
+      list1.getBoundingClientRect().height;
 
-  const listHeight =
-    list1.getBoundingClientRect()
-      .height;
-
-
-  if (
-    listHeight <= 0
-  ) {
-
-    return;
-  }
-
-
-  /* ===================================================
-     POSISI AWAL
-  =================================================== */
-
-  donorScrollPosition =
-    0;
-
-  donorScrollLastTime =
-    null;
-
-
-  scroll.style.transform =
-    "translate3d(0,0,0)";
-
-
-  /* ===================================================
-     ANIMASI
-  =================================================== */
-
-  function animateScroll(
-    timestamp
-  ) {
-
-
-    if (
-      !donorScrollLastTime
-    ) {
-
-      donorScrollLastTime =
-        timestamp;
-
+    if (listHeight <= 0) {
+      return;
     }
 
-
-    const delta =
-
-      Math.min(
-
-        0.05,
-
-        (
-          timestamp -
-          donorScrollLastTime
-        ) / 1000
-
-      );
-
-
-    donorScrollLastTime =
-      timestamp;
-
-
-    /* -----------------------------------------------
-       GERAK KE ATAS
-    ------------------------------------------------ */
-
-    donorScrollPosition -=
-
-      DONOR_SCROLL_SPEED *
-      delta;
-
-
-    /* -----------------------------------------------
-       SATU LIST SUDAH HABIS
-    ------------------------------------------------ */
-
-    if (
-      donorScrollPosition <=
-      -listHeight
-    ) {
-
-      /*
-       * Kembali tepat ke posisi awal.
-       *
-       * Karena LIST 2 identik dengan LIST 1,
-       * pergantian terjadi tanpa lompatan visual.
-       */
-      donorScrollPosition =
-        0;
-
-    }
-
-
-    /* -----------------------------------------------
-       TERAPKAN POSISI
-    ------------------------------------------------ */
+    donorScrollPosition = 0;
+    donorScrollLastTime = null;
 
     scroll.style.transform =
+      "translate3d(0,0,0)";
 
-      "translate3d(0," +
-      donorScrollPosition +
-      "px,0)";
+    function animateScroll(timestamp) {
 
+      if (!donorScrollLastTime) {
+        donorScrollLastTime = timestamp;
+      }
 
-    /* -----------------------------------------------
-       FRAME BERIKUTNYA
-    ------------------------------------------------ */
+      const delta =
+        Math.min(
+          0.05,
+          (timestamp - donorScrollLastTime) / 1000
+        );
+
+      donorScrollLastTime = timestamp;
+
+      donorScrollPosition -=
+        DONOR_SCROLL_SPEED * delta;
+
+      /*
+         Reset hanya setelah SELURUH LIST 1,
+         termasuk donatur terakhir, selesai dilewati.
+      */
+      if (donorScrollPosition <= -listHeight) {
+        donorScrollPosition = 0;
+      }
+
+      scroll.style.transform =
+        "translate3d(0," +
+        donorScrollPosition +
+        "px,0)";
+
+      donorScrollAnimation =
+        requestAnimationFrame(animateScroll);
+    }
 
     donorScrollAnimation =
-      requestAnimationFrame(
-        animateScroll
-      );
+      requestAnimationFrame(animateScroll);
 
-  }
-
-
-  donorScrollAnimation =
-    requestAnimationFrame(
-      animateScroll
-    );
-
+  });
 }
 
 
@@ -2301,4 +2218,3 @@ setInterval(
 </body>
 
 </html>
-
