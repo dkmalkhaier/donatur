@@ -359,29 +359,22 @@ body {
 ===================================================== */
 
 .donor-scroll {
-
   position: absolute;
-
   width: 100%;
-
   left: 0;
-
   top: 0;
 
   display: flex;
-
   flex-direction: column;
-
   align-items: center;
+
+  margin: 0;
+  padding: 0;
 
   will-change: transform;
 
   transform:
     translate3d(0, 0, 0);
-
-  margin: 0;
-
-  padding: 0;
 }
 
 
@@ -1469,31 +1462,15 @@ function tampilkanCache() {
    TAMPILKAN DATA
 ===================================================== */
 
-function tampilkanData(
-  data,
-  fromCache = false
-) {
+function tampilkanData(data, fromCache = false) {
 
-  /*
-    Pastikan data benar-benar array.
-  */
+  /* ============================================
+     AMBIL SEMUA DATA
+     TIDAK ADA BATAS JUMLAH
+  ============================================ */
 
-  if (
-    !Array.isArray(data)
-  ) {
-
-    donorData = [];
-
-  } else {
-
-    /*
-      JANGAN MEMBATASI DATA.
-
-      Semua baris dari API dimasukkan.
-    */
-
-    donorData =
-      data.filter(function(item) {
+  donorData = Array.isArray(data)
+    ? data.filter(function(item) {
 
         return (
           item &&
@@ -1502,42 +1479,36 @@ function tampilkanData(
           String(item.nama).trim() !== ""
         );
 
-      });
-
-  }
+      })
+    : [];
 
 
   console.log(
-    "DATA YANG DITAMPILKAN:",
+    "TOTAL DATA DONATUR:",
     donorData.length
   );
 
 
-  /* ===================================================
+  /* ============================================
      JUMLAH DONATUR
-  =================================================== */
+  ============================================ */
 
   document.getElementById(
     "jumlahDonatur"
-  ).textContent =
-    donorData.length;
+  ).textContent = donorData.length;
 
 
-  /* ===================================================
+  /* ============================================
      TOTAL DONASI
-  =================================================== */
+  ============================================ */
 
   let total = 0;
 
+  donorData.forEach(function(item) {
 
-  donorData.forEach(
-    function(item) {
+    total += Number(item.jumlah) || 0;
 
-      total +=
-        Number(item.jumlah) || 0;
-
-    }
-  );
+  });
 
 
   document.getElementById(
@@ -1546,114 +1517,83 @@ function tampilkanData(
     formatRupiah(total);
 
 
-  /* ===================================================
-     AREA
-  =================================================== */
+  /* ============================================
+     AREA DONATUR
+  ============================================ */
 
   const area =
-    document.getElementById(
-      "donorArea"
-    );
+    document.getElementById("donorArea");
 
 
   stopDonorScroll();
 
 
-  if (
-    donorData.length === 0
-  ) {
+  if (donorData.length === 0) {
 
-    area.innerHTML =
-      '<div class="empty-message">' +
-      'Belum ada data donatur.' +
-      '</div>';
-
+    area.innerHTML = `
+      <div class="empty-message">
+        Belum ada data donatur.
+      </div>
+    `;
 
     document.getElementById(
       "status"
     ).textContent =
       "Data kosong";
 
-
     return;
 
   }
 
 
-  /* ===================================================
-     BUAT TRACK
-  =================================================== */
+  /* ============================================
+     BUAT SATU TRACK SAJA
+  ============================================ */
 
   const scroll =
-    document.createElement(
-      "div"
-    );
-
+    document.createElement("div");
 
   scroll.className =
     "donor-scroll";
 
 
-  /* ===================================================
-     PEMBUATAN KARTU
-  =================================================== */
+  /* ============================================
+     BUAT KARTU
+  ============================================ */
 
-  function buatKartuDonatur(
-    item
-  ) {
+  donorData.forEach(function(item) {
 
     const card =
-      document.createElement(
-        "div"
-      );
-
+      document.createElement("div");
 
     card.className =
       "donor-card";
-
-
-    const nama =
-      escapeHTML(
-        item.nama
-      );
-
-
-    const tanggal =
-      escapeHTML(
-        item.tanggal || ""
-      );
 
 
     const rt =
       item.rt !== undefined &&
       item.rt !== null &&
       String(item.rt).trim() !== ""
-        ? escapeHTML(item.rt)
+        ? item.rt
         : "-";
-
-
-    const jumlah =
-      formatRupiah(
-        item.jumlah
-      );
 
 
     card.innerHTML = `
 
       <div class="donor-name">
-        ${nama}
+        ${escapeHTML(item.nama)}
       </div>
 
       <div class="donor-meta">
 
         <span>
-          ${tanggal}
+          ${escapeHTML(item.tanggal || "")}
           &nbsp; • &nbsp;
-          RT ${rt}
+          RT ${escapeHTML(rt)}
         </span>
 
         <span class="donor-amount">
-          ${jumlah}
+          ${formatRupiah(item.jumlah)}
         </span>
 
       </div>
@@ -1661,121 +1601,59 @@ function tampilkanData(
     `;
 
 
-    return card;
+    scroll.appendChild(card);
 
-  }
-
-
-  /* ===================================================
-     FRAGMENT
-  =================================================== */
-
-  const fragment =
-    document.createDocumentFragment();
+  });
 
 
-  /*
-    SALINAN PERTAMA
-
-    Semua data nomor 1 sampai terakhir.
-  */
-
-  donorData.forEach(
-    function(item) {
-
-      fragment.appendChild(
-        buatKartuDonatur(item)
-      );
-
-    }
-  );
-
-
-  /*
-    SALINAN KEDUA
-
-    Hanya untuk membuat looping
-    tanpa mengurangi data.
-  */
-
-  donorData.forEach(
-    function(item) {
-
-      fragment.appendChild(
-        buatKartuDonatur(item)
-      );
-
-    }
-  );
-
+  /* ============================================
+     PASANG KE AREA
+  ============================================ */
 
   area.innerHTML = "";
 
-
-  area.appendChild(
-    scroll
-  );
-
-
-  scroll.appendChild(
-    fragment
-  );
+  area.appendChild(scroll);
 
 
   /*
-    Mulai dari posisi 0.
-
-    Tidak lagi dimulai dari bawah layar.
-    Dengan demikian kartu nomor 1 langsung
-    menjadi bagian dari daftar.
+     Pastikan posisi awal benar-benar 0
   */
 
-  donorScrollPosition = 0;
-
-  donorScrollLastTime = null;
+  scroll.style.transform =
+    "translate3d(0,0,0)";
 
 
   /*
-    Tunggu browser menghitung tinggi
-    seluruh kartu sebelum memulai animasi.
+     Mulai setelah browser selesai menghitung
+     ukuran semua kartu
   */
 
-  requestAnimationFrame(
-    function() {
+  requestAnimationFrame(function() {
 
-      startDonorScroll();
+    startDonorScroll();
 
-    }
-  );
+  });
 
 
   document.getElementById(
     "status"
   ).textContent =
     fromCache
-      ? "Data tersimpan — memperbarui..."
-      : "Data " +
-        donorData.length +
+      ? "Memperbarui data..."
+      : donorData.length +
         " donatur diperbarui";
 
 
-  setTimeout(
-    function() {
+  setTimeout(function() {
 
-      const status =
-        document.getElementById(
-          "status"
-        );
+    const status =
+      document.getElementById("status");
 
-      if (status) {
+    if (status) {
+      status.textContent = "";
+    }
 
-        status.textContent = "";
-
-      }
-
-    },
-    2500
-  );
+  }, 2500);
 
 }
 
@@ -1817,15 +1695,11 @@ function startDonorScroll() {
 
 
   const area =
-    document.getElementById(
-      "donorArea"
-    );
+    document.getElementById("donorArea");
 
 
   const scroll =
-    document.querySelector(
-      ".donor-scroll"
-    );
+    document.querySelector(".donor-scroll");
 
 
   if (
@@ -1833,48 +1707,31 @@ function startDonorScroll() {
     !scroll ||
     donorData.length === 0
   ) {
-
     return;
-
   }
 
 
   /*
-    Karena data dibuat 2 kali,
-    tinggi satu putaran adalah
-    setengah tinggi keseluruhan.
+     Karena sekarang hanya ada SATU daftar,
+     kita mengambil tinggi sebenarnya.
   */
 
   const totalHeight =
     scroll.scrollHeight;
 
 
-  const oneListHeight =
-    totalHeight / 2;
-
-
-  if (
-    oneListHeight <= 0
-  ) {
-
-    return;
-
-  }
+  const areaHeight =
+    area.clientHeight;
 
 
   /*
-    Kalau seluruh data lebih pendek
-    dari area layar, tidak perlu scroll.
-
-    Semua data tetap terlihat.
+     Jika seluruh data muat di layar,
+     jangan lakukan animasi.
   */
 
   if (
-    oneListHeight <=
-    area.clientHeight
+    totalHeight <= areaHeight
   ) {
-
-    donorScrollPosition = 0;
 
     scroll.style.transform =
       "translate3d(0,0,0)";
@@ -1885,16 +1742,7 @@ function startDonorScroll() {
 
 
   /*
-    MULAI DARI 0.
-
-    Jadi:
-    nomor 1
-    nomor 2
-    nomor 3
-    ...
-    nomor terakhir
-
-    semuanya akan melewati layar.
+     Mulai dari posisi 0.
   */
 
   donorScrollPosition = 0;
@@ -1906,13 +1754,9 @@ function startDonorScroll() {
     "translate3d(0,0,0)";
 
 
-  function animateScroll(
-    timestamp
-  ) {
+  function animateScroll(timestamp) {
 
-    if (
-      !donorScrollLastTime
-    ) {
+    if (!donorScrollLastTime) {
 
       donorScrollLastTime =
         timestamp;
@@ -1928,14 +1772,13 @@ function startDonorScroll() {
 
 
     /*
-      Mencegah loncatan besar
-      jika browser berhenti sebentar.
+       Batasi lonjakan waktu
     */
 
     delta =
       Math.min(
-        0.05,
-        delta
+        delta,
+        0.05
       );
 
 
@@ -1943,32 +1786,29 @@ function startDonorScroll() {
       timestamp;
 
 
+    /*
+       Gerakkan ke atas
+    */
+
     donorScrollPosition -=
       DONOR_SCROLL_SPEED *
       delta;
 
 
     /*
-      Reset TEPAT setelah
-      satu daftar selesai.
+       Jika SELURUH daftar sudah selesai
+       melewati layar, kembali ke awal.
 
-      Bukan berdasarkan
-      tinggi layar.
-      Bukan berdasarkan
-      jumlah tertentu.
-
-      Jadi seluruh data nomor 1
-      sampai nomor terakhir selesai
-      ditampilkan terlebih dahulu.
+       Tidak menggunakan setengah tinggi.
+       Tidak menggunakan spacer.
     */
 
     if (
       donorScrollPosition <=
-      -oneListHeight
+      -totalHeight
     ) {
 
-      donorScrollPosition +=
-        oneListHeight;
+      donorScrollPosition = 0;
 
     }
 
