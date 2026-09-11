@@ -1051,7 +1051,6 @@ let donorData = [];
 const CACHE_KEY = "dkm_al_khaier_donatur_cache_v1";
 const CACHE_MAX_AGE = 5 * 60 * 1000;
 const DONOR_SCROLL_SPEED = 32;
-const MAX_SCROLL_CARDS = 30;
 let donorScrollAnimation = null;
 let donorScrollPosition = 0;
 let donorScrollLastTime = null;
@@ -1209,32 +1208,35 @@ function tampilkanData(data, fromCache = false) {
     return;
   }
 
-  /* DOM dibuat sedikit saja. Data lengkap tetap tersedia untuk Detail. */
+  /* =====================================================
+     SEMUA DATA DONATUR DITAMPILKAN
+     Animasi bergerak sampai kartu paling terakhir.
+  ===================================================== */
   const scroll = document.createElement("div");
   scroll.className = "donor-scroll";
-  const jumlahKartu = Math.min(
-    Math.max(MAX_SCROLL_CARDS, Math.ceil((area.clientHeight || 500) / 70) + 8),
-    donorData.length
-  );
+
   const fragment = document.createDocumentFragment();
 
-  for (let i = 0; i < jumlahKartu; i++) {
-    const item = donorData[i % donorData.length];
+  donorData.forEach(function(item) {
     const card = document.createElement("div");
     card.className = "donor-card";
+
     card.innerHTML = `
       <div class="donor-name">${escapeHTML(item.nama)}</div>
       <div class="donor-meta">
         <span>${escapeHTML(item.tanggal || "")} &nbsp; • &nbsp; RT ${escapeHTML(item.rt || "")}</span>
         <span class="donor-amount">${formatRupiah(item.jumlah)}</span>
       </div>`;
+
     fragment.appendChild(card);
-  }
+  });
 
   area.innerHTML = "";
   area.appendChild(scroll);
   scroll.appendChild(fragment);
-  donorCardIndex = jumlahKartu % donorData.length;
+
+  donorCardIndex = 0;
+
   requestAnimationFrame(startDonorScroll);
 
   document.getElementById("status").textContent = fromCache ? "Data tersimpan — memperbarui..." : "Data diperbarui";
@@ -1251,46 +1253,71 @@ function stopDonorScroll() {
 }
 
 function startDonorScroll() {
+
   stopDonorScroll();
+
   const area = document.getElementById("donorArea");
   const scroll = document.querySelector(".donor-scroll");
+
   if (!area || !scroll || !donorData.length) return;
 
-  let lastHeight = scroll.scrollHeight;
-  if (lastHeight <= 0) return;
-  donorScrollPosition = area.clientHeight;
-  scroll.style.transform = "translate3d(0," + donorScrollPosition + "px,0)";
+  const areaHeight = area.clientHeight;
+  const scrollHeight = scroll.scrollHeight;
+
+  /* Jika seluruh data lebih pendek dari area,
+     tampilkan tanpa animasi. */
+  if (scrollHeight <= areaHeight) {
+    scroll.style.transform = "translate3d(0, 0, 0)";
+    return;
+  }
+
+  /* Mulai dari bawah area */
+  donorScrollPosition = areaHeight;
+  donorScrollLastTime = null;
+
+  scroll.style.transform =
+    "translate3d(0," + donorScrollPosition + "px,0)";
 
   function animateScroll(timestamp) {
-    if (!donorScrollLastTime) donorScrollLastTime = timestamp;
-    const delta = Math.min(0.05, (timestamp - donorScrollLastTime) / 1000);
-    donorScrollLastTime = timestamp;
-    donorScrollPosition -= DONOR_SCROLL_SPEED * delta;
 
-    if (donorScrollPosition <= -lastHeight) {
-      donorScrollPosition = area.clientHeight;
-      donorCardIndex = (donorCardIndex + 1) % donorData.length;
-      renderNextDonorCards(scroll);
-      lastHeight = scroll.scrollHeight;
+    if (!donorScrollLastTime) {
+      donorScrollLastTime = timestamp;
     }
-    scroll.style.transform = "translate3d(0," + donorScrollPosition + "px,0)";
-    donorScrollAnimation = requestAnimationFrame(animateScroll);
+
+    const delta =
+      Math.min(
+        0.05,
+        (timestamp - donorScrollLastTime) / 1000
+      );
+
+    donorScrollLastTime = timestamp;
+
+    donorScrollPosition -=
+      DONOR_SCROLL_SPEED * delta;
+
+    /* Tunggu sampai SELURUH daftar,
+       termasuk kartu paling terakhir,
+       benar-benar melewati bagian atas. */
+    if (donorScrollPosition <= -scrollHeight) {
+
+      donorScrollPosition = areaHeight;
+      donorScrollLastTime = timestamp;
+
+    }
+
+    scroll.style.transform =
+      "translate3d(0," +
+      donorScrollPosition +
+      "px,0)";
+
+    donorScrollAnimation =
+      requestAnimationFrame(animateScroll);
   }
-  donorScrollAnimation = requestAnimationFrame(animateScroll);
+
+  donorScrollAnimation =
+    requestAnimationFrame(animateScroll);
 }
 
-function renderNextDonorCards(scroll) {
-  const cards = scroll.querySelectorAll(".donor-card");
-  for (let i = 0; i < cards.length; i++) {
-    const item = donorData[(donorCardIndex + i) % donorData.length];
-    cards[i].innerHTML = `
-      <div class="donor-name">${escapeHTML(item.nama)}</div>
-      <div class="donor-meta">
-        <span>${escapeHTML(item.tanggal || "")} &nbsp; • &nbsp; RT ${escapeHTML(item.rt || "")}</span>
-        <span class="donor-amount">${formatRupiah(item.jumlah)}</span>
-      </div>`;
-  }
-}
 
 function escapeHTML(value) {
 
