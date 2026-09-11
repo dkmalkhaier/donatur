@@ -1853,6 +1853,11 @@ function stopDonorScroll() {
    VERSI: SEMUA DATA TAMPIL UTUH
 ===================================================== */
 
+/* =====================================================
+   MULAI ANIMASI DONATUR
+   VERSI STABIL - SEMUA DATA DITAMPILKAN
+===================================================== */
+
 function startDonorScroll() {
 
   stopDonorScroll();
@@ -1863,41 +1868,33 @@ function startDonorScroll() {
   const scroll =
     document.querySelector(".donor-scroll");
 
-  const list1 =
-    document.querySelectorAll(".donor-list")[0];
-
-  const list2 =
-    document.querySelectorAll(".donor-list")[1];
+  const lists =
+    document.querySelectorAll(".donor-list");
 
   if (
     !area ||
     !scroll ||
-    !list1 ||
-    !list2 ||
+    lists.length < 2 ||
     !donorData.length
   ) {
     return;
   }
 
+  const list1 = lists[0];
+  const list2 = lists[1];
+
 
   /* ===================================================
-     TUNGGU LAYOUT SELESAI
+     TUNGGU BROWSER SELESAI MENGHITUNG UKURAN
   =================================================== */
 
   requestAnimationFrame(function() {
 
     requestAnimationFrame(function() {
 
-      /*
-       * Tinggi asli satu putaran data
-       */
       const listHeight =
         list1.getBoundingClientRect().height;
 
-
-      /*
-       * Tinggi area yang terlihat
-       */
       const areaHeight =
         area.getBoundingClientRect().height;
 
@@ -1910,68 +1907,15 @@ function startDonorScroll() {
       }
 
 
-      /*
-       * Tambahkan ruang kosong di akhir
-       *
-       * Tujuannya supaya kartu donatur terakhir
-       * bisa bergerak masuk dan terlihat UTUH
-       * sebelum kembali ke awal.
-       */
+      /* =================================================
+         POSISI AWAL
+      ================================================= */
 
-      const spacer =
-        document.createElement("div");
-
-      spacer.style.width =
-        "100%";
-
-      spacer.style.height =
-        areaHeight + "px";
-
-      spacer.style.flexShrink =
-        "0";
-
-
-      list1.appendChild(spacer);
-
-
-      /*
-       * Karena list2 harus identik dengan list1,
-       * spacer juga harus ada di list2.
-       */
-
-      const spacer2 =
-        document.createElement("div");
-
-      spacer2.style.width =
-        "100%";
-
-      spacer2.style.height =
-        areaHeight + "px";
-
-      spacer2.style.flexShrink =
-        "0";
-
-
-      list2.appendChild(spacer2);
-
-
-      /*
-       * Tinggi baru satu putaran
-       */
-      const fullListHeight =
-        list1.getBoundingClientRect().height;
-
-
-      /*
-       * Posisi awal
-       */
       donorScrollPosition = 0;
-
       donorScrollLastTime = null;
 
-
       scroll.style.transform =
-        "translate3d(0,0,0)";
+        "translate3d(0, 0, 0)";
 
 
       /* =================================================
@@ -1988,13 +1932,22 @@ function startDonorScroll() {
         }
 
 
-        const delta =
+        let delta =
+          (
+            timestamp -
+            donorScrollLastTime
+          ) / 1000;
+
+
+        /*
+         * Cegah lonjakan jika browser
+         * sempat berhenti / tab tidak aktif
+         */
+
+        delta =
           Math.min(
-            0.05,
-            (
-              timestamp -
-              donorScrollLastTime
-            ) / 1000
+            delta,
+            0.05
           );
 
 
@@ -2002,37 +1955,43 @@ function startDonorScroll() {
           timestamp;
 
 
-        /*
-         * Gerakkan ke atas
-         */
+        /* ===============================================
+           GERAKKAN KE ATAS
+        =============================================== */
+
         donorScrollPosition -=
           DONOR_SCROLL_SPEED *
           delta;
 
 
-        /*
-         * RESET SETELAH SATU PUTARAN
-         *
-         * Karena sudah ditambah spacer,
-         * data terakhir akan benar-benar sempat
-         * masuk ke area tampilan.
-         */
+        /* ===============================================
+           SETELAH LIST 1 HABIS
+           
+           Langsung kembali ke posisi awal.
+           
+           Karena LIST 2 identik dengan LIST 1,
+           perpindahan terlihat mulus.
+        =============================================== */
 
         if (
           donorScrollPosition <=
-          -fullListHeight
+          -listHeight
         ) {
 
-          donorScrollPosition =
-            0;
+          donorScrollPosition +=
+            listHeight;
 
         }
 
 
+        /* ===============================================
+           TERAPKAN POSISI
+        =============================================== */
+
         scroll.style.transform =
-          "translate3d(0," +
+          "translate3d(0, " +
           donorScrollPosition +
-          "px,0)";
+          "px, 0)";
 
 
         donorScrollAnimation =
@@ -2042,6 +2001,10 @@ function startDonorScroll() {
 
       }
 
+
+      /* =================================================
+         MULAI
+      ================================================= */
 
       donorScrollAnimation =
         requestAnimationFrame(
@@ -2053,6 +2016,8 @@ function startDonorScroll() {
   });
 
 }
+
+
 
 
 /* =====================================================
