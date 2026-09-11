@@ -80,10 +80,8 @@ body {
 
 
 /* =====================================================
-   =====================================================
    BAGIAN ATAS
    JANGAN DIUBAH
-   =====================================================
 ===================================================== */
 
 
@@ -316,12 +314,8 @@ body {
 
 
 /* =====================================================
-   =====================================================
    MULAI BAGIAN BARU
-   DI BAWAH KOTAK MERAH
-   =====================================================
 ===================================================== */
-
 
 
 /* =====================================================
@@ -684,7 +678,6 @@ body {
 
 /* =====================================================
    DETAIL BARIS REKAP
-   Jika satu baris Rekap memiliki banyak kolom
 ===================================================== */
 
 .rekap-row-card {
@@ -766,6 +759,385 @@ body {
   color: #222;
 
   word-break: break-word;
+}
+
+
+
+/* =====================================================
+   TOMBOL CEK PENGELUARAN
+===================================================== */
+
+.expense-button-wrap {
+
+  margin:
+    0 15px 20px;
+
+  text-align: center;
+}
+
+
+.expense-btn {
+
+  width: 100%;
+
+  max-width: 360px;
+
+  border: none;
+
+  border-radius: 10px;
+
+  padding:
+    12px 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #b71c1c,
+      #e53935
+    );
+
+  color: white;
+
+  font-size: 14px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 3px 8px
+    rgba(183,28,28,.25);
+
+  transition:
+    transform .2s,
+    box-shadow .2s;
+}
+
+
+.expense-btn:hover {
+
+  box-shadow:
+    0 5px 12px
+    rgba(183,28,28,.35);
+
+  transform:
+    translateY(-1px);
+}
+
+
+.expense-btn:active {
+
+  transform:
+    scale(.97);
+}
+
+
+
+/* =====================================================
+   MODAL PENGELUARAN
+===================================================== */
+
+.expense-modal {
+
+  display: none;
+
+  position: fixed;
+
+  z-index: 110;
+
+  left: 0;
+
+  top: 0;
+
+  width: 100%;
+
+  height: 100%;
+
+  background:
+    rgba(0,0,0,.58);
+
+  padding: 15px;
+}
+
+
+.expense-modal-content {
+
+  position: relative;
+
+  width: 100%;
+
+  max-width: 800px;
+
+  height: 90vh;
+
+  margin: auto;
+
+  background: white;
+
+  border-radius: 14px;
+
+  overflow: hidden;
+
+  display: flex;
+
+  flex-direction: column;
+
+  box-shadow:
+    0 8px 30px
+    rgba(0,0,0,.25);
+}
+
+
+.expense-header {
+
+  padding:
+    14px 16px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7f0000,
+      #c62828
+    );
+
+  color: white;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  flex-shrink: 0;
+}
+
+
+.expense-header h2 {
+
+  margin: 0;
+
+  font-size: 18px;
+}
+
+
+.expense-close {
+
+  border: none;
+
+  background: transparent;
+
+  color: white;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  cursor: pointer;
+}
+
+
+.expense-body {
+
+  overflow: auto;
+
+  padding: 12px;
+}
+
+
+.expense-loading {
+
+  text-align: center;
+
+  padding:
+    40px 15px;
+
+  color: #777;
+
+  font-size: 14px;
+}
+
+
+.expense-error {
+
+  text-align: center;
+
+  padding:
+    30px 15px;
+
+  color: #b71c1c;
+
+  font-size: 14px;
+}
+
+
+.expense-table {
+
+  width: 100%;
+
+  border-collapse:
+    collapse;
+
+  font-size: 13px;
+}
+
+
+.expense-table th {
+
+  background:
+    #b71c1c;
+
+  color: white;
+
+  padding:
+    9px 7px;
+
+  text-align: left;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 2;
+}
+
+
+.expense-table td {
+
+  padding:
+    9px 7px;
+
+  border-bottom:
+    1px solid #ddd;
+
+  vertical-align: top;
+}
+
+
+.expense-table tr:nth-child(even) {
+
+  background:
+    #fafafa;
+}
+
+
+.expense-no {
+
+  width: 45px;
+
+  text-align: center;
+}
+
+
+.expense-value {
+
+  text-align: right;
+
+  white-space: nowrap;
+
+  font-weight: 700;
+
+  color: #b71c1c;
+}
+
+
+.expense-summary {
+
+  margin-top: 15px;
+
+  display: grid;
+
+  gap: 9px;
+}
+
+
+.expense-summary-row {
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding:
+    11px 13px;
+
+  border-radius: 9px;
+
+  background: #f7f7f7;
+
+  border:
+    1px solid #e2e2e2;
+
+  font-size: 13px;
+}
+
+
+.expense-summary-label {
+
+  color: #555;
+
+  font-weight: 600;
+}
+
+
+.expense-summary-value {
+
+  font-weight: 800;
+
+  white-space: nowrap;
+}
+
+
+.expense-total {
+
+  background:
+    #ffebee;
+
+  border-color:
+    #ffcdd2;
+}
+
+
+.expense-total
+.expense-summary-value {
+
+  color: #b71c1c;
+}
+
+
+.expense-sisa {
+
+  background:
+    #e8f5e9;
+
+  border-color:
+    #c8e6c9;
+}
+
+
+.expense-sisa
+.expense-summary-value {
+
+  color: #1b5e20;
+}
+
+
+.expense-negative {
+
+  background:
+    #fff3e0;
+
+  border-color:
+    #ffe0b2;
+}
+
+
+.expense-negative
+.expense-summary-value {
+
+  color: #e65100;
 }
 
 
@@ -1044,7 +1416,7 @@ body {
 
 
 /* =====================================================
-   MODAL
+   MODAL DETAIL
 ===================================================== */
 
 .modal {
@@ -1225,10 +1597,6 @@ tr:nth-child(even) {
   }
 
 
-  /*
-     BAGIAN ATAS DIPERTAHANKAN
-  */
-
   .header {
 
     padding:
@@ -1394,6 +1762,76 @@ tr:nth-child(even) {
   }
 
 
+  /* TOMBOL PENGELUARAN */
+
+  .expense-button-wrap {
+
+    margin:
+      0 10px 15px;
+  }
+
+
+  .expense-btn {
+
+    max-width: none;
+
+    padding:
+      11px 14px;
+
+    font-size: 13px;
+  }
+
+
+  .expense-modal {
+
+    padding: 8px;
+  }
+
+
+  .expense-modal-content {
+
+    height: 94vh;
+
+    border-radius: 10px;
+  }
+
+
+  .expense-header {
+
+    padding:
+      11px 12px;
+  }
+
+
+  .expense-header h2 {
+
+    font-size: 16px;
+  }
+
+
+  .expense-table {
+
+    font-size: 11px;
+  }
+
+
+  .expense-table th,
+  .expense-table td {
+
+    padding:
+      7px 5px;
+  }
+
+
+  .expense-summary-row {
+
+    font-size: 11px;
+
+    padding:
+      9px 10px;
+  }
+
+
   /* DONATUR */
 
   .donor-area {
@@ -1531,7 +1969,6 @@ tr:nth-child(even) {
 
 <!-- =====================================================
      BAGIAN ATAS
-     TIDAK DIUBAH
 ===================================================== -->
 
 
@@ -1672,6 +2109,25 @@ tr:nth-child(even) {
 
 
 
+<!-- =====================================================
+     TOMBOL CEK PENGELUARAN
+===================================================== -->
+
+<div class="expense-button-wrap">
+
+  <button
+    type="button"
+    class="expense-btn"
+    onclick="bukaPengeluaran()">
+
+    💸 Cek Pengeluaran
+
+  </button>
+
+</div>
+
+
+
 <div class="section-line"></div>
 
 
@@ -1781,6 +2237,55 @@ tr:nth-child(even) {
 
 
 
+<!-- =====================================================
+     MODAL PENGELUARAN
+===================================================== -->
+
+<div
+  id="pengeluaranModal"
+  class="expense-modal">
+
+
+  <div class="expense-modal-content">
+
+
+    <div class="expense-header">
+
+      <h2>
+        💸 Biaya Pengeluaran
+      </h2>
+
+
+      <button
+        class="expense-close"
+        onclick="tutupPengeluaran()">
+
+        ×
+
+      </button>
+
+    </div>
+
+
+    <div
+      id="pengeluaranBody"
+      class="expense-body">
+
+      <div class="expense-loading">
+
+        Memuat data pengeluaran...
+
+      </div>
+
+    </div>
+
+
+  </div>
+
+</div>
+
+
+
 <script>
 
 
@@ -1789,7 +2294,7 @@ tr:nth-child(even) {
 ===================================================== */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbxwYz-u8a9DmUxgtk_O8Uxu2dtrZ8-FNiP39eyRGm0i9z_e3Elg5okYUBYtRn5cyd_K/exec";
+  "https://script.google.com/macros/s/AKfycbyrZez1Yp_dL6ZttIric7rNdwo9gerJn-Quu1-OFX3YhIdTRdM65oXwxi32-pAuKDPH/exec";
 
 
 
@@ -2691,12 +3196,6 @@ function tampilkanRekap(
   }
 
 
-  /*
-   * JIKA HANYA ADA 1 BARIS DATA
-   *
-   * Tampilkan sebagai kartu-kartu
-   */
-
   if (
     data.length === 1
   ) {
@@ -2763,13 +3262,6 @@ function tampilkanRekap(
   }
 
 
-  /*
-   * JIKA BANYAK BARIS
-   *
-   * Setiap baris menjadi
-   * satu kartu rekap.
-   */
-
   data.forEach(
     function(item, index) {
 
@@ -2787,12 +3279,6 @@ function tampilkanRekap(
         "Rekap " +
         (index + 1);
 
-
-      /*
-       * Cari kolom pertama
-       * yang memiliki isi untuk
-       * dijadikan judul.
-       */
 
       for (
         let i = 0;
@@ -3044,6 +3530,294 @@ function tampilkanCacheInfo() {
 
 
 /* =====================================================
+   CEK PENGELUARAN
+===================================================== */
+
+function bukaPengeluaran() {
+
+  const modal =
+    document.getElementById(
+      "pengeluaranModal"
+    );
+
+
+  const body =
+    document.getElementById(
+      "pengeluaranBody"
+    );
+
+
+  modal.style.display =
+    "block";
+
+
+  body.innerHTML =
+
+    '<div class="expense-loading">' +
+
+    '⏳ Memuat data pengeluaran...' +
+
+    '</div>';
+
+
+  /*
+   * Panggil API pengeluaran
+   * secara langsung.
+   *
+   * Tidak menggunakan cache,
+   * sehingga data selalu terbaru
+   * dari spreadsheet.
+   */
+
+  apiRequest(
+    "pengeluaran",
+    function(response) {
+
+      if (
+        !response ||
+        response.success !== true
+      ) {
+
+        body.innerHTML =
+
+          '<div class="expense-error">' +
+
+          '❌ ' +
+
+          escapeHTML(
+            response &&
+            response.message
+              ? response.message
+              : "Data pengeluaran tidak dapat diambil."
+          ) +
+
+          '</div>';
+
+        return;
+      }
+
+
+      const data =
+        Array.isArray(
+          response.data
+        )
+          ? response.data
+          : [];
+
+
+      const totalDonasi =
+        Number(
+          response.totalDonasi
+        ) || 0;
+
+
+      const totalPengeluaran =
+        Number(
+          response.totalPengeluaran
+        ) || 0;
+
+
+      const sisaUang =
+        Number(
+          response.sisaUang
+        ) || 0;
+
+
+      let html = "";
+
+
+      /* =================================================
+         JIKA BELUM ADA PENGELUARAN
+      ================================================= */
+
+      if (
+        data.length === 0
+      ) {
+
+        html +=
+
+          '<div class="expense-loading">' +
+
+          'Belum ada data pengeluaran.' +
+
+          '</div>';
+
+      }
+
+      else {
+
+        html +=
+
+          '<table class="expense-table">' +
+
+          '<thead>' +
+
+          '<tr>' +
+
+          '<th class="expense-no">No</th>' +
+
+          '<th>Keterangan</th>' +
+
+          '<th style="text-align:right;">Pengeluaran</th>' +
+
+          '</tr>' +
+
+          '</thead>' +
+
+          '<tbody>';
+
+
+        data.forEach(
+          function(item, index) {
+
+            html +=
+
+              '<tr>' +
+
+              '<td class="expense-no">' +
+
+              (index + 1) +
+
+              '</td>' +
+
+              '<td>' +
+
+              escapeHTML(
+                item.keterangan || ""
+              ) +
+
+              '</td>' +
+
+              '<td class="expense-value">' +
+
+              formatRupiah(
+                item.pengeluaran
+              ) +
+
+              '</td>' +
+
+              '</tr>';
+
+          }
+        );
+
+
+        html +=
+
+          '</tbody>' +
+
+          '</table>';
+
+      }
+
+
+      /*
+       * Tentukan warna sisa uang.
+       */
+
+      const kelasSisa =
+        sisaUang < 0
+          ? "expense-summary-row expense-negative"
+          : "expense-summary-row expense-sisa";
+
+
+      /* =================================================
+         RINGKASAN
+      ================================================= */
+
+      html +=
+
+        '<div class="expense-summary">' +
+
+        '<div class="expense-summary-row">' +
+
+        '<span class="expense-summary-label">' +
+
+        '💰 Total Donasi' +
+
+        '</span>' +
+
+        '<span class="expense-summary-value">' +
+
+        formatRupiah(
+          totalDonasi
+        ) +
+
+        '</span>' +
+
+        '</div>' +
+
+
+        '<div class="expense-summary-row expense-total">' +
+
+        '<span class="expense-summary-label">' +
+
+        '💸 Total Pengeluaran' +
+
+        '</span>' +
+
+        '<span class="expense-summary-value">' +
+
+        formatRupiah(
+          totalPengeluaran
+        ) +
+
+        '</span>' +
+
+        '</div>' +
+
+
+        '<div class="' +
+        kelasSisa +
+        '">' +
+
+        '<span class="expense-summary-label">' +
+
+        (
+          sisaUang < 0
+            ? '⚠️ Kekurangan Uang'
+            : '💵 Sisa Uang'
+        ) +
+
+        '</span>' +
+
+        '<span class="expense-summary-value">' +
+
+        formatRupiah(
+          sisaUang
+        ) +
+
+        '</span>' +
+
+        '</div>' +
+
+        '</div>';
+
+
+      body.innerHTML =
+        html;
+
+    }
+  );
+}
+
+
+
+/* =====================================================
+   TUTUP PENGELUARAN
+===================================================== */
+
+function tutupPengeluaran() {
+
+  document.getElementById(
+    "pengeluaranModal"
+  ).style.display =
+    "none";
+}
+
+
+
+/* =====================================================
    ESCAPE HTML
 ===================================================== */
 
@@ -3212,18 +3986,35 @@ function tutupDetail() {
 window.onclick =
   function(event) {
 
-    const modal =
+    const detailModal =
       document.getElementById(
         "detailModal"
       );
 
 
+    const pengeluaranModal =
+      document.getElementById(
+        "pengeluaranModal"
+      );
+
+
     if (
-      event.target === modal
+      event.target ===
+      detailModal
     ) {
 
       tutupDetail();
     }
+
+
+    if (
+      event.target ===
+      pengeluaranModal
+    ) {
+
+      tutupPengeluaran();
+    }
+
   };
 
 
