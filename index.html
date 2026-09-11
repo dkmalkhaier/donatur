@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -19,11 +20,6 @@
 * {
   box-sizing: border-box;
 }
-
-
-/* =========================================================
-   BODY
-========================================================= */
 
 html,
 body {
@@ -189,7 +185,7 @@ body {
 
 
 /* =========================================================
-   SCROLL CONTAINER
+   CONTAINER SCROLL
 ========================================================= */
 
 .donor-scroll {
@@ -202,19 +198,20 @@ body {
 
   width: 100%;
 
+  margin: 0;
+
+  padding: 0;
+
   display: flex;
 
   flex-direction: column;
 
   align-items: stretch;
 
-  margin: 0;
-
-  padding: 0;
-
   will-change: transform;
 
-  transform: translate3d(0,0,0);
+  transform: translateY(0);
+
 }
 
 
@@ -226,13 +223,13 @@ body {
 
   width: 100%;
 
+  flex: none;
+
   display: flex;
 
   flex-direction: column;
 
   align-items: center;
-
-  flex-shrink: 0;
 
   margin: 0;
 
@@ -241,7 +238,7 @@ body {
 
 
 /* =========================================================
-   CARD DONATUR
+   CARD
 ========================================================= */
 
 .donor-card {
@@ -265,10 +262,14 @@ body {
   justify-content: space-between;
 
   gap: 15px;
+
+  flex-shrink: 0;
 }
 
 
-/* KIRI */
+/* =========================================================
+   NAMA
+========================================================= */
 
 .donor-left {
 
@@ -302,7 +303,9 @@ body {
 }
 
 
-/* KANAN */
+/* =========================================================
+   JUMLAH
+========================================================= */
 
 .donor-right {
 
@@ -621,6 +624,7 @@ td.amount {
 
     font-size: 10px;
   }
+
 }
 
 </style>
@@ -736,7 +740,7 @@ td.amount {
 
 
 <!-- =======================================================
-     MODAL DETAIL
+     MODAL
 ======================================================= -->
 
 <div
@@ -781,9 +785,7 @@ td.amount {
 
         </thead>
 
-        <tbody id="tabelDetail">
-
-        </tbody>
+        <tbody id="tabelDetail"></tbody>
 
       </table>
 
@@ -798,17 +800,16 @@ td.amount {
 
 
 /* =========================================================
-   KONFIGURASI
+   API GOOGLE APPS SCRIPT
 ========================================================= */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbyAoAlwjZ19-LW9-Szi_tAn1dUg-KSZnUA2fDTcJvm3R6GidRffZbRh3BuNepbvGr_t/exec";
+  "https://script.google.com/macros/s/AKfycbzAoAlwjZ19-LW9-Szi_tAn1dUg-KSZnUA2fDTcJvm3R6GidRffZbRh3BuNepbvGr_t/exec";
 
 
-/*
-   Kecepatan scroll.
-   Semakin kecil = semakin lambat.
-*/
+/* =========================================================
+   KECEPATAN
+========================================================= */
 
 const DONOR_SCROLL_SPEED = 32;
 
@@ -823,30 +824,34 @@ let donorScrollAnimation = null;
 
 let donorScrollPosition = 0;
 
-let donorScrollLastTime = null;
+let donorScrollLastTime = 0;
 
 
 /* =========================================================
-   FORMAT RUPIAH
+   RUPIAH
 ========================================================= */
 
 function formatRupiah(value) {
 
-  let angka = Number(value) || 0;
+  const angka =
+    Number(value) || 0;
 
-  return "Rp " + angka.toLocaleString("id-ID");
+  return "Rp " +
+    angka.toLocaleString("id-ID");
 
 }
 
 
 /* =========================================================
-   FORMAT TANGGAL
+   TANGGAL
 ========================================================= */
 
 function formatTanggalDisplay(value) {
 
   if (!value) {
+
     return "-";
+
   }
 
   return String(value);
@@ -855,7 +860,7 @@ function formatTanggalDisplay(value) {
 
 
 /* =========================================================
-   UPDATE WAKTU
+   JAM REALTIME
 ========================================================= */
 
 function updateTanggal() {
@@ -878,39 +883,39 @@ function updateTanggal() {
   ];
 
   const jam =
-    String(now.getHours()).padStart(2, "0");
+    String(now.getHours())
+      .padStart(2, "0");
 
   const menit =
-    String(now.getMinutes()).padStart(2, "0");
+    String(now.getMinutes())
+      .padStart(2, "0");
 
   const detik =
-    String(now.getSeconds()).padStart(2, "0");
+    String(now.getSeconds())
+      .padStart(2, "0");
 
   const tanggal =
-    String(now.getDate()).padStart(2, "0");
+    String(now.getDate())
+      .padStart(2, "0");
 
-  const namaBulan =
-    bulan[now.getMonth()];
-
-  const tahun =
-    now.getFullYear();
-
-  document.getElementById("tanggal").textContent =
+  document.getElementById(
+    "tanggal"
+  ).textContent =
     jam + ":" +
     menit + ":" +
     detik + " " +
     tanggal + "/" +
-    namaBulan + "/" +
-    tahun;
+    bulan[now.getMonth()] + "/" +
+    now.getFullYear();
 
 }
 
-
-/* Jalankan waktu */
-
 updateTanggal();
 
-setInterval(updateTanggal, 1000);
+setInterval(
+  updateTanggal,
+  1000
+);
 
 
 /* =========================================================
@@ -919,7 +924,9 @@ setInterval(updateTanggal, 1000);
 
 function stopDonorScroll() {
 
-  if (donorScrollAnimation !== null) {
+  if (
+    donorScrollAnimation !== null
+  ) {
 
     cancelAnimationFrame(
       donorScrollAnimation
@@ -940,62 +947,47 @@ function startDonorScroll() {
 
   stopDonorScroll();
 
-  const area =
-    document.getElementById("donorArea");
-
   const scroll =
-    document.querySelector(".donor-scroll");
+    document.querySelector(
+      ".donor-scroll"
+    );
 
-  const lists =
-    document.querySelectorAll(".donor-list");
+  const list1 =
+    document.getElementById(
+      "list1"
+    );
 
+  const list2 =
+    document.getElementById(
+      "list2"
+    );
 
-  if (!area) return;
 
   if (!scroll) return;
 
-  if (lists.length < 2) return;
+  if (!list1) return;
+
+  if (!list2) return;
 
   if (donorData.length === 0) return;
 
 
-  const list1 = lists[0];
-
-  const list2 = lists[1];
-
-
   /*
-     Tunggu browser selesai menghitung
-     tinggi semua kartu.
+     Pastikan browser sudah selesai
+     merender seluruh kartu.
   */
 
-  requestAnimationFrame(function() {
+  requestAnimationFrame(
+    function() {
 
-    requestAnimationFrame(function() {
-
-      const listHeight =
-        list1.offsetHeight;
-
-      const areaHeight =
-        area.clientHeight;
+      const tinggiList =
+        list1.getBoundingClientRect().height;
 
 
-      console.log(
-        "Tinggi list 1:",
-        listHeight
-      );
-
-      console.log(
-        "Tinggi area:",
-        areaHeight
-      );
-
-
-      if (listHeight <= 0) {
-
-        console.log(
-          "List tidak memiliki tinggi."
-        );
+      if (
+        !tinggiList ||
+        tinggiList <= 0
+      ) {
 
         return;
 
@@ -1004,17 +996,19 @@ function startDonorScroll() {
 
       donorScrollPosition = 0;
 
-      donorScrollLastTime = null;
+      donorScrollLastTime = 0;
 
 
       scroll.style.transform =
         "translate3d(0,0,0)";
 
 
-      function animateScroll(timestamp) {
+      function gerakkan(timestamp) {
 
 
-        if (!donorScrollLastTime) {
+        if (
+          donorScrollLastTime === 0
+        ) {
 
           donorScrollLastTime =
             timestamp;
@@ -1023,14 +1017,11 @@ function startDonorScroll() {
 
 
         let delta =
-          (timestamp -
-           donorScrollLastTime) / 1000;
+          (
+            timestamp -
+            donorScrollLastTime
+          ) / 1000;
 
-
-        /*
-           Mencegah loncatan besar apabila
-           browser sempat berhenti.
-        */
 
         if (delta > 0.05) {
 
@@ -1044,25 +1035,26 @@ function startDonorScroll() {
 
 
         donorScrollPosition -=
-          DONOR_SCROLL_SPEED * delta;
+          DONOR_SCROLL_SPEED *
+          delta;
 
 
         /*
-           Setelah list pertama selesai,
-           kembali ke posisi awal list pertama.
+           Jika list pertama sudah
+           habis, langsung kembali
+           sebesar tinggi list pertama.
 
-           Karena list kedua adalah salinan
-           yang sama persis, perpindahan
-           terlihat terus menerus.
+           Karena list kedua identik,
+           perpindahan tidak terlihat.
         */
 
         if (
           donorScrollPosition <=
-          -listHeight
+          -tinggiList
         ) {
 
           donorScrollPosition +=
-            listHeight;
+            tinggiList;
 
         }
 
@@ -1075,7 +1067,7 @@ function startDonorScroll() {
 
         donorScrollAnimation =
           requestAnimationFrame(
-            animateScroll
+            gerakkan
           );
 
       }
@@ -1083,18 +1075,17 @@ function startDonorScroll() {
 
       donorScrollAnimation =
         requestAnimationFrame(
-          animateScroll
+          gerakkan
         );
 
-    });
-
-  });
+    }
+  );
 
 }
 
 
 /* =========================================================
-   BUAT KARTU DONATUR
+   BUAT KARTU
 ========================================================= */
 
 function buatKartuDonatur(item) {
@@ -1130,23 +1121,27 @@ function buatKartuDonatur(item) {
     "donor-info";
 
 
-  const tanggal =
+  let infoText =
     formatTanggalDisplay(
       item.tanggal
     );
 
 
-  const rt =
+  if (
     item.rt !== undefined &&
     item.rt !== null &&
     String(item.rt).trim() !== ""
-      ? "RT " + item.rt
-      : "";
+  ) {
+
+    infoText +=
+      " • RT " +
+      item.rt;
+
+  }
 
 
   info.textContent =
-    tanggal +
-    (rt ? " • " + rt : "");
+    infoText;
 
 
   left.appendChild(name);
@@ -1168,7 +1163,9 @@ function buatKartuDonatur(item) {
     "donor-amount";
 
   amount.textContent =
-    formatRupiah(item.jumlah);
+    formatRupiah(
+      item.jumlah
+    );
 
 
   right.appendChild(amount);
@@ -1192,52 +1189,42 @@ function tampilkanData(data) {
 
 
   /*
-     Pastikan data berupa array.
+     Jangan batasi jumlah data.
+
+     Data yang dikirim Apps Script
+     langsung dipakai.
   */
 
-  const dataMasuk =
+  donorData =
     Array.isArray(data)
-      ? data
+      ? data.filter(function(item) {
+
+          return (
+            item &&
+            item.nama !== undefined &&
+            item.nama !== null &&
+            String(item.nama).trim() !== ""
+          );
+
+        })
       : [];
 
 
   console.log(
-    "Jumlah data diterima:",
-    dataMasuk.length
+    "DATA DITERIMA:",
+    Array.isArray(data)
+      ? data.length
+      : 0
   );
 
 
-  /*
-     Hanya buang baris yang tidak mempunyai
-     nama donatur.
-
-     TIDAK ADA batas 30,
-     50,
-     100,
-     atau jumlah tertentu.
-  */
-
-  donorData =
-    dataMasuk.filter(function(item) {
-
-      return (
-        item &&
-        item.nama &&
-        String(item.nama).trim() !== ""
-      );
-
-    });
-
-
   console.log(
-    "Jumlah data ditampilkan:",
+    "DATA DITAMPILKAN:",
     donorData.length
   );
 
 
-  /*
-     Status di layar.
-  */
+  /* Status */
 
   document.getElementById(
     "statusData"
@@ -1246,31 +1233,28 @@ function tampilkanData(data) {
     " data donatur";
 
 
-  /*
-     Jumlah donatur.
-  */
+  /* Jumlah */
 
   document.getElementById(
     "jumlahDonatur"
   ).textContent =
-    donorData.length.toLocaleString("id-ID");
+    donorData.length
+      .toLocaleString("id-ID");
 
 
-  /*
-     Hitung total donasi.
-  */
+  /* Total */
 
   let total = 0;
 
 
-  donorData.forEach(function(item) {
+  donorData.forEach(
+    function(item) {
 
-    let jumlah =
-      Number(item.jumlah) || 0;
+      total +=
+        Number(item.jumlah) || 0;
 
-    total += jumlah;
-
-  });
+    }
+  );
 
 
   document.getElementById(
@@ -1279,15 +1263,17 @@ function tampilkanData(data) {
     formatRupiah(total);
 
 
-  /*
-     Ambil list.
-  */
+  /* List */
 
   const list1 =
-    document.getElementById("list1");
+    document.getElementById(
+      "list1"
+    );
 
   const list2 =
-    document.getElementById("list2");
+    document.getElementById(
+      "list2"
+    );
 
 
   list1.innerHTML = "";
@@ -1298,24 +1284,26 @@ function tampilkanData(data) {
   stopDonorScroll();
 
 
-  /*
-     Jika tidak ada data.
-  */
+  /* Tidak ada data */
 
-  if (donorData.length === 0) {
+  if (
+    donorData.length === 0
+  ) {
 
-    const empty =
-      document.createElement("div");
+    const pesan =
+      document.createElement(
+        "div"
+      );
 
-    empty.className =
+    pesan.className =
       "loading";
 
-    empty.textContent =
+    pesan.textContent =
       "Belum ada data donatur.";
 
-    list1.appendChild(empty);
-
-    list2.appendChild(empty.cloneNode(true));
+    list1.appendChild(
+      pesan
+    );
 
     return;
 
@@ -1323,43 +1311,54 @@ function tampilkanData(data) {
 
 
   /*
-     MASUKKAN SEMUA DATA KE LIST 1.
+     MASUKKAN SEMUA DATA
+     KE LIST 1
   */
 
-  donorData.forEach(function(item) {
+  donorData.forEach(
+    function(item) {
 
-    list1.appendChild(
-      buatKartuDonatur(item)
-    );
+      list1.appendChild(
+        buatKartuDonatur(item)
+      );
 
-  });
+    }
+  );
 
 
   /*
-     MASUKKAN SEMUA DATA KE LIST 2.
+     SALIN SEMUA DATA
+     KE LIST 2
   */
 
-  donorData.forEach(function(item) {
+  donorData.forEach(
+    function(item) {
 
-    list2.appendChild(
-      buatKartuDonatur(item)
-    );
+      list2.appendChild(
+        buatKartuDonatur(item)
+      );
 
-  });
+    }
+  );
 
 
   /*
-     Mulai animasi setelah semua kartu
-     benar-benar selesai dibuat.
+     Mulai scroll.
   */
 
-  startDonorScroll();
+  requestAnimationFrame(
+    function() {
+
+      startDonorScroll();
+
+    }
+  );
 
 }
 
 
 /* =========================================================
-   AMBIL DATA DARI APPS SCRIPT
+   AMBIL DATA
 ========================================================= */
 
 async function ambilData() {
@@ -1374,36 +1373,31 @@ async function ambilData() {
 
 
     /*
-       Tambahkan timestamp agar browser
-       tidak menggunakan cache lama.
+       PENTING:
+       URL API TIDAK DIUBAH.
     */
 
     const url =
       API_URL +
-      "?action=data&_=" +
-      Date.now();
+      "?action=data";
 
 
     console.log(
-      "Memanggil API:",
+      "Memanggil:",
       url
     );
 
 
     const response =
       await fetch(
-        url,
-        {
-          method: "GET",
-          cache: "no-store"
-        }
+        url
       );
 
 
     if (!response.ok) {
 
       throw new Error(
-        "HTTP Error " +
+        "HTTP " +
         response.status
       );
 
@@ -1415,7 +1409,7 @@ async function ambilData() {
 
 
     console.log(
-      "Data dari API:",
+      "Response API:",
       data
     );
 
@@ -1424,7 +1418,9 @@ async function ambilData() {
        Tampilkan data.
     */
 
-    tampilkanData(data);
+    tampilkanData(
+      data
+    );
 
 
     /*
@@ -1440,33 +1436,45 @@ async function ambilData() {
 
       localStorage.setItem(
         "donorDataTime",
-        Date.now().toString()
+        String(Date.now())
       );
 
     } catch (e) {
 
       console.log(
-        "Cache tidak dapat disimpan:",
+        "Cache gagal:",
         e
       );
 
     }
 
 
-  } catch (error) {
+  }
+  catch (error) {
 
 
     console.error(
-      "Gagal mengambil data:",
+      "ERROR API:",
       error
     );
 
 
-    document.getElementById(
-      "statusData"
-    ).textContent =
-      "Gagal mengambil data";
+    /*
+       JANGAN menghapus data
+       yang sudah tampil apabila
+       refresh API gagal.
+    */
 
+    if (
+      donorData.length === 0
+    ) {
+
+      document.getElementById(
+        "statusData"
+      ).textContent =
+        "Gagal mengambil data";
+
+    }
 
   }
 
@@ -1474,13 +1482,12 @@ async function ambilData() {
 
 
 /* =========================================================
-   TAMPILKAN CACHE
+   CACHE
 ========================================================= */
 
 function tampilkanCache() {
 
   try {
-
 
     const cache =
       localStorage.getItem(
@@ -1495,50 +1502,25 @@ function tampilkanCache() {
     }
 
 
-    const waktu =
-      Number(
-        localStorage.getItem(
-          "donorDataTime"
-        )
-      ) || 0;
-
-
-    /*
-       Cache hanya dipakai sebagai
-       tampilan sementara.
-
-       Setelah itu API tetap dipanggil
-       untuk mendapatkan data terbaru.
-    */
-
-    const umur =
-      Date.now() - waktu;
-
-
-    if (
-      umur >
-      5 * 60 * 1000
-    ) {
-
-      return;
-
-    }
-
-
     const data =
-      JSON.parse(cache);
+      JSON.parse(
+        cache
+      );
 
 
     if (
-      Array.isArray(data)
+      Array.isArray(data) &&
+      data.length > 0
     ) {
 
-      tampilkanData(data);
+      tampilkanData(
+        data
+      );
 
     }
 
-
-  } catch (error) {
+  }
+  catch (error) {
 
     console.log(
       "Cache error:",
@@ -1551,11 +1533,10 @@ function tampilkanCache() {
 
 
 /* =========================================================
-   MODAL DETAIL
+   DETAIL
 ========================================================= */
 
 function bukaDetail() {
-
 
   const tbody =
     document.getElementById(
@@ -1566,27 +1547,29 @@ function bukaDetail() {
   tbody.innerHTML = "";
 
 
-  /*
-     Tampilkan SEMUA data.
-  */
-
   donorData.forEach(
     function(item, index) {
 
 
       const tr =
-        document.createElement("tr");
+        document.createElement(
+          "tr"
+        );
 
 
       const tdNo =
-        document.createElement("td");
+        document.createElement(
+          "td"
+        );
 
       tdNo.textContent =
         index + 1;
 
 
       const tdTanggal =
-        document.createElement("td");
+        document.createElement(
+          "td"
+        );
 
       tdTanggal.textContent =
         formatTanggalDisplay(
@@ -1595,14 +1578,18 @@ function bukaDetail() {
 
 
       const tdNama =
-        document.createElement("td");
+        document.createElement(
+          "td"
+        );
 
       tdNama.textContent =
         item.nama || "-";
 
 
       const tdRT =
-        document.createElement("td");
+        document.createElement(
+          "td"
+        );
 
       tdRT.textContent =
         item.rt !== undefined &&
@@ -1613,13 +1600,17 @@ function bukaDetail() {
 
 
       const tdJumlah =
-        document.createElement("td");
+        document.createElement(
+          "td"
+        );
 
       tdJumlah.className =
         "amount";
 
       tdJumlah.textContent =
-        formatRupiah(item.jumlah);
+        formatRupiah(
+          item.jumlah
+        );
 
 
       tr.appendChild(tdNo);
@@ -1633,8 +1624,9 @@ function bukaDetail() {
       tr.appendChild(tdJumlah);
 
 
-      tbody.appendChild(tr);
-
+      tbody.appendChild(
+        tr
+      );
 
     }
   );
@@ -1649,7 +1641,7 @@ function bukaDetail() {
 
 
 /* =========================================================
-   TUTUP MODAL
+   TUTUP DETAIL
 ========================================================= */
 
 function tutupDetail() {
@@ -1670,7 +1662,6 @@ window.addEventListener(
   "click",
   function(event) {
 
-
     const modal =
       document.getElementById(
         "modalDetail"
@@ -1690,12 +1681,8 @@ window.addEventListener(
 
 
 /* =========================================================
-   REFRESH OTOMATIS
+   REFRESH DATA
 ========================================================= */
-
-/*
-   Ambil data terbaru setiap 60 detik.
-*/
 
 setInterval(
   function() {
@@ -1708,7 +1695,7 @@ setInterval(
 
 
 /* =========================================================
-   MULAI
+   MULAI HALAMAN
 ========================================================= */
 
 tampilkanCache();
@@ -1721,3 +1708,4 @@ ambilData();
 </body>
 
 </html>
+
