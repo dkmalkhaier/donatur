@@ -1846,8 +1846,11 @@ function stopDonorScroll() {
 }
 
 
+
+
 /* =====================================================
    MULAI ANIMASI DONATUR
+   VERSI: SEMUA DATA TAMPIL UTUH
 ===================================================== */
 
 function startDonorScroll() {
@@ -1861,74 +1864,194 @@ function startDonorScroll() {
     document.querySelector(".donor-scroll");
 
   const list1 =
-    document.querySelector(".donor-list");
+    document.querySelectorAll(".donor-list")[0];
+
+  const list2 =
+    document.querySelectorAll(".donor-list")[1];
 
   if (
     !area ||
     !scroll ||
     !list1 ||
+    !list2 ||
     !donorData.length
   ) {
     return;
   }
 
-  /*
-     Tunggu browser selesai menghitung tinggi
-     seluruh kartu donatur.
-  */
-  requestAnimationFrame(function () {
 
-    const listHeight =
-      list1.getBoundingClientRect().height;
+  /* ===================================================
+     TUNGGU LAYOUT SELESAI
+  =================================================== */
 
-    if (listHeight <= 0) {
-      return;
-    }
+  requestAnimationFrame(function() {
 
-    donorScrollPosition = 0;
-    donorScrollLastTime = null;
-
-    scroll.style.transform =
-      "translate3d(0,0,0)";
-
-    function animateScroll(timestamp) {
-
-      if (!donorScrollLastTime) {
-        donorScrollLastTime = timestamp;
-      }
-
-      const delta =
-        Math.min(
-          0.05,
-          (timestamp - donorScrollLastTime) / 1000
-        );
-
-      donorScrollLastTime = timestamp;
-
-      donorScrollPosition -=
-        DONOR_SCROLL_SPEED * delta;
+    requestAnimationFrame(function() {
 
       /*
-         Reset hanya setelah SELURUH LIST 1,
-         termasuk donatur terakhir, selesai dilewati.
-      */
-      if (donorScrollPosition <= -listHeight) {
-        donorScrollPosition = 0;
+       * Tinggi asli satu putaran data
+       */
+      const listHeight =
+        list1.getBoundingClientRect().height;
+
+
+      /*
+       * Tinggi area yang terlihat
+       */
+      const areaHeight =
+        area.getBoundingClientRect().height;
+
+
+      if (
+        listHeight <= 0 ||
+        areaHeight <= 0
+      ) {
+        return;
       }
 
+
+      /*
+       * Tambahkan ruang kosong di akhir
+       *
+       * Tujuannya supaya kartu donatur terakhir
+       * bisa bergerak masuk dan terlihat UTUH
+       * sebelum kembali ke awal.
+       */
+
+      const spacer =
+        document.createElement("div");
+
+      spacer.style.width =
+        "100%";
+
+      spacer.style.height =
+        areaHeight + "px";
+
+      spacer.style.flexShrink =
+        "0";
+
+
+      list1.appendChild(spacer);
+
+
+      /*
+       * Karena list2 harus identik dengan list1,
+       * spacer juga harus ada di list2.
+       */
+
+      const spacer2 =
+        document.createElement("div");
+
+      spacer2.style.width =
+        "100%";
+
+      spacer2.style.height =
+        areaHeight + "px";
+
+      spacer2.style.flexShrink =
+        "0";
+
+
+      list2.appendChild(spacer2);
+
+
+      /*
+       * Tinggi baru satu putaran
+       */
+      const fullListHeight =
+        list1.getBoundingClientRect().height;
+
+
+      /*
+       * Posisi awal
+       */
+      donorScrollPosition = 0;
+
+      donorScrollLastTime = null;
+
+
       scroll.style.transform =
-        "translate3d(0," +
-        donorScrollPosition +
-        "px,0)";
+        "translate3d(0,0,0)";
+
+
+      /* =================================================
+         ANIMASI
+      ================================================= */
+
+      function animateScroll(timestamp) {
+
+        if (!donorScrollLastTime) {
+
+          donorScrollLastTime =
+            timestamp;
+
+        }
+
+
+        const delta =
+          Math.min(
+            0.05,
+            (
+              timestamp -
+              donorScrollLastTime
+            ) / 1000
+          );
+
+
+        donorScrollLastTime =
+          timestamp;
+
+
+        /*
+         * Gerakkan ke atas
+         */
+        donorScrollPosition -=
+          DONOR_SCROLL_SPEED *
+          delta;
+
+
+        /*
+         * RESET SETELAH SATU PUTARAN
+         *
+         * Karena sudah ditambah spacer,
+         * data terakhir akan benar-benar sempat
+         * masuk ke area tampilan.
+         */
+
+        if (
+          donorScrollPosition <=
+          -fullListHeight
+        ) {
+
+          donorScrollPosition =
+            0;
+
+        }
+
+
+        scroll.style.transform =
+          "translate3d(0," +
+          donorScrollPosition +
+          "px,0)";
+
+
+        donorScrollAnimation =
+          requestAnimationFrame(
+            animateScroll
+          );
+
+      }
+
 
       donorScrollAnimation =
-        requestAnimationFrame(animateScroll);
-    }
+        requestAnimationFrame(
+          animateScroll
+        );
 
-    donorScrollAnimation =
-      requestAnimationFrame(animateScroll);
+    });
 
   });
+
 }
 
 
