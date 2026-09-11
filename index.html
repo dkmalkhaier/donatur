@@ -215,12 +215,12 @@ body {
 ========================================================= */
 
 .donor-area {
-
   position: relative;
 
-  flex: 1;
+  height: 65vh;
+  flex: 0 0 65vh;
 
-  min-height: 0;
+  min-height: 250px;
 
   margin: 0 10px 10px 10px;
 
@@ -234,14 +234,7 @@ body {
     #eeeeee
   );
 
-  /*
-     PENTING:
-     Gunakan scroll asli browser.
-     Tidak menggunakan transform.
-  */
-
   overflow-y: auto;
-
   overflow-x: hidden;
 
   scrollbar-width: thin;
@@ -588,115 +581,14 @@ body {
 
 @media (max-width: 600px) {
 
-  .header h1 {
-
-    font-size: 20px;
-  }
-
-
-  .header h2 {
-
-    font-size: 14px;
-  }
-
-
-  #tanggal {
-
-    font-size: 12px;
-  }
-
-
-  .summary {
-
-    gap: 6px;
-
-    padding-left: 7px;
-    padding-right: 7px;
-  }
-
-
-  .summary-box {
-
-    padding: 8px 5px;
-  }
-
-
-  .summary-value {
-
-    font-size: 16px;
-  }
-
-
-  .summary-title {
-
-    font-size: 11px;
-  }
-
-
-  .summary-small {
-
-    font-size: 10px;
-  }
-
-
   .donor-area {
+    height: 58vh;
+    flex: 0 0 58vh;
+
+    min-height: 220px;
 
     margin-left: 7px;
-
     margin-right: 7px;
-  }
-
-
-  .donor-card {
-
-    width: calc(100% - 14px);
-
-    padding: 9px 10px;
-  }
-
-
-  .donor-name {
-
-    font-size: 14px;
-  }
-
-
-  .donor-meta {
-
-    font-size: 11px;
-
-    flex-wrap: wrap;
-  }
-
-
-  .donor-amount {
-
-    font-size: 12px;
-  }
-
-
-  .modal {
-
-    padding: 8px;
-  }
-
-
-  .modal-content {
-
-    max-height: 94vh;
-  }
-
-
-  .detail-table {
-
-    font-size: 11px;
-  }
-
-
-  .detail-table th,
-  .detail-table td {
-
-    padding: 7px 5px;
   }
 
 }
