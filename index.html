@@ -902,7 +902,7 @@ setInterval(
    HENTIKAN AUTO SCROLL
 ========================================================= */
 
-function stopDonorScroll() {
+function function stopDonorScroll() {
 
   if (donorScrollAnimation) {
 
@@ -910,16 +910,13 @@ function stopDonorScroll() {
       donorScrollAnimation
     );
 
-
     clearTimeout(
       donorScrollAnimation
     );
   }
 
-
   donorScrollAnimation = null;
 }
-
 
 /* =========================================================
    AUTO SCROLL
@@ -929,36 +926,24 @@ function startDonorScroll() {
 
   stopDonorScroll();
 
+  const area = document.getElementById("donorArea");
 
-  const area =
-    document.getElementById(
-      "donorArea"
-    );
-
-
-  if (!area) {
-    return;
-  }
-
-
-  /*
-     Tunggu browser selesai menghitung
-     tinggi seluruh kartu.
-  */
+  if (!area) return;
 
   setTimeout(function() {
 
-
+    /*
+     * Hitung tinggi sebenarnya setelah
+     * semua kartu selesai dibuat browser.
+     */
     const maxScroll =
-      area.scrollHeight -
-      area.clientHeight;
+      area.scrollHeight - area.clientHeight;
 
 
     /*
-       Kalau seluruh data sudah terlihat,
-       tidak perlu melakukan scroll.
-    */
-
+     * Kalau semua data sudah terlihat,
+     * tidak perlu auto-scroll.
+     */
     if (maxScroll <= 5) {
       return;
     }
@@ -966,17 +951,14 @@ function startDonorScroll() {
 
     let lastTime = null;
 
-
     /*
-       Kecepatan scroll.
-       Nilai kecil = lebih pelan.
-    */
-
-    const speed = 18;
+     * Kecepatan scroll.
+     * Semakin kecil semakin pelan.
+     */
+    const speed = 15;
 
 
     function animate(timestamp) {
-
 
       if (!lastTime) {
         lastTime = timestamp;
@@ -993,43 +975,62 @@ function startDonorScroll() {
       lastTime = timestamp;
 
 
-      area.scrollTop +=
-        speed * delta;
+      /*
+       * Scroll perlahan.
+       */
+      area.scrollTop += speed * delta;
 
 
       /*
-         Jika sudah sampai paling bawah
-      */
+       * Hitung posisi paling bawah
+       * setiap frame karena tinggi konten
+       * bisa berubah.
+       */
+      const posisiBawah =
+        area.scrollHeight -
+        area.clientHeight;
 
+
+      /*
+       * SUDAH SAMPAI BARIS TERAKHIR
+       */
       if (
         area.scrollTop >=
-        area.scrollHeight -
-        area.clientHeight -
-        1
+        posisiBawah - 2
       ) {
+
+        /*
+         * Paksa benar-benar ke posisi paling bawah.
+         * Ini penting agar baris terakhir
+         * tidak tertinggal.
+         */
+        area.scrollTop = posisiBawah;
 
 
         /*
-           Berhenti sebentar di bawah.
-        */
-
+         * Berhenti di baris terakhir
+         * selama 4 detik.
+         */
         donorScrollAnimation =
           setTimeout(function() {
 
-
+            /*
+             * Kembali ke baris pertama.
+             */
             area.scrollTop = 0;
-
 
             lastTime = null;
 
 
+            /*
+             * Mulai lagi dari atas.
+             */
             donorScrollAnimation =
               requestAnimationFrame(
                 animate
               );
 
-
-          }, 1500);
+          }, 4000);
 
 
         return;
@@ -1040,9 +1041,13 @@ function startDonorScroll() {
         requestAnimationFrame(
           animate
         );
-
     }
 
+
+    /*
+     * Mulai dari baris pertama.
+     */
+    area.scrollTop = 0;
 
     donorScrollAnimation =
       requestAnimationFrame(
@@ -1050,8 +1055,7 @@ function startDonorScroll() {
       );
 
 
-  }, 500);
-
+  }, 1000);
 }
 
 
