@@ -368,6 +368,7 @@ body {
   align-items: center;
   will-change: transform;
   transform: translate3d(0, 0, 0);
+  height: auto;
 }
 
 
@@ -1210,14 +1211,13 @@ function tampilkanData(data, fromCache = false) {
 
   /* =====================================================
      SEMUA DATA DONATUR DITAMPILKAN
-     Animasi bergerak sampai kartu paling terakhir.
+     Dua salinan daftar dipakai agar looping mulus.
+     Tidak ada batas jumlah kartu.
   ===================================================== */
   const scroll = document.createElement("div");
   scroll.className = "donor-scroll";
 
-  const fragment = document.createDocumentFragment();
-
-  donorData.forEach(function(item) {
+  function buatKartuDonatur(item) {
     const card = document.createElement("div");
     card.className = "donor-card";
 
@@ -1228,14 +1228,27 @@ function tampilkanData(data, fromCache = false) {
         <span class="donor-amount">${formatRupiah(item.jumlah)}</span>
       </div>`;
 
-    fragment.appendChild(card);
+    return card;
+  }
+
+  const fragment = document.createDocumentFragment();
+
+  /* Salinan pertama: SEMUA donatur */
+  donorData.forEach(function(item) {
+    fragment.appendChild(buatKartuDonatur(item));
+  });
+
+  /* Salinan kedua: SEMUA donatur lagi untuk looping mulus */
+  donorData.forEach(function(item) {
+    fragment.appendChild(buatKartuDonatur(item));
   });
 
   area.innerHTML = "";
   area.appendChild(scroll);
   scroll.appendChild(fragment);
 
-  donorCardIndex = 0;
+  donorScrollPosition = area.clientHeight;
+  donorScrollLastTime = null;
 
   requestAnimationFrame(startDonorScroll);
 
@@ -1262,16 +1275,29 @@ function startDonorScroll() {
   if (!area || !scroll || !donorData.length) return;
 
   const areaHeight = area.clientHeight;
-  const scrollHeight = scroll.scrollHeight;
 
-  /* Jika seluruh data lebih pendek dari area,
-     tampilkan tanpa animasi. */
-  if (scrollHeight <= areaHeight) {
+  /*
+    Karena daftar dibuat 2 kali, tinggi satu putaran adalah
+    tinggi setengah dari seluruh .donor-scroll.
+  */
+  const totalHeight = scroll.scrollHeight;
+  const oneListHeight = totalHeight / 2;
+
+  if (oneListHeight <= 0) return;
+
+  /*
+    Jika satu daftar lebih pendek dari area, tetap tampilkan
+    seluruh data tanpa animasi supaya tidak terlihat terpotong.
+  */
+  if (oneListHeight <= areaHeight) {
     scroll.style.transform = "translate3d(0, 0, 0)";
     return;
   }
 
-  /* Mulai dari bawah area */
+  /*
+    Mulai dari bawah area sehingga kartu pertama muncul
+    dari bawah dan bergerak sampai kartu TERAKHIR.
+  */
   donorScrollPosition = areaHeight;
   donorScrollLastTime = null;
 
@@ -1295,14 +1321,14 @@ function startDonorScroll() {
     donorScrollPosition -=
       DONOR_SCROLL_SPEED * delta;
 
-    /* Tunggu sampai SELURUH daftar,
-       termasuk kartu paling terakhir,
-       benar-benar melewati bagian atas. */
-    if (donorScrollPosition <= -scrollHeight) {
-
-      donorScrollPosition = areaHeight;
-      donorScrollLastTime = timestamp;
-
+    /*
+      Jangan reset berdasarkan tinggi seluruh track.
+      Reset tepat setelah SATU daftar lengkap selesai.
+      Dengan demikian seluruh data, termasuk data terakhir,
+      pasti tampil sebelum mengulang.
+    */
+    if (donorScrollPosition <= -oneListHeight) {
+      donorScrollPosition += oneListHeight;
     }
 
     scroll.style.transform =
