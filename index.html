@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="id">
 
@@ -215,12 +215,12 @@ body {
 ========================================================= */
 
 .donor-area {
+
   position: relative;
 
-  height: 65vh;
-  flex: 0 0 65vh;
+  flex: 1;
 
-  min-height: 250px;
+  min-height: 0;
 
   margin: 0 10px 10px 10px;
 
@@ -234,7 +234,14 @@ body {
     #eeeeee
   );
 
+  /*
+     PENTING:
+     Gunakan scroll asli browser.
+     Tidak menggunakan transform.
+  */
+
   overflow-y: auto;
+
   overflow-x: hidden;
 
   scrollbar-width: thin;
@@ -581,14 +588,115 @@ body {
 
 @media (max-width: 600px) {
 
-  .donor-area {
-    height: 58vh;
-    flex: 0 0 58vh;
+  .header h1 {
 
-    min-height: 220px;
+    font-size: 20px;
+  }
+
+
+  .header h2 {
+
+    font-size: 14px;
+  }
+
+
+  #tanggal {
+
+    font-size: 12px;
+  }
+
+
+  .summary {
+
+    gap: 6px;
+
+    padding-left: 7px;
+    padding-right: 7px;
+  }
+
+
+  .summary-box {
+
+    padding: 8px 5px;
+  }
+
+
+  .summary-value {
+
+    font-size: 16px;
+  }
+
+
+  .summary-title {
+
+    font-size: 11px;
+  }
+
+
+  .summary-small {
+
+    font-size: 10px;
+  }
+
+
+  .donor-area {
 
     margin-left: 7px;
+
     margin-right: 7px;
+  }
+
+
+  .donor-card {
+
+    width: calc(100% - 14px);
+
+    padding: 9px 10px;
+  }
+
+
+  .donor-name {
+
+    font-size: 14px;
+  }
+
+
+  .donor-meta {
+
+    font-size: 11px;
+
+    flex-wrap: wrap;
+  }
+
+
+  .donor-amount {
+
+    font-size: 12px;
+  }
+
+
+  .modal {
+
+    padding: 8px;
+  }
+
+
+  .modal-content {
+
+    max-height: 94vh;
+  }
+
+
+  .detail-table {
+
+    font-size: 11px;
+  }
+
+
+  .detail-table th,
+  .detail-table td {
+
+    padding: 7px 5px;
   }
 
 }
@@ -777,7 +885,7 @@ body {
 ========================================================= */
 
 const API_URL =
-  "https://script.google.com/macros/s/AKfycbyAoAlwjZ19-LW9-Szi_tAn1dUg-KSZnUA2fDTcJvm3R6GidRffZbRh3BuNepbvGr_t/exec";
+  "https://script.google.com/macros/s/AKfycbxNCHEcmRTGMvsJr9MyS64s632d6UX3YK5huPVvWL6LObf5T8V_HfQlQbxOOM_bv5ge/exec";
 
 
 /* =========================================================
@@ -902,7 +1010,7 @@ setInterval(
    HENTIKAN AUTO SCROLL
 ========================================================= */
 
-function function stopDonorScroll() {
+function stopDonorScroll() {
 
   if (donorScrollAnimation) {
 
@@ -910,13 +1018,16 @@ function function stopDonorScroll() {
       donorScrollAnimation
     );
 
+
     clearTimeout(
       donorScrollAnimation
     );
   }
 
+
   donorScrollAnimation = null;
 }
+
 
 /* =========================================================
    AUTO SCROLL
@@ -926,24 +1037,36 @@ function startDonorScroll() {
 
   stopDonorScroll();
 
-  const area = document.getElementById("donorArea");
 
-  if (!area) return;
+  const area =
+    document.getElementById(
+      "donorArea"
+    );
+
+
+  if (!area) {
+    return;
+  }
+
+
+  /*
+     Tunggu browser selesai menghitung
+     tinggi seluruh kartu.
+  */
 
   setTimeout(function() {
 
-    /*
-     * Hitung tinggi sebenarnya setelah
-     * semua kartu selesai dibuat browser.
-     */
+
     const maxScroll =
-      area.scrollHeight - area.clientHeight;
+      area.scrollHeight -
+      area.clientHeight;
 
 
     /*
-     * Kalau semua data sudah terlihat,
-     * tidak perlu auto-scroll.
-     */
+       Kalau seluruh data sudah terlihat,
+       tidak perlu melakukan scroll.
+    */
+
     if (maxScroll <= 5) {
       return;
     }
@@ -951,14 +1074,17 @@ function startDonorScroll() {
 
     let lastTime = null;
 
+
     /*
-     * Kecepatan scroll.
-     * Semakin kecil semakin pelan.
-     */
-    const speed = 15;
+       Kecepatan scroll.
+       Nilai kecil = lebih pelan.
+    */
+
+    const speed = 18;
 
 
     function animate(timestamp) {
+
 
       if (!lastTime) {
         lastTime = timestamp;
@@ -975,62 +1101,43 @@ function startDonorScroll() {
       lastTime = timestamp;
 
 
-      /*
-       * Scroll perlahan.
-       */
-      area.scrollTop += speed * delta;
+      area.scrollTop +=
+        speed * delta;
 
 
       /*
-       * Hitung posisi paling bawah
-       * setiap frame karena tinggi konten
-       * bisa berubah.
-       */
-      const posisiBawah =
-        area.scrollHeight -
-        area.clientHeight;
+         Jika sudah sampai paling bawah
+      */
 
-
-      /*
-       * SUDAH SAMPAI BARIS TERAKHIR
-       */
       if (
         area.scrollTop >=
-        posisiBawah - 2
+        area.scrollHeight -
+        area.clientHeight -
+        1
       ) {
 
-        /*
-         * Paksa benar-benar ke posisi paling bawah.
-         * Ini penting agar baris terakhir
-         * tidak tertinggal.
-         */
-        area.scrollTop = posisiBawah;
-
 
         /*
-         * Berhenti di baris terakhir
-         * selama 4 detik.
-         */
+           Berhenti sebentar di bawah.
+        */
+
         donorScrollAnimation =
           setTimeout(function() {
 
-            /*
-             * Kembali ke baris pertama.
-             */
+
             area.scrollTop = 0;
+
 
             lastTime = null;
 
 
-            /*
-             * Mulai lagi dari atas.
-             */
             donorScrollAnimation =
               requestAnimationFrame(
                 animate
               );
 
-          }, 4000);
+
+          }, 1500);
 
 
         return;
@@ -1041,13 +1148,9 @@ function startDonorScroll() {
         requestAnimationFrame(
           animate
         );
+
     }
 
-
-    /*
-     * Mulai dari baris pertama.
-     */
-    area.scrollTop = 0;
 
     donorScrollAnimation =
       requestAnimationFrame(
@@ -1055,7 +1158,8 @@ function startDonorScroll() {
       );
 
 
-  }, 1000);
+  }, 500);
+
 }
 
 
@@ -1993,4 +2097,4 @@ ambilData();
 </body>
 
 </html>
-
+```
