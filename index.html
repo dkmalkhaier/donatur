@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 
 <meta name="viewport"
-   content="width=device-width, initial-scale=1.0">
+content="width=device-width, initial-scale=1.0">
 
 <title>Data Donatur DKM Al-Khaier</title>
 
@@ -315,7 +315,7 @@ body {
   left: 0;
   right: 0;
 
-  height: 40px;
+  height: 30px;
 
   background:
     linear-gradient(
@@ -339,7 +339,7 @@ body {
   left: 0;
   right: 0;
 
-  height: 40px;
+  height: 30px;
 
   background:
     linear-gradient(
@@ -359,16 +359,29 @@ body {
 ===================================================== */
 
 .donor-scroll {
+
   position: absolute;
+
   width: 100%;
+
   left: 0;
+
   top: 0;
+
   display: flex;
+
   flex-direction: column;
+
   align-items: center;
+
   will-change: transform;
-  transform: translate3d(0, 0, 0);
-  height: auto;
+
+  transform:
+    translate3d(0, 0, 0);
+
+  margin: 0;
+
+  padding: 0;
 }
 
 
@@ -877,6 +890,7 @@ tr:nth-child(even) {
 
   <div class="header">
 
+```
 <h1>🕌 DKM Al-Khaier</h1>
 
 <div class="subtitle">
@@ -888,6 +902,7 @@ tr:nth-child(even) {
   class="datetime">
   Memuat waktu...
 </div>
+```
 
   </div>
 
@@ -895,7 +910,7 @@ tr:nth-child(even) {
 
   <div class="total-box">
 
-
+```
 <div class="total-label">
   💰 Total Donasi Terkumpul
 </div>
@@ -907,7 +922,7 @@ tr:nth-child(even) {
   Rp 0
 
 </div>
-
+```
 
   </div>
 
@@ -915,7 +930,7 @@ tr:nth-child(even) {
 
   <div class="donor-info-row">
 
-
+```
 <div class="donor-count">
 
   <span class="donor-count-label">
@@ -938,6 +953,7 @@ tr:nth-child(even) {
   Lihat Detail
 
 </button>
+```
 
   </div>
 
@@ -947,7 +963,7 @@ tr:nth-child(even) {
     id="donorArea"
     class="donor-area">
 
-
+```
 <div
   id="loading"
   class="loading">
@@ -955,6 +971,7 @@ tr:nth-child(even) {
   Memuat data donatur...
 
 </div>
+```
 
   </div>
 
@@ -980,7 +997,7 @@ Memuat data...
 
   <div class="modal-content">
 
-
+```
 <div class="modal-header">
 
   <h2>
@@ -1028,6 +1045,7 @@ Memuat data...
   </table>
 
 </div>
+```
 
   </div>
 
@@ -1039,7 +1057,8 @@ Memuat data...
    URL GOOGLE APPS SCRIPT
 ===================================================== */
 
-const API_URL = "https://script.google.com/macros/s/AKfycbyAoAlwjZ19-LW9-Szi_tAn1dUg-KSZnUA2fDTcJvm3R6GidRffZbRh3BuNepbvGr_t/exec";
+const API_URL =
+"https://script.google.com/macros/s/AKfycbyAoAlwjZ19-LW9-Szi_tAn1dUg-KSZnUA2fDTcJvm3R6GidRffZbRh3BuNepbvGr_t/exec";
 
 
 /* =====================================================
@@ -1048,14 +1067,34 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyAoAlwjZ19-LW9-Szi_tAn
 
 let donorData = [];
 
-/* CACHE + ANIMASI DONATUR */
-const CACHE_KEY = "dkm_al_khaier_donatur_cache_v1";
-const CACHE_MAX_AGE = 5 * 60 * 1000;
-const DONOR_SCROLL_SPEED = 32;
+
+/* =====================================================
+   CACHE
+===================================================== */
+
+const CACHE_KEY =
+"dkm_al_khaier_donatur_cache_v2";
+
+const CACHE_MAX_AGE =
+5 * 60 * 1000;
+
+
+/* =====================================================
+   KECEPATAN SCROLL
+===================================================== */
+
+const DONOR_SCROLL_SPEED = 25;
+
+
+/* =====================================================
+   VARIABEL ANIMASI
+===================================================== */
+
 let donorScrollAnimation = null;
+
 let donorScrollPosition = 0;
+
 let donorScrollLastTime = null;
-let donorCardIndex = 0;
 
 
 /* =====================================================
@@ -1064,9 +1103,11 @@ let donorCardIndex = 0;
 
 function formatRupiah(angka) {
 
+  const nilai =
+    Number(angka) || 0;
+
   return "Rp " +
-    Number(angka || 0)
-      .toLocaleString("id-ID");
+    nilai.toLocaleString("id-ID");
 
 }
 
@@ -1077,37 +1118,30 @@ function formatRupiah(angka) {
 
 function updateDateTime() {
 
-  const now =
-    new Date();
+  const now = new Date();
 
   const dd =
-    String(
-      now.getDate()
-    ).padStart(2, "0");
+    String(now.getDate())
+      .padStart(2, "0");
 
   const mm =
-    String(
-      now.getMonth() + 1
-    ).padStart(2, "0");
+    String(now.getMonth() + 1)
+      .padStart(2, "0");
 
   const yyyy =
     now.getFullYear();
 
   const hh =
-    String(
-      now.getHours()
-    ).padStart(2, "0");
+    String(now.getHours())
+      .padStart(2, "0");
 
   const min =
-    String(
-      now.getMinutes()
-    ).padStart(2, "0");
+    String(now.getMinutes())
+      .padStart(2, "0");
 
   const sec =
-    String(
-      now.getSeconds()
-    ).padStart(2, "0");
-
+    String(now.getSeconds())
+      .padStart(2, "0");
 
   document.getElementById(
     "datetime"
@@ -1122,9 +1156,6 @@ function updateDateTime() {
 
 }
 
-
-/* jalankan jam */
-
 setInterval(
   updateDateTime,
   1000
@@ -1134,221 +1165,849 @@ updateDateTime();
 
 
 /* =====================================================
-   JSONP
+   AMBIL DATA DARI GOOGLE APPS SCRIPT
+   FORMAT API:
+   {
+     success:true,
+     data:[...]
+   }
 ===================================================== */
 
 function ambilData() {
-  const loading = document.getElementById("loading");
-  if (loading && !donorData.length) loading.textContent = "Menghubungkan ke data donatur...";
 
-  const callbackName = "callback_" + Date.now() + "_" + Math.random().toString(36).slice(2);
-  const script = document.createElement("script");
+  const loading =
+    document.getElementById("loading");
+
+  if (
+    loading &&
+    donorData.length === 0
+  ) {
+
+    loading.textContent =
+      "Menghubungkan ke data donatur...";
+
+  }
+
+
+  const callbackName =
+    "callback_" +
+    Date.now() +
+    "_" +
+    Math.random()
+      .toString(36)
+      .slice(2);
+
+
+  const script =
+    document.createElement("script");
+
+
   let selesai = false;
 
-  window[callbackName] = function(response) {
-    if (selesai) return;
-    selesai = true;
-    try {
-      if (!response || response.success !== true) {
-        tampilkanError("Data tidak dapat diambil.");
-        return;
+
+  /* ===================================================
+     CALLBACK JSONP
+  =================================================== */
+
+  window[callbackName] =
+    function(response) {
+
+      if (selesai) return;
+
+      selesai = true;
+
+
+      try {
+
+        console.log(
+          "RESPON GOOGLE APPS SCRIPT:",
+          response
+        );
+
+
+        if (
+          !response ||
+          response.success !== true
+        ) {
+
+          tampilkanError(
+            "Data tidak dapat diambil."
+          );
+
+          return;
+        }
+
+
+        /*
+          PENTING:
+
+          API mengembalikan:
+
+          response.data
+
+          bukan response langsung.
+        */
+
+        if (
+          !Array.isArray(
+            response.data
+          )
+        ) {
+
+          tampilkanError(
+            "Format data tidak benar."
+          );
+
+          return;
+        }
+
+
+        /*
+          Ambil SEMUA data.
+          Tidak ada slice().
+          Tidak ada batas 30/50/100.
+        */
+
+        donorData =
+          response.data.slice();
+
+
+        console.log(
+          "JUMLAH DATA DITERIMA:",
+          donorData.length
+        );
+
+
+        /*
+          Simpan cache
+        */
+
+        try {
+
+          localStorage.setItem(
+            CACHE_KEY,
+
+            JSON.stringify({
+              time: Date.now(),
+              data: donorData
+            })
+          );
+
+        } catch (e) {}
+
+
+        /*
+          Tampilkan semua data
+        */
+
+        tampilkanData(
+          donorData,
+          false
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Kesalahan membaca data:",
+          error
+        );
+
+        tampilkanError(
+          "Terjadi kesalahan membaca data."
+        );
+
+
+      } finally {
+
+        delete window[callbackName];
+
+        if (script.parentNode) {
+          script.parentNode.removeChild(script);
+        }
+
       }
-      donorData = Array.isArray(response.data) ? response.data : [];
-      try { localStorage.setItem(CACHE_KEY, JSON.stringify({time: Date.now(), data: donorData})); } catch (e) {}
-      tampilkanData(donorData);
-    } catch (error) {
-      tampilkanError("Terjadi kesalahan membaca data.");
-    } finally {
+
+    };
+
+
+  /* ===================================================
+     ERROR JSONP
+  =================================================== */
+
+  script.onerror =
+    function() {
+
+      if (selesai) return;
+
+      selesai = true;
+
+
+      console.error(
+        "JSONP gagal terhubung ke:",
+        API_URL
+      );
+
+
+      if (
+        donorData.length === 0
+      ) {
+
+        tampilkanError(
+          "Tidak dapat terhubung ke Google Apps Script."
+        );
+
+      } else {
+
+        document.getElementById(
+          "status"
+        ).textContent =
+          "Data terakhir ditampilkan";
+
+      }
+
+
       delete window[callbackName];
-      script.remove();
-    }
-  };
 
-  script.onerror = function() {
-    if (selesai) return;
-    selesai = true;
-    if (!donorData.length) tampilkanError("Tidak dapat terhubung ke Google Apps Script.");
-    else document.getElementById("status").textContent = "Data terakhir ditampilkan";
-    delete window[callbackName];
-    script.remove();
-  };
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
 
-  script.src = API_URL + "?action=data&callback=" + encodeURIComponent(callbackName) + "&t=" + Date.now();
-  document.body.appendChild(script);
+    };
+
+
+  /*
+    Cache busting
+  */
+
+  script.src =
+    API_URL +
+    "?action=data" +
+    "&callback=" +
+    encodeURIComponent(callbackName) +
+    "&t=" +
+    Date.now();
+
+
+  document.body.appendChild(
+    script
+  );
+
 }
+
+
+/* =====================================================
+   TAMPILKAN CACHE
+===================================================== */
 
 function tampilkanCache() {
+
   try {
-    const raw = localStorage.getItem(CACHE_KEY);
+
+    const raw =
+      localStorage.getItem(
+        CACHE_KEY
+      );
+
     if (!raw) return false;
-    const cached = JSON.parse(raw);
-    if (!cached || !Array.isArray(cached.data)) return false;
-    if (Date.now() - Number(cached.time || 0) > CACHE_MAX_AGE) return false;
-    donorData = cached.data;
-    tampilkanData(donorData, true);
+
+
+    const cached =
+      JSON.parse(raw);
+
+
+    if (
+      !cached ||
+      !Array.isArray(cached.data)
+    ) {
+
+      return false;
+
+    }
+
+
+    if (
+      Date.now() -
+      Number(cached.time || 0)
+      >
+      CACHE_MAX_AGE
+    ) {
+
+      return false;
+
+    }
+
+
+    donorData =
+      cached.data.slice();
+
+
+    tampilkanData(
+      donorData,
+      true
+    );
+
+
     return true;
-  } catch (e) { return false; }
+
+
+  } catch (e) {
+
+    console.error(
+      "Cache error:",
+      e
+    );
+
+    return false;
+
+  }
+
 }
 
-function tampilkanData(data, fromCache = false) {
-  donorData = (Array.isArray(data) ? data : []).filter(function(item) {
-    return item && item.nama && String(item.nama).trim() !== "";
-  });
 
-  document.getElementById("jumlahDonatur").textContent = donorData.length;
+/* =====================================================
+   TAMPILKAN DATA
+===================================================== */
+
+function tampilkanData(
+  data,
+  fromCache = false
+) {
+
+  /*
+    Pastikan data benar-benar array.
+  */
+
+  if (
+    !Array.isArray(data)
+  ) {
+
+    donorData = [];
+
+  } else {
+
+    /*
+      JANGAN MEMBATASI DATA.
+
+      Semua baris dari API dimasukkan.
+    */
+
+    donorData =
+      data.filter(function(item) {
+
+        return (
+          item &&
+          item.nama !== undefined &&
+          item.nama !== null &&
+          String(item.nama).trim() !== ""
+        );
+
+      });
+
+  }
+
+
+  console.log(
+    "DATA YANG DITAMPILKAN:",
+    donorData.length
+  );
+
+
+  /* ===================================================
+     JUMLAH DONATUR
+  =================================================== */
+
+  document.getElementById(
+    "jumlahDonatur"
+  ).textContent =
+    donorData.length;
+
+
+  /* ===================================================
+     TOTAL DONASI
+  =================================================== */
+
   let total = 0;
-  donorData.forEach(function(item) { total += Number(item.jumlah) || 0; });
-  document.getElementById("totalDonasi").textContent = formatRupiah(total);
 
-  const area = document.getElementById("donorArea");
+
+  donorData.forEach(
+    function(item) {
+
+      total +=
+        Number(item.jumlah) || 0;
+
+    }
+  );
+
+
+  document.getElementById(
+    "totalDonasi"
+  ).textContent =
+    formatRupiah(total);
+
+
+  /* ===================================================
+     AREA
+  =================================================== */
+
+  const area =
+    document.getElementById(
+      "donorArea"
+    );
+
+
   stopDonorScroll();
 
-  if (donorData.length === 0) {
-    area.innerHTML = '<div class="empty-message">Belum ada data donatur.</div>';
-    document.getElementById("status").textContent = "Data kosong";
+
+  if (
+    donorData.length === 0
+  ) {
+
+    area.innerHTML =
+      '<div class="empty-message">' +
+      'Belum ada data donatur.' +
+      '</div>';
+
+
+    document.getElementById(
+      "status"
+    ).textContent =
+      "Data kosong";
+
+
     return;
+
   }
 
-  /* =====================================================
-     SEMUA DATA DONATUR DITAMPILKAN
-     Dua salinan daftar dipakai agar looping mulus.
-     Tidak ada batas jumlah kartu.
-  ===================================================== */
-  const scroll = document.createElement("div");
-  scroll.className = "donor-scroll";
 
-  function buatKartuDonatur(item) {
-    const card = document.createElement("div");
-    card.className = "donor-card";
+  /* ===================================================
+     BUAT TRACK
+  =================================================== */
+
+  const scroll =
+    document.createElement(
+      "div"
+    );
+
+
+  scroll.className =
+    "donor-scroll";
+
+
+  /* ===================================================
+     PEMBUATAN KARTU
+  =================================================== */
+
+  function buatKartuDonatur(
+    item
+  ) {
+
+    const card =
+      document.createElement(
+        "div"
+      );
+
+
+    card.className =
+      "donor-card";
+
+
+    const nama =
+      escapeHTML(
+        item.nama
+      );
+
+
+    const tanggal =
+      escapeHTML(
+        item.tanggal || ""
+      );
+
+
+    const rt =
+      item.rt !== undefined &&
+      item.rt !== null &&
+      String(item.rt).trim() !== ""
+        ? escapeHTML(item.rt)
+        : "-";
+
+
+    const jumlah =
+      formatRupiah(
+        item.jumlah
+      );
+
 
     card.innerHTML = `
-      <div class="donor-name">${escapeHTML(item.nama)}</div>
+
+      <div class="donor-name">
+        ${nama}
+      </div>
+
       <div class="donor-meta">
-        <span>${escapeHTML(item.tanggal || "")} &nbsp; • &nbsp; RT ${escapeHTML(item.rt || "")}</span>
-        <span class="donor-amount">${formatRupiah(item.jumlah)}</span>
-      </div>`;
+
+        <span>
+          ${tanggal}
+          &nbsp; • &nbsp;
+          RT ${rt}
+        </span>
+
+        <span class="donor-amount">
+          ${jumlah}
+        </span>
+
+      </div>
+
+    `;
+
 
     return card;
+
   }
 
-  const fragment = document.createDocumentFragment();
 
-  /* Salinan pertama: SEMUA donatur */
-  donorData.forEach(function(item) {
-    fragment.appendChild(buatKartuDonatur(item));
-  });
+  /* ===================================================
+     FRAGMENT
+  =================================================== */
 
-  /* Salinan kedua: SEMUA donatur lagi untuk looping mulus */
-  donorData.forEach(function(item) {
-    fragment.appendChild(buatKartuDonatur(item));
-  });
+  const fragment =
+    document.createDocumentFragment();
+
+
+  /*
+    SALINAN PERTAMA
+
+    Semua data nomor 1 sampai terakhir.
+  */
+
+  donorData.forEach(
+    function(item) {
+
+      fragment.appendChild(
+        buatKartuDonatur(item)
+      );
+
+    }
+  );
+
+
+  /*
+    SALINAN KEDUA
+
+    Hanya untuk membuat looping
+    tanpa mengurangi data.
+  */
+
+  donorData.forEach(
+    function(item) {
+
+      fragment.appendChild(
+        buatKartuDonatur(item)
+      );
+
+    }
+  );
+
 
   area.innerHTML = "";
-  area.appendChild(scroll);
-  scroll.appendChild(fragment);
 
-  donorScrollPosition = area.clientHeight;
+
+  area.appendChild(
+    scroll
+  );
+
+
+  scroll.appendChild(
+    fragment
+  );
+
+
+  /*
+    Mulai dari posisi 0.
+
+    Tidak lagi dimulai dari bawah layar.
+    Dengan demikian kartu nomor 1 langsung
+    menjadi bagian dari daftar.
+  */
+
+  donorScrollPosition = 0;
+
   donorScrollLastTime = null;
 
-  requestAnimationFrame(startDonorScroll);
 
-  document.getElementById("status").textContent = fromCache ? "Data tersimpan — memperbarui..." : "Data diperbarui";
-  setTimeout(function() {
-    const status = document.getElementById("status");
-    if (status) status.textContent = "";
-  }, 2500);
+  /*
+    Tunggu browser menghitung tinggi
+    seluruh kartu sebelum memulai animasi.
+  */
+
+  requestAnimationFrame(
+    function() {
+
+      startDonorScroll();
+
+    }
+  );
+
+
+  document.getElementById(
+    "status"
+  ).textContent =
+    fromCache
+      ? "Data tersimpan — memperbarui..."
+      : "Data " +
+        donorData.length +
+        " donatur diperbarui";
+
+
+  setTimeout(
+    function() {
+
+      const status =
+        document.getElementById(
+          "status"
+        );
+
+      if (status) {
+
+        status.textContent = "";
+
+      }
+
+    },
+    2500
+  );
+
 }
+
+
+/* =====================================================
+   STOP SCROLL
+===================================================== */
 
 function stopDonorScroll() {
-  if (donorScrollAnimation) cancelAnimationFrame(donorScrollAnimation);
-  donorScrollAnimation = null;
-  donorScrollLastTime = null;
+
+  if (
+    donorScrollAnimation
+  ) {
+
+    cancelAnimationFrame(
+      donorScrollAnimation
+    );
+
+  }
+
+
+  donorScrollAnimation =
+    null;
+
+
+  donorScrollLastTime =
+    null;
+
 }
+
+
+/* =====================================================
+   MULAI SCROLL
+===================================================== */
 
 function startDonorScroll() {
 
   stopDonorScroll();
 
-  const area = document.getElementById("donorArea");
-  const scroll = document.querySelector(".donor-scroll");
 
-  if (!area || !scroll || !donorData.length) return;
+  const area =
+    document.getElementById(
+      "donorArea"
+    );
 
-  const areaHeight = area.clientHeight;
 
-  /*
-    Karena daftar dibuat 2 kali, tinggi satu putaran adalah
-    tinggi setengah dari seluruh .donor-scroll.
-  */
-  const totalHeight = scroll.scrollHeight;
-  const oneListHeight = totalHeight / 2;
+  const scroll =
+    document.querySelector(
+      ".donor-scroll"
+    );
 
-  if (oneListHeight <= 0) return;
 
-  /*
-    Jika satu daftar lebih pendek dari area, tetap tampilkan
-    seluruh data tanpa animasi supaya tidak terlihat terpotong.
-  */
-  if (oneListHeight <= areaHeight) {
-    scroll.style.transform = "translate3d(0, 0, 0)";
+  if (
+    !area ||
+    !scroll ||
+    donorData.length === 0
+  ) {
+
     return;
+
   }
 
+
   /*
-    Mulai dari bawah area sehingga kartu pertama muncul
-    dari bawah dan bergerak sampai kartu TERAKHIR.
+    Karena data dibuat 2 kali,
+    tinggi satu putaran adalah
+    setengah tinggi keseluruhan.
   */
-  donorScrollPosition = areaHeight;
+
+  const totalHeight =
+    scroll.scrollHeight;
+
+
+  const oneListHeight =
+    totalHeight / 2;
+
+
+  if (
+    oneListHeight <= 0
+  ) {
+
+    return;
+
+  }
+
+
+  /*
+    Kalau seluruh data lebih pendek
+    dari area layar, tidak perlu scroll.
+
+    Semua data tetap terlihat.
+  */
+
+  if (
+    oneListHeight <=
+    area.clientHeight
+  ) {
+
+    donorScrollPosition = 0;
+
+    scroll.style.transform =
+      "translate3d(0,0,0)";
+
+    return;
+
+  }
+
+
+  /*
+    MULAI DARI 0.
+
+    Jadi:
+    nomor 1
+    nomor 2
+    nomor 3
+    ...
+    nomor terakhir
+
+    semuanya akan melewati layar.
+  */
+
+  donorScrollPosition = 0;
+
   donorScrollLastTime = null;
 
+
   scroll.style.transform =
-    "translate3d(0," + donorScrollPosition + "px,0)";
+    "translate3d(0,0,0)";
 
-  function animateScroll(timestamp) {
 
-    if (!donorScrollLastTime) {
-      donorScrollLastTime = timestamp;
+  function animateScroll(
+    timestamp
+  ) {
+
+    if (
+      !donorScrollLastTime
+    ) {
+
+      donorScrollLastTime =
+        timestamp;
+
     }
 
-    const delta =
-      Math.min(
-        0.05,
-        (timestamp - donorScrollLastTime) / 1000
-      );
 
-    donorScrollLastTime = timestamp;
+    let delta =
+      (
+        timestamp -
+        donorScrollLastTime
+      ) / 1000;
 
-    donorScrollPosition -=
-      DONOR_SCROLL_SPEED * delta;
 
     /*
-      Jangan reset berdasarkan tinggi seluruh track.
-      Reset tepat setelah SATU daftar lengkap selesai.
-      Dengan demikian seluruh data, termasuk data terakhir,
-      pasti tampil sebelum mengulang.
+      Mencegah loncatan besar
+      jika browser berhenti sebentar.
     */
-    if (donorScrollPosition <= -oneListHeight) {
-      donorScrollPosition += oneListHeight;
+
+    delta =
+      Math.min(
+        0.05,
+        delta
+      );
+
+
+    donorScrollLastTime =
+      timestamp;
+
+
+    donorScrollPosition -=
+      DONOR_SCROLL_SPEED *
+      delta;
+
+
+    /*
+      Reset TEPAT setelah
+      satu daftar selesai.
+
+      Bukan berdasarkan
+      tinggi layar.
+      Bukan berdasarkan
+      jumlah tertentu.
+
+      Jadi seluruh data nomor 1
+      sampai nomor terakhir selesai
+      ditampilkan terlebih dahulu.
+    */
+
+    if (
+      donorScrollPosition <=
+      -oneListHeight
+    ) {
+
+      donorScrollPosition +=
+        oneListHeight;
+
     }
+
 
     scroll.style.transform =
       "translate3d(0," +
       donorScrollPosition +
       "px,0)";
 
+
     donorScrollAnimation =
-      requestAnimationFrame(animateScroll);
+      requestAnimationFrame(
+        animateScroll
+      );
+
   }
 
+
   donorScrollAnimation =
-    requestAnimationFrame(animateScroll);
+    requestAnimationFrame(
+      animateScroll
+    );
+
 }
 
 
-function escapeHTML(value) {
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(
+  value
+) {
 
   return String(
-    value || ""
+    value === undefined ||
+    value === null
+      ? ""
+      : value
   )
   .replace(
     /&/g,
@@ -1395,16 +2054,28 @@ function bukaDetail() {
   ) {
 
     tbody.innerHTML = `
+
       <tr>
+
         <td
           colspan="5"
           style="text-align:center;">
+
           Belum ada data donatur.
+
         </td>
+
       </tr>
+
     `;
 
   } else {
+
+    /*
+      Tampilkan SEMUA data.
+
+      Tidak ada batas jumlah.
+    */
 
     donorData.forEach(
       function(item) {
@@ -1413,6 +2084,14 @@ function bukaDetail() {
           document.createElement(
             "tr"
           );
+
+
+        const rt =
+          item.rt !== undefined &&
+          item.rt !== null &&
+          String(item.rt).trim() !== ""
+            ? item.rt
+            : "-";
 
 
         tr.innerHTML = `
@@ -1430,7 +2109,7 @@ function bukaDetail() {
           </td>
 
           <td>
-            ${escapeHTML(item.rt)}
+            ${escapeHTML(rt)}
           </td>
 
           <td class="amount-cell">
@@ -1472,7 +2151,9 @@ function tutupDetail() {
 }
 
 
-/* klik area luar modal */
+/* =====================================================
+   KLIK LUAR MODAL
+===================================================== */
 
 window.onclick =
   function(event) {
@@ -1481,6 +2162,7 @@ window.onclick =
       document.getElementById(
         "detailModal"
       );
+
 
     if (
       event.target === modal
@@ -1497,16 +2179,28 @@ window.onclick =
    ERROR
 ===================================================== */
 
-function tampilkanError(message) {
+function tampilkanError(
+  message
+) {
 
   document.getElementById(
     "status"
   ).textContent =
     message;
 
-  document.getElementById(
-    "loading"
-  )?.remove();
+
+  const loading =
+    document.getElementById(
+      "loading"
+    );
+
+
+  if (loading) {
+
+    loading.textContent =
+      message;
+
+  }
 
 }
 
@@ -1516,15 +2210,47 @@ function tampilkanError(message) {
 ===================================================== */
 
 tampilkanCache();
+
 ambilData();
 
+
+/* =====================================================
+   RESIZE
+===================================================== */
+
 let resizeTimer = null;
-window.addEventListener("resize", function() {
-  clearTimeout(resizeTimer);
-  resizeTimer = setTimeout(function() {
-    if (donorData.length) tampilkanData(donorData, true);
-  }, 250);
-});
+
+
+window.addEventListener(
+  "resize",
+  function() {
+
+    clearTimeout(
+      resizeTimer
+    );
+
+
+    resizeTimer =
+      setTimeout(
+        function() {
+
+          if (
+            donorData.length
+          ) {
+
+            tampilkanData(
+              donorData,
+              true
+            );
+
+          }
+
+        },
+        250
+      );
+
+  }
+);
 
 
 /* =====================================================
