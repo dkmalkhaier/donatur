@@ -10,6 +10,7 @@
 
 <title>Data Donatur DKM Al-Khaier</title>
 
+
 <style>
 
 /* =====================================================
@@ -29,7 +30,11 @@ body {
 }
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
   background:
     linear-gradient(
@@ -49,8 +54,11 @@ body {
 ===================================================== */
 
 .container {
+
   width: 100%;
+
   max-width: 1000px;
+
   margin: auto;
 
   background: #ffffff;
@@ -63,10 +71,11 @@ body {
 
 /* =====================================================
    HEADER
-   BAGIAN ATAS TIDAK DIUBAH
+   BAGIAN ATAS TETAP
 ===================================================== */
 
 .header {
+
   text-align: center;
 
   padding: 15px 10px 10px;
@@ -76,7 +85,9 @@ body {
   flex-shrink: 0;
 }
 
+
 .header h1 {
+
   margin: 0;
 
   font-size: 25px;
@@ -86,7 +97,9 @@ body {
   letter-spacing: .5px;
 }
 
+
 .header .subtitle {
+
   margin-top: 5px;
 
   font-size: 13px;
@@ -100,6 +113,7 @@ body {
 ===================================================== */
 
 .datetime {
+
   text-align: center;
 
   font-size: 14px;
@@ -117,6 +131,7 @@ body {
 ===================================================== */
 
 .total-box {
+
   margin: 12px 15px 8px;
 
   padding: 15px 10px;
@@ -137,7 +152,9 @@ body {
   flex-shrink: 0;
 }
 
+
 .total-label {
+
   font-size: 14px;
 
   color: #555;
@@ -145,7 +162,9 @@ body {
   margin-bottom: 5px;
 }
 
+
 .total-value {
+
   font-size: 30px;
 
   font-weight: 800;
@@ -163,6 +182,7 @@ body {
 ===================================================== */
 
 .donor-info-row {
+
   display: flex;
 
   align-items: center;
@@ -184,7 +204,9 @@ body {
   flex-shrink: 0;
 }
 
+
 .donor-count {
+
   display: flex;
 
   align-items: center;
@@ -198,7 +220,9 @@ body {
   min-width: 0;
 }
 
+
 .donor-count-label {
+
   font-size: 14px;
 
   color: #555;
@@ -206,7 +230,9 @@ body {
   white-space: nowrap;
 }
 
+
 .donor-count-value {
+
   font-size: 20px;
 
   font-weight: 700;
@@ -220,6 +246,7 @@ body {
 ===================================================== */
 
 .detail-btn {
+
   flex-shrink: 0;
 
   border: none;
@@ -243,16 +270,19 @@ body {
   transition: .2s;
 }
 
+
 .detail-btn:hover {
+
   background: #1b5e20;
 }
 
 
 /* =====================================================
-   TEKS BERJALAN
+   TEKS BERJALAN DATA DONATUR
 ===================================================== */
 
 .marquee-box {
+
   margin: 8px 15px 15px;
 
   border-radius: 10px;
@@ -279,7 +309,9 @@ body {
   align-items: center;
 }
 
+
 .marquee {
+
   width: 100%;
 
   overflow: hidden;
@@ -287,7 +319,9 @@ body {
   white-space: nowrap;
 }
 
+
 .marquee-text {
+
   display: inline-block;
 
   padding-left: 100%;
@@ -299,17 +333,24 @@ body {
   font-weight: 600;
 
   animation:
-    berjalan 90s linear infinite;
+    berjalan 100s linear infinite;
 }
+
 
 @keyframes berjalan {
 
   0% {
-    transform: translateX(0);
+
+    transform:
+      translateX(0);
+
   }
 
   100% {
-    transform: translateX(-100%);
+
+    transform:
+      translateX(-100%);
+
   }
 
 }
@@ -320,6 +361,7 @@ body {
 ===================================================== */
 
 .pengeluaran-area {
+
   display: flex;
 
   justify-content: center;
@@ -329,7 +371,9 @@ body {
   margin: 15px 15px 20px;
 }
 
+
 .pengeluaran-btn {
+
   width: min(630px, 90%);
 
   border: none;
@@ -359,27 +403,30 @@ body {
   transition: .2s;
 }
 
+
 .pengeluaran-btn:hover {
-  transform: translateY(-1px);
+
+  transform:
+    translateY(-1px);
 }
 
+
 .pengeluaran-btn:active {
-  transform: scale(.98);
+
+  transform:
+    scale(.98);
 }
 
 
 /* =====================================================
-   =====================================================
-   INFORMASI UCAPAN TERIMA KASIH
-   BAGIAN BARU
-   =====================================================
+   INFORMASI MAULUD NABI
 ===================================================== */
 
 .ucapan-section {
 
-  margin: 25px 15px 20px;
+  margin: 25px 15px 25px;
 
-  padding: 20px 18px;
+  padding: 18px;
 
   border-radius: 15px;
 
@@ -394,13 +441,16 @@ body {
 
   box-shadow:
     0 4px 12px rgba(0,0,0,.07);
-
 }
 
 
+/* =====================================================
+   JUDUL INFORMASI
+===================================================== */
+
 .ucapan-title {
 
-  margin: 0 0 12px;
+  margin: 0 0 14px;
 
   text-align: center;
 
@@ -411,46 +461,165 @@ body {
   color: #1b5e20;
 
   line-height: 1.35;
-
 }
 
 
-.ucapan-text {
+/* =====================================================
+   AREA TEKS SCROLL
+===================================================== */
+
+.ucapan-scroll {
+
+  position: relative;
+
+  height: 220px;
+
+  overflow: hidden;
+
+  border-radius: 10px;
+
+  background:
+    rgba(255,255,255,.75);
+
+  border: 1px solid #e3eadf;
+}
+
+
+/*
+   BAGIAN ATAS DAN BAWAH DIBERI
+   EFEK FADE AGAR TEKS TERLIHAT HALUS
+*/
+
+.ucapan-scroll::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 35px;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(255,255,255,1),
+      rgba(255,255,255,0)
+    );
+}
+
+
+.ucapan-scroll::after {
+
+  content: "";
+
+  position: absolute;
+
+  bottom: 0;
+
+  left: 0;
+
+  right: 0;
+
+  height: 35px;
+
+  z-index: 2;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      to top,
+      rgba(255,255,255,1),
+      rgba(255,255,255,0)
+    );
+}
+
+
+/* =====================================================
+   TEKS YANG BERGERAK KE ATAS
+===================================================== */
+
+.ucapan-scroll-content {
+
+  position: absolute;
+
+  width: 100%;
+
+  left: 0;
+
+  top: 100%;
+
+  padding: 10px 15px;
+
+  text-align: left;
+
+  animation:
+    scrollUcapan 45s linear infinite;
+}
+
+
+/* =====================================================
+   ISI TEKS
+===================================================== */
+
+.ucapan-scroll-content p {
+
+  margin: 0 0 15px;
 
   font-size: 14px;
 
   line-height: 1.8;
 
   color: #444;
-
-  text-align: left;
-
 }
 
 
-.ucapan-text p {
-
-  margin: 0 0 12px;
-
-}
-
-
-.ucapan-text p:last-child {
+.ucapan-scroll-content p:last-child {
 
   margin-bottom: 0;
-
 }
 
 
 .ucapan-doa {
 
-  text-align: center;
+  text-align: center !important;
 
   font-weight: 700;
 
-  color: #1b5e20;
+  color: #1b5e20 !important;
+}
 
-  margin-top: 15px !important;
+
+/* =====================================================
+   ANIMASI TEKS BAWAH KE ATAS
+===================================================== */
+
+@keyframes scrollUcapan {
+
+  0% {
+
+    transform:
+      translateY(0);
+
+  }
+
+  100% {
+
+    transform:
+      translateY(
+        calc(-100% - 220px)
+      );
+
+  }
 
 }
 
@@ -462,7 +631,6 @@ body {
 .dokumentasi-section {
 
   margin: 25px 15px 25px;
-
 }
 
 
@@ -477,7 +645,6 @@ body {
   font-weight: 800;
 
   color: #333;
-
 }
 
 
@@ -492,7 +659,6 @@ body {
   font-size: 13px;
 
   line-height: 1.5;
-
 }
 
 
@@ -508,7 +674,6 @@ body {
     repeat(2, 1fr);
 
   gap: 10px;
-
 }
 
 
@@ -530,7 +695,6 @@ body {
 
   box-shadow:
     0 3px 8px rgba(0,0,0,.12);
-
 }
 
 
@@ -546,14 +710,13 @@ body {
 
   transition:
     transform .35s ease;
-
 }
 
 
 .foto-card:hover img {
 
-  transform: scale(1.06);
-
+  transform:
+    scale(1.06);
 }
 
 
@@ -567,12 +730,12 @@ body {
 
   bottom: 0;
 
-  padding: 20px 8px 8px;
+  padding: 22px 8px 8px;
 
   background:
     linear-gradient(
       transparent,
-      rgba(0,0,0,.55)
+      rgba(0,0,0,.60)
     );
 
   color: white;
@@ -580,7 +743,6 @@ body {
   font-size: 11px;
 
   font-weight: 600;
-
 }
 
 
@@ -612,14 +774,12 @@ body {
   align-items: center;
 
   justify-content: center;
-
 }
 
 
 .foto-modal.show {
 
   display: flex;
-
 }
 
 
@@ -639,7 +799,6 @@ body {
 
   box-shadow:
     0 5px 30px rgba(0,0,0,.5);
-
 }
 
 
@@ -671,7 +830,6 @@ body {
   cursor: pointer;
 
   z-index: 301;
-
 }
 
 
@@ -679,7 +837,6 @@ body {
 
   background:
     rgba(255,255,255,.30);
-
 }
 
 
@@ -702,14 +859,12 @@ body {
   font-size: 12px;
 
   line-height: 1.7;
-
 }
 
 
 .footer strong {
 
   color: #2e7d32;
-
 }
 
 
@@ -718,6 +873,7 @@ body {
 ===================================================== */
 
 .status {
+
   position: fixed;
 
   bottom: 8px;
@@ -746,6 +902,7 @@ body {
 ===================================================== */
 
 .modal {
+
   display: none;
 
   position: fixed;
@@ -844,6 +1001,7 @@ body {
 ===================================================== */
 
 .pengeluaran-list {
+
   width: 100%;
 }
 
@@ -1037,7 +1195,6 @@ tr:nth-child(even) {
   body {
 
     background: #ffffff;
-
   }
 
 
@@ -1046,37 +1203,32 @@ tr:nth-child(even) {
     max-width: none;
 
     width: 100%;
-
   }
 
 
-  /* BAGIAN ATAS TETAP */
+  /* BAGIAN ATAS */
 
   .header {
 
     padding: 12px 8px 8px;
-
   }
 
 
   .header h1 {
 
     font-size: 21px;
-
   }
 
 
   .header .subtitle {
 
     font-size: 11px;
-
   }
 
 
   .datetime {
 
     font-size: 12px;
-
   }
 
 
@@ -1085,21 +1237,18 @@ tr:nth-child(even) {
     margin: 9px 10px 6px;
 
     padding: 12px 8px;
-
   }
 
 
   .total-label {
 
     font-size: 12px;
-
   }
 
 
   .total-value {
 
     font-size: 25px;
-
   }
 
 
@@ -1108,21 +1257,18 @@ tr:nth-child(even) {
     margin: 3px 10px 7px;
 
     padding: 8px 9px;
-
   }
 
 
   .donor-count-label {
 
     font-size: 12px;
-
   }
 
 
   .donor-count-value {
 
     font-size: 18px;
-
   }
 
 
@@ -1131,7 +1277,6 @@ tr:nth-child(even) {
     padding: 7px 10px;
 
     font-size: 11px;
-
   }
 
 
@@ -1140,7 +1285,6 @@ tr:nth-child(even) {
     margin: 7px 10px 12px;
 
     height: 38px;
-
   }
 
 
@@ -1148,15 +1292,14 @@ tr:nth-child(even) {
 
     font-size: 12px;
 
-    animation-duration: 80s;
-
+    animation-duration:
+      100s;
   }
 
 
   .pengeluaran-area {
 
     margin: 12px 10px 18px;
-
   }
 
 
@@ -1165,22 +1308,20 @@ tr:nth-child(even) {
     font-size: 13px;
 
     padding: 11px 15px;
-
   }
 
 
-  /* ================================================
-     INFORMASI
+  /* =================================================
+     INFORMASI MOBILE
   ================================================= */
 
   .ucapan-section {
 
     margin: 20px 10px 20px;
 
-    padding: 17px 14px;
+    padding: 15px 12px;
 
     border-radius: 13px;
-
   }
 
 
@@ -1189,41 +1330,48 @@ tr:nth-child(even) {
     font-size: 18px;
 
     margin-bottom: 10px;
-
   }
 
 
-  .ucapan-text {
+  .ucapan-scroll {
+
+    height: 220px;
+  }
+
+
+  .ucapan-scroll-content {
+
+    padding:
+      10px 10px;
+
+    animation-duration:
+      50s;
+  }
+
+
+  .ucapan-scroll-content p {
 
     font-size: 13px;
 
     line-height: 1.75;
 
+    margin-bottom: 12px;
   }
 
 
-  .ucapan-text p {
-
-    margin-bottom: 10px;
-
-  }
-
-
-  /* ================================================
-     DOKUMENTASI
+  /* =================================================
+     DOKUMENTASI MOBILE
   ================================================= */
 
   .dokumentasi-section {
 
     margin: 20px 10px 20px;
-
   }
 
 
   .dokumentasi-title {
 
     font-size: 18px;
-
   }
 
 
@@ -1232,7 +1380,6 @@ tr:nth-child(even) {
     font-size: 12px;
 
     margin-bottom: 14px;
-
   }
 
 
@@ -1242,47 +1389,44 @@ tr:nth-child(even) {
       repeat(2, 1fr);
 
     gap: 8px;
-
   }
 
 
   .foto-card {
 
     border-radius: 9px;
-
   }
 
 
   .foto-overlay {
 
     font-size: 10px;
-
   }
 
 
-  /* ================================================
-     FOOTER
+  /* =================================================
+     FOOTER MOBILE
   ================================================= */
 
   .footer {
 
-    margin: 25px 10px 10px;
+    margin:
+      25px 10px 10px;
 
-    padding: 15px 8px;
+    padding:
+      15px 8px;
 
     font-size: 11px;
-
   }
 
 
-  /* ================================================
-     MODAL
+  /* =================================================
+     MODAL MOBILE
   ================================================= */
 
   .modal {
 
     padding: 8px;
-
   }
 
 
@@ -1291,43 +1435,39 @@ tr:nth-child(even) {
     max-height: 94vh;
 
     border-radius: 9px;
-
   }
 
 
   .modal-header {
 
-    padding: 11px 12px;
-
+    padding:
+      11px 12px;
   }
 
 
   .modal-header h2 {
 
     font-size: 16px;
-
   }
 
 
   table {
 
     font-size: 11px;
-
   }
 
 
   th,
   td {
 
-    padding: 7px 5px;
-
+    padding:
+      7px 5px;
   }
 
 
   .foto-modal {
 
     padding: 10px;
-
   }
 
 
@@ -1336,55 +1476,53 @@ tr:nth-child(even) {
     max-width: 96vw;
 
     max-height: 85vh;
-
   }
 
 }
 
+
+/* =====================================================
+   HP SANGAT KECIL
+===================================================== */
 
 @media (max-width: 380px) {
 
   .donor-count-label {
 
     font-size: 11px;
-
   }
 
 
   .donor-count-value {
 
     font-size: 16px;
-
   }
 
 
   .detail-btn {
 
-    padding: 6px 8px;
+    padding:
+      6px 8px;
 
     font-size: 10px;
-
   }
 
 
   .total-value {
 
     font-size: 22px;
-
   }
 
 
   .ucapan-title {
 
     font-size: 17px;
-
   }
 
 
   .ucapan-text {
 
     font-size: 12.5px;
-
   }
 
 }
@@ -1401,8 +1539,7 @@ tr:nth-child(even) {
 
 
 <!-- =====================================================
-     BAGIAN ATAS
-     TIDAK DIUBAH
+     HEADER
 ===================================================== -->
 
 <div class="header">
@@ -1478,7 +1615,7 @@ tr:nth-child(even) {
 
 
 <!-- =====================================================
-     TEKS BERJALAN
+     TEKS BERJALAN DATA DONATUR
 ===================================================== -->
 
 <div class="marquee-box">
@@ -1514,58 +1651,76 @@ tr:nth-child(even) {
 
 
 <!-- =====================================================
-     INFORMASI UCAPAN TERIMA KASIH
-     BAGIAN BARU
+     INFORMASI MAULUD NABI
+     TEKS SCROLL BAWAH KE ATAS
 ===================================================== -->
 
 <section class="ucapan-section">
 
   <h2 class="ucapan-title">
-    🌙 Alhamdulillah, Maulud Nabi Telah Terlaksana
+
+    🌙 Alhamdulillah, Maulid Nabi Muhammad Shallallahu 'Alaihi Wasallam  Telah Terlaksana
+
   </h2>
 
 
-  <div class="ucapan-text">
+  <div class="ucapan-scroll">
 
-    <p>
-      Alhamdulillahirabbil 'alamin.
-    </p>
+    <div class="ucapan-scroll-content">
 
-    <p>
-      Dengan penuh rasa syukur kepada Allah SWT,
-      kegiatan Maulud Nabi Muhammad SAW di DKM Al-Khaier
-      telah terlaksana dengan baik.
-    </p>
 
-    <p>
-      Kami mengucapkan terima kasih yang sebesar-besarnya
-      kepada seluruh jamaah, para donatur, panitia,
-      tokoh masyarakat, serta semua pihak yang telah
-      memberikan dukungan, tenaga, waktu, doa dan bantuan
-      sehingga acara Maulud Nabi ini dapat terselenggara
-      dengan lancar.
-    </p>
+      <p>
+        Alhamdulillahirabbil 'alamin.
+      </p>
 
-    <p>
-      Semoga setiap kebaikan, sedekah, bantuan dan
-      partisipasi yang telah diberikan menjadi amal jariyah,
-      mendapatkan pahala yang berlipat ganda, serta membawa
-      keberkahan bagi kita semua.
-    </p>
 
-    <p>
-      Semoga kegiatan ini semakin mempererat ukhuwah
-      Islamiyah dan menambah kecintaan kita kepada
-      Nabi Muhammad SAW.
-    </p>
+      <p>
+        Dengan penuh rasa syukur kepada Allah SWT,
+        kegiatan Maulud Nabi Muhammad SAW di DKM Al-Khaier
+        telah terlaksana dengan baik.
+      </p>
 
-    <p class="ucapan-doa">
-      Jazakumullahu khairan katsiran.
-    </p>
 
-    <p class="ucapan-doa">
-      🌙 DKM Al-Khaier
-    </p>
+      <p>
+        Kami mengucapkan terima kasih yang sebesar-besarnya
+        kepada seluruh jamaah, para donatur, panitia,
+        tokoh masyarakat, serta semua pihak yang telah
+        memberikan dukungan, tenaga, waktu, doa dan bantuan
+        sehingga acara Maulud Nabi ini dapat terselenggara
+        dengan lancar.
+      </p>
+
+
+      <p>
+        Semoga setiap kebaikan, sedekah, bantuan dan
+        partisipasi yang telah diberikan menjadi amal jariyah,
+        mendapatkan pahala yang berlipat ganda, serta membawa
+        keberkahan bagi kita semua.
+      </p>
+
+
+      <p>
+        Semoga kegiatan ini semakin mempererat ukhuwah
+        Islamiyah dan menambah kecintaan kita kepada
+        Nabi Muhammad SAW.
+      </p>
+
+
+      <p class="ucapan-doa">
+
+        Jazakumullahu khairan katsiran.
+
+      </p>
+
+
+      <p class="ucapan-doa">
+
+        🌙 DKM Al-Khaier
+
+      </p>
+
+
+    </div>
 
   </div>
 
@@ -1573,32 +1728,34 @@ tr:nth-child(even) {
 
 
 <!-- =====================================================
-     DOKUMENTASI ACARA
+     DOKUMENTASI
 ===================================================== -->
 
 <section class="dokumentasi-section">
 
+
   <h2 class="dokumentasi-title">
+
     📸 Dokumentasi Acara Maulud Nabi
+
   </h2>
 
+
   <div class="dokumentasi-subtitle">
+
     Beberapa dokumentasi kegiatan Maulud Nabi
     DKM Al-Khaier
+
   </div>
 
-
-  <!-- ===================================================
-       GALERI FOTO
-       GANTI URL DI BAGIAN JAVASCRIPT DI BAWAH
-  ==================================================== -->
 
   <div id="galeriFoto"
        class="galeri">
 
-    <!-- Foto dibuat otomatis oleh JavaScript -->
+    <!-- Galeri dibuat otomatis -->
 
   </div>
+
 
 </section>
 
@@ -1643,13 +1800,16 @@ tr:nth-child(even) {
 <div id="detailDonaturModal"
      class="modal">
 
+
   <div class="modal-content">
+
 
     <div class="modal-header">
 
       <h2>
         📋 Detail Data Donatur
       </h2>
+
 
       <button class="close-btn"
               onclick="tutupDetailDonatur()">
@@ -1662,6 +1822,7 @@ tr:nth-child(even) {
 
 
     <div class="modal-body">
+
 
       <table>
 
@@ -1690,7 +1851,9 @@ tr:nth-child(even) {
 
       </table>
 
+
     </div>
+
 
   </div>
 
@@ -1704,13 +1867,16 @@ tr:nth-child(even) {
 <div id="pengeluaranModal"
      class="modal">
 
+
   <div class="modal-content">
+
 
     <div class="modal-header">
 
       <h2>
         💸 Detail Pengeluaran
       </h2>
+
 
       <button class="close-btn"
               onclick="tutupPengeluaran()">
@@ -1725,11 +1891,16 @@ tr:nth-child(even) {
     <div id="pengeluaranBody"
          class="modal-body">
 
+
       <div class="loading-detail">
+
         Memuat data pengeluaran...
+
       </div>
 
+
     </div>
+
 
   </div>
 
@@ -1737,12 +1908,13 @@ tr:nth-child(even) {
 
 
 <!-- =====================================================
-     MODAL / LIGHTBOX FOTO
+     LIGHTBOX FOTO
 ===================================================== -->
 
 <div id="fotoModal"
      class="foto-modal"
      onclick="tutupFoto(event)">
+
 
   <button class="foto-close"
           onclick="tutupFoto()">
@@ -1751,15 +1923,18 @@ tr:nth-child(even) {
 
   </button>
 
+
   <img id="fotoModalImage"
        src=""
        alt="Dokumentasi Maulud Nabi"
        onclick="event.stopPropagation();">
 
+
 </div>
 
 
 <script>
+
 
 /* =====================================================
    URL GOOGLE APPS SCRIPT
@@ -1775,6 +1950,7 @@ const API_URL =
 
 let donorData = [];
 
+
 let infoText =
   "🤲 Terima kasih kepada seluruh donatur DKM Al-Khaier. Semoga setiap kebaikan menjadi amal jariyah dan mendapatkan balasan terbaik dari Allah SWT. 🕌";
 
@@ -1786,8 +1962,10 @@ let infoText =
 const CACHE_KEY =
   "dkm_al_khaier_donatur_cache_v3";
 
+
 const INFO_CACHE_KEY =
   "dkm_al_khaier_info_cache_v2";
+
 
 const CACHE_MAX_AGE =
   5 * 60 * 1000;
@@ -1809,39 +1987,70 @@ function formatRupiah(angka) {
 
 
 /* =====================================================
-   JAM & TANGGAL
+   JAM DAN TANGGAL
 ===================================================== */
 
 function updateDateTime() {
 
-  const now = new Date();
+  const now =
+    new Date();
+
 
   const dd =
-    String(now.getDate())
-      .padStart(2, "0");
+    String(
+      now.getDate()
+    ).padStart(
+      2,
+      "0"
+    );
+
 
   const mm =
-    String(now.getMonth() + 1)
-      .padStart(2, "0");
+    String(
+      now.getMonth() + 1
+    ).padStart(
+      2,
+      "0"
+    );
+
 
   const yyyy =
     now.getFullYear();
 
+
   const hh =
-    String(now.getHours())
-      .padStart(2, "0");
+    String(
+      now.getHours()
+    ).padStart(
+      2,
+      "0"
+    );
+
 
   const min =
-    String(now.getMinutes())
-      .padStart(2, "0");
+    String(
+      now.getMinutes()
+    ).padStart(
+      2,
+      "0"
+    );
+
 
   const sec =
-    String(now.getSeconds())
-      .padStart(2, "0");
+    String(
+      now.getSeconds()
+    ).padStart(
+      2,
+      "0"
+    );
+
 
   document
-    .getElementById("datetime")
+    .getElementById(
+      "datetime"
+    )
     .textContent =
+
       dd +
       "/" +
       mm +
@@ -1862,6 +2071,7 @@ setInterval(
   1000
 );
 
+
 updateDateTime();
 
 
@@ -1874,42 +2084,66 @@ function apiRequest(
   callback
 ) {
 
+
   const callbackName =
+
     "callback_" +
+
     Date.now() +
+
     "_" +
+
     Math.random()
       .toString(36)
       .slice(2);
 
-  const script =
-    document.createElement("script");
 
-  let selesai = false;
+  const script =
+    document.createElement(
+      "script"
+    );
+
+
+  let selesai =
+    false;
 
 
   window[callbackName] =
     function(response) {
 
+
       if (selesai) {
+
         return;
+
       }
 
-      selesai = true;
+
+      selesai =
+        true;
+
 
       try {
 
-        callback(response);
+        callback(
+          response
+        );
 
       }
 
       catch (error) {
 
-        console.error(error);
+        console.error(
+          error
+        );
 
       }
 
-      delete window[callbackName];
+
+      delete window[
+        callbackName
+      ];
+
 
       script.remove();
 
@@ -1919,11 +2153,17 @@ function apiRequest(
   script.onerror =
     function() {
 
+
       if (selesai) {
+
         return;
+
       }
 
-      selesai = true;
+
+      selesai =
+        true;
+
 
       callback({
 
@@ -1934,7 +2174,11 @@ function apiRequest(
 
       });
 
-      delete window[callbackName];
+
+      delete window[
+        callbackName
+      ];
+
 
       script.remove();
 
@@ -1942,16 +2186,29 @@ function apiRequest(
 
 
   script.src =
+
     API_URL +
+
     "?action=" +
-    encodeURIComponent(action) +
+
+    encodeURIComponent(
+      action
+    ) +
+
     "&callback=" +
-    encodeURIComponent(callbackName) +
+
+    encodeURIComponent(
+      callbackName
+    ) +
+
     "&t=" +
+
     Date.now();
 
 
-  document.body.appendChild(script);
+  document.body.appendChild(
+    script
+  );
 
 }
 
@@ -1962,20 +2219,27 @@ function apiRequest(
 
 function ambilDataDonatur() {
 
+
   apiRequest(
 
     "data",
 
     function(response) {
 
+
       if (
+
         !response ||
+
         response.success !== true
+
       ) {
+
 
         updateStatus(
           "Tidak dapat mengambil data donatur."
         );
+
 
         return;
 
@@ -1983,10 +2247,17 @@ function ambilDataDonatur() {
 
 
       donorData =
-        Array.isArray(response.data)
+
+        Array.isArray(
+          response.data
+        )
+
         ?
+
         response.data
+
         :
+
         [];
 
 
@@ -1998,9 +2269,11 @@ function ambilDataDonatur() {
 
           JSON.stringify({
 
-            time: Date.now(),
+            time:
+              Date.now(),
 
-            data: donorData
+            data:
+              donorData
 
           })
 
@@ -2026,10 +2299,13 @@ function ambilDataDonatur() {
 
 function tampilkanDataDonatur() {
 
+
   donorData =
+
     donorData.filter(
 
       function(item) {
+
 
         return (
 
@@ -2037,8 +2313,10 @@ function tampilkanDataDonatur() {
 
           item.nama &&
 
-          String(item.nama)
-            .trim() !== ""
+          String(
+            item.nama
+          )
+          .trim() !== ""
 
         );
 
@@ -2048,20 +2326,32 @@ function tampilkanDataDonatur() {
 
 
   document
-    .getElementById("jumlahDonatur")
+    .getElementById(
+      "jumlahDonatur"
+    )
     .textContent =
+
       donorData.length;
 
 
-  let total = 0;
+  let total =
+    0;
 
 
   donorData.forEach(
 
     function(item) {
 
+
       total +=
-        Number(item.jumlah) || 0;
+
+        Number(
+          item.jumlah
+        )
+
+        ||
+
+        0;
 
     }
 
@@ -2069,12 +2359,18 @@ function tampilkanDataDonatur() {
 
 
   document
-    .getElementById("totalDonasi")
+    .getElementById(
+      "totalDonasi"
+    )
     .textContent =
-      formatRupiah(total);
+
+      formatRupiah(
+        total
+      );
 
 
   updateMarquee();
+
 
   updateStatus(
     "Data diperbarui"
@@ -2089,11 +2385,13 @@ function tampilkanDataDonatur() {
 
 function ambilInfo() {
 
+
   apiRequest(
 
     "info",
 
     function(response) {
+
 
       if (
 
@@ -2104,6 +2402,7 @@ function ambilInfo() {
         response.text
 
       ) {
+
 
         infoText =
           response.text;
@@ -2117,9 +2416,11 @@ function ambilInfo() {
 
             JSON.stringify({
 
-              time: Date.now(),
+              time:
+                Date.now(),
 
-              text: infoText
+              text:
+                infoText
 
             })
 
@@ -2142,11 +2443,11 @@ function ambilInfo() {
 
 
 /* =====================================================
-   TEKS BERJALAN
-   INFO + DATA DONATUR
+   TEKS BERJALAN DATA DONATUR
 ===================================================== */
 
 function updateMarquee() {
+
 
   const marquee =
     document.getElementById(
@@ -2158,7 +2459,10 @@ function updateMarquee() {
     infoText;
 
 
-  if (donorData.length > 0) {
+  if (
+    donorData.length > 0
+  ) {
+
 
     text +=
       "  •  👥 DATA DONATUR:  ";
@@ -2167,6 +2471,7 @@ function updateMarquee() {
     donorData.forEach(
 
       function(item) {
+
 
         text +=
 
@@ -2207,7 +2512,9 @@ function updateMarquee() {
 
 function tampilkanCacheDonatur() {
 
+
   try {
+
 
     const raw =
       localStorage.getItem(
@@ -2216,17 +2523,26 @@ function tampilkanCacheDonatur() {
 
 
     if (!raw) {
+
       return;
+
     }
 
 
     const cached =
-      JSON.parse(raw);
+      JSON.parse(
+        raw
+      );
 
 
     if (
+
       !cached ||
-      !Array.isArray(cached.data)
+
+      !Array.isArray(
+        cached.data
+      )
+
     ) {
 
       return;
@@ -2237,8 +2553,13 @@ function tampilkanCacheDonatur() {
     if (
 
       Date.now() -
-      Number(cached.time || 0)
+
+      Number(
+        cached.time || 0
+      )
+
       >
+
       CACHE_MAX_AGE
 
     ) {
@@ -2267,7 +2588,9 @@ function tampilkanCacheDonatur() {
 
 function tampilkanCacheInfo() {
 
+
   try {
+
 
     const raw =
       localStorage.getItem(
@@ -2276,17 +2599,24 @@ function tampilkanCacheInfo() {
 
 
     if (!raw) {
+
       return;
+
     }
 
 
     const cached =
-      JSON.parse(raw);
+      JSON.parse(
+        raw
+      );
 
 
     if (
+
       !cached ||
+
       !cached.text
+
     ) {
 
       return;
@@ -2297,8 +2627,13 @@ function tampilkanCacheInfo() {
     if (
 
       Date.now() -
-      Number(cached.time || 0)
+
+      Number(
+        cached.time || 0
+      )
+
       >
+
       CACHE_MAX_AGE
 
     ) {
@@ -2327,17 +2662,40 @@ function tampilkanCacheInfo() {
 
 function escapeHTML(value) {
 
-  return String(value || "")
 
-    .replace(/&/g, "&amp;")
+  return String(
+    value || ""
+  )
 
-    .replace(/</g, "&lt;")
 
-    .replace(/>/g, "&gt;")
+  .replace(
+    /&/g,
+    "&amp;"
+  )
 
-    .replace(/"/g, "&quot;")
 
-    .replace(/'/g, "&#039;");
+  .replace(
+    /</g,
+    "&lt;"
+  )
+
+
+  .replace(
+    />/g,
+    "&gt;"
+  )
+
+
+  .replace(
+    /"/g,
+    "&quot;"
+  )
+
+
+  .replace(
+    /'/g,
+    "&#039;"
+  );
 
 }
 
@@ -2348,78 +2706,93 @@ function escapeHTML(value) {
 
 function bukaDetailDonatur() {
 
+
   const tbody =
     document.getElementById(
       "detailTableBody"
     );
 
 
-  tbody.innerHTML = "";
+  tbody.innerHTML =
+    "";
 
 
   if (
+
     !donorData ||
+
     donorData.length === 0
+
   ) {
+
 
     tbody.innerHTML =
 
-      '<tr>' +
+      "<tr>" +
 
       '<td colspan="5" ' +
+
       'style="text-align:center;">' +
 
-      'Belum ada data donatur.' +
+      "Belum ada data donatur." +
 
-      '</td>' +
+      "</td>" +
 
-      '</tr>';
+      "</tr>";
 
   }
 
   else {
 
+
     donorData.forEach(
 
       function(item) {
 
+
         const tr =
-          document.createElement("tr");
+          document.createElement(
+            "tr"
+          );
 
 
         tr.innerHTML =
 
-          '<td>' +
+          "<td>" +
 
           escapeHTML(
             item.nomor
           ) +
 
-          '</td>' +
+          "</td>" +
 
-          '<td>' +
+
+          "<td>" +
 
           escapeHTML(
             item.tanggal
           ) +
 
-          '</td>' +
+          "</td>" +
 
-          '<td>' +
+
+          "<td>" +
 
           escapeHTML(
             item.nama
           ) +
 
-          '</td>' +
+          "</td>" +
 
-          '<td>' +
+
+          "<td>" +
 
           escapeHTML(
             item.rt
           ) +
 
-          '</td>' +
+          "</td>" +
+
 
           '<td class="amount-cell">' +
 
@@ -2427,10 +2800,12 @@ function bukaDetailDonatur() {
             item.jumlah
           ) +
 
-          '</td>';
+          "</td>";
 
 
-        tbody.appendChild(tr);
+        tbody.appendChild(
+          tr
+        );
 
       }
 
@@ -2455,6 +2830,7 @@ function bukaDetailDonatur() {
 
 function tutupDetailDonatur() {
 
+
   document
     .getElementById(
       "detailDonaturModal"
@@ -2471,6 +2847,7 @@ function tutupDetailDonatur() {
 
 function bukaPengeluaran() {
 
+
   const body =
     document.getElementById(
       "pengeluaranBody"
@@ -2481,9 +2858,9 @@ function bukaPengeluaran() {
 
     '<div class="loading-detail">' +
 
-    'Memuat data pengeluaran...' +
+    "Memuat data pengeluaran..." +
 
-    '</div>';
+    "</div>";
 
 
   document
@@ -2500,7 +2877,9 @@ function bukaPengeluaran() {
 
     function(response) {
 
-      tampilkanPengeluaran(response);
+      tampilkanPengeluaran(
+        response
+      );
 
     }
 
@@ -2513,7 +2892,10 @@ function bukaPengeluaran() {
    TAMPIL DETAIL PENGELUARAN
 ===================================================== */
 
-function tampilkanPengeluaran(response) {
+function tampilkanPengeluaran(
+  response
+) {
+
 
   const body =
     document.getElementById(
@@ -2529,13 +2911,15 @@ function tampilkanPengeluaran(response) {
 
   ) {
 
+
     body.innerHTML =
 
       '<div class="empty-detail">' +
 
       escapeHTML(
 
-        response && response.message
+        response &&
+        response.message
 
         ?
 
@@ -2547,7 +2931,7 @@ function tampilkanPengeluaran(response) {
 
       ) +
 
-      '</div>';
+      "</div>";
 
 
     return;
@@ -2557,7 +2941,9 @@ function tampilkanPengeluaran(response) {
 
   const data =
 
-    Array.isArray(response.data)
+    Array.isArray(
+      response.data
+    )
 
     ?
 
@@ -2572,23 +2958,28 @@ function tampilkanPengeluaran(response) {
     '<div class="pengeluaran-list">';
 
 
-  if (data.length === 0) {
+  if (
+    data.length === 0
+  ) {
+
 
     html +=
 
       '<div class="empty-detail">' +
 
-      'Belum ada data pengeluaran.' +
+      "Belum ada data pengeluaran." +
 
-      '</div>';
+      "</div>";
 
   }
 
   else {
 
+
     data.forEach(
 
       function(item) {
+
 
         html +=
 
@@ -2600,7 +2991,7 @@ function tampilkanPengeluaran(response) {
             item.keterangan
           ) +
 
-          '</div>' +
+          "</div>" +
 
           '<div class="pengeluaran-jumlah">' +
 
@@ -2608,9 +2999,9 @@ function tampilkanPengeluaran(response) {
             item.jumlah
           ) +
 
-          '</div>' +
+          "</div>" +
 
-          '</div>';
+          "</div>";
 
       }
 
@@ -2620,7 +3011,7 @@ function tampilkanPengeluaran(response) {
 
 
   html +=
-    '</div>';
+    "</div>";
 
 
   html +=
@@ -2632,9 +3023,9 @@ function tampilkanPengeluaran(response) {
 
     '<div class="ringkasan-label">' +
 
-    'Total Pengeluaran' +
+    "Total Pengeluaran" +
 
-    '</div>' +
+    "</div>" +
 
     '<div class="ringkasan-value">' +
 
@@ -2642,18 +3033,18 @@ function tampilkanPengeluaran(response) {
       response.totalPengeluaran
     ) +
 
-    '</div>' +
+    "</div>" +
 
-    '</div>' +
+    "</div>" +
 
 
     '<div class="ringkasan-row sisa-uang">' +
 
     '<div class="ringkasan-label">' +
 
-    'Sisa Uang' +
+    "Sisa Uang" +
 
-    '</div>' +
+    "</div>" +
 
     '<div class="ringkasan-value">' +
 
@@ -2661,12 +3052,12 @@ function tampilkanPengeluaran(response) {
       response.sisaUang
     ) +
 
-    '</div>' +
+    "</div>" +
 
-    '</div>' +
+    "</div>" +
 
 
-    '</div>';
+    "</div>";
 
 
   body.innerHTML =
@@ -2681,6 +3072,7 @@ function tampilkanPengeluaran(response) {
 
 function tutupPengeluaran() {
 
+
   document
     .getElementById(
       "pengeluaranModal"
@@ -2692,11 +3084,319 @@ function tutupPengeluaran() {
 
 
 /* =====================================================
+   GALERI FOTO ACARA
+===================================================== */
+
+
+/*
+   ====================================================
+   MASUKKAN FOTO ACARA DI SINI
+   ====================================================
+
+   Jika foto ada di folder "foto" GitHub:
+
+   "foto/maulud-01.jpg"
+
+   "foto/maulud-02.jpg"
+
+   dan seterusnya.
+
+
+   Contoh:
+
+   const fotoAcara = [
+
+     "foto/maulud-01.jpg",
+     "foto/maulud-02.jpg",
+     "foto/maulud-03.jpg",
+     "foto/maulud-04.jpg",
+     "foto/maulud-05.jpg",
+     "foto/maulud-06.jpg"
+
+   ];
+
+
+   Anda bisa menambahkan foto sebanyak yang diperlukan.
+*/
+
+
+const fotoAcara = [
+
+  "URL_FOTO_ACARA_1",
+
+  "URL_FOTO_ACARA_2",
+
+  "URL_FOTO_ACARA_3",
+
+  "URL_FOTO_ACARA_4",
+
+  "URL_FOTO_ACARA_5",
+
+  "URL_FOTO_ACARA_6"
+
+];
+
+
+/* =====================================================
+   TAMPILKAN GALERI
+===================================================== */
+
+function tampilkanGaleri() {
+
+
+  const galeri =
+    document.getElementById(
+      "galeriFoto"
+    );
+
+
+  galeri.innerHTML =
+    "";
+
+
+  const fotoValid =
+    fotoAcara.filter(
+
+      function(url) {
+
+
+        return (
+
+          url &&
+
+          String(url).trim() !== "" &&
+
+          !String(url)
+            .startsWith(
+              "URL_FOTO"
+            )
+
+        );
+
+      }
+
+    );
+
+
+  if (
+    fotoValid.length === 0
+  ) {
+
+
+    galeri.innerHTML =
+
+      '<div style="' +
+
+      "grid-column:1/-1;" +
+
+      "text-align:center;" +
+
+      "padding:30px 15px;" +
+
+      "color:#888;" +
+
+      "border:1px dashed #ccc;" +
+
+      "border-radius:12px;" +
+
+      '">' +
+
+      "📷 Dokumentasi foto akan ditampilkan di sini." +
+
+      "</div>";
+
+
+    return;
+
+  }
+
+
+  fotoValid.forEach(
+
+    function(url, index) {
+
+
+      const card =
+        document.createElement(
+          "div"
+        );
+
+
+      card.className =
+        "foto-card";
+
+
+      card.innerHTML =
+
+        '<img src="' +
+
+        escapeHTML(url) +
+
+        '" ' +
+
+        'alt="Dokumentasi Maulud Nabi ' +
+
+        (index + 1) +
+
+        '" ' +
+
+        'loading="lazy">' +
+
+
+        '<div class="foto-overlay">' +
+
+        "📸 Dokumentasi " +
+
+        (index + 1) +
+
+        "</div>";
+
+
+      card.onclick =
+        function() {
+
+          bukaFoto(url);
+
+        };
+
+
+      galeri.appendChild(
+        card
+      );
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   BUKA FOTO
+===================================================== */
+
+function bukaFoto(url) {
+
+
+  const modal =
+    document.getElementById(
+      "fotoModal"
+    );
+
+
+  const image =
+    document.getElementById(
+      "fotoModalImage"
+    );
+
+
+  image.src =
+    url;
+
+
+  modal.classList.add(
+    "show"
+  );
+
+
+  document.body.style.overflow =
+    "hidden";
+
+}
+
+
+/* =====================================================
+   TUTUP FOTO
+===================================================== */
+
+function tutupFoto(event) {
+
+
+  if (
+
+    !event ||
+
+    event.target.id ===
+      "fotoModal"
+
+  ) {
+
+
+    const modal =
+      document.getElementById(
+        "fotoModal"
+      );
+
+
+    const image =
+      document.getElementById(
+        "fotoModalImage"
+      );
+
+
+    modal.classList.remove(
+      "show"
+    );
+
+
+    image.src =
+      "";
+
+
+    document.body.style.overflow =
+      "";
+
+  }
+
+}
+
+
+/* =====================================================
+   TUTUP FOTO DENGAN ESC
+===================================================== */
+
+document.addEventListener(
+
+  "keydown",
+
+  function(event) {
+
+
+    if (
+      event.key === "Escape"
+    ) {
+
+
+      const modal =
+        document.getElementById(
+          "fotoModal"
+        );
+
+
+      if (
+        modal.classList.contains(
+          "show"
+        )
+      ) {
+
+        tutupFoto();
+
+      }
+
+    }
+
+  }
+
+);
+
+
+/* =====================================================
    KLIK DI LUAR MODAL
 ===================================================== */
 
 window.onclick =
   function(event) {
+
 
     const donorModal =
       document.getElementById(
@@ -2734,7 +3434,10 @@ window.onclick =
    STATUS
 ===================================================== */
 
-function updateStatus(message) {
+function updateStatus(
+  message
+) {
+
 
   const status =
     document.getElementById(
@@ -2750,287 +3453,6 @@ function updateStatus(message) {
   }
 
 }
-
-
-/* =====================================================
-   =====================================================
-   GALERI FOTO ACARA
-   =====================================================
-===================================================== */
-
-/*
-   ====================================================
-   GANTI URL FOTO DI BAWAH INI
-   ====================================================
-
-   Contoh jika foto berada di folder "foto":
-
-   "foto/foto1.jpg"
-
-   atau menggunakan URL GitHub:
-
-   "https://dkmalkhaier.github.io/dkm.al-khaier/foto/foto1.jpg"
-
-   Tinggal tambah foto baru seperti:
-
-   "foto/foto7.jpg",
-   "foto/foto8.jpg",
-
-   dan seterusnya.
-*/
-
-
-const fotoAcara = [
-
-  "URL_FOTO_ACARA_1",
-
-  "URL_FOTO_ACARA_2",
-
-  "URL_FOTO_ACARA_3",
-
-  "URL_FOTO_ACARA_4",
-
-  "URL_FOTO_ACARA_5",
-
-  "URL_FOTO_ACARA_6"
-
-];
-
-
-/* =====================================================
-   TAMPIL GALERI
-===================================================== */
-
-function tampilkanGaleri() {
-
-  const galeri =
-    document.getElementById(
-      "galeriFoto"
-    );
-
-
-  galeri.innerHTML = "";
-
-
-  /*
-     Hanya tampilkan URL yang benar-benar
-     sudah diisi.
-  */
-
-  const fotoValid =
-    fotoAcara.filter(
-
-      function(url) {
-
-        return (
-
-          url &&
-
-          String(url).trim() !== "" &&
-
-          !String(url)
-            .startsWith("URL_FOTO")
-
-        );
-
-      }
-
-    );
-
-
-  if (fotoValid.length === 0) {
-
-    galeri.innerHTML =
-
-      '<div style="' +
-
-      'grid-column:1/-1;' +
-
-      'text-align:center;' +
-
-      'padding:30px 15px;' +
-
-      'color:#888;' +
-
-      'border:1px dashed #ccc;' +
-
-      'border-radius:12px;' +
-
-      '">' +
-
-      '📷 Dokumentasi foto akan ditampilkan di sini.' +
-
-      '</div>';
-
-
-    return;
-
-  }
-
-
-  fotoValid.forEach(
-
-    function(url, index) {
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "foto-card";
-
-
-      card.innerHTML =
-
-        '<img src="' +
-
-        escapeHTML(url) +
-
-        '" ' +
-
-        'alt="Dokumentasi Maulud Nabi ' +
-
-        (index + 1) +
-
-        '" ' +
-
-        'loading="lazy">' +
-
-
-        '<div class="foto-overlay">' +
-
-        '📸 Dokumentasi ' +
-
-        (index + 1) +
-
-        '</div>';
-
-
-      card.onclick =
-        function() {
-
-          bukaFoto(url);
-
-        };
-
-
-      galeri.appendChild(card);
-
-    }
-
-  );
-
-}
-
-
-/* =====================================================
-   BUKA FOTO
-===================================================== */
-
-function bukaFoto(url) {
-
-  const modal =
-    document.getElementById(
-      "fotoModal"
-    );
-
-
-  const image =
-    document.getElementById(
-      "fotoModalImage"
-    );
-
-
-  image.src =
-    url;
-
-
-  modal.classList.add("show");
-
-
-  document.body.style.overflow =
-    "hidden";
-
-}
-
-
-/* =====================================================
-   TUTUP FOTO
-===================================================== */
-
-function tutupFoto(event) {
-
-  /*
-     Jika klik tombol X atau
-     background, tutup modal.
-  */
-
-  if (
-    !event ||
-    event.target.id === "fotoModal"
-  ) {
-
-    const modal =
-      document.getElementById(
-        "fotoModal"
-      );
-
-
-    const image =
-      document.getElementById(
-        "fotoModalImage"
-      );
-
-
-    modal.classList.remove("show");
-
-
-    image.src = "";
-
-
-    document.body.style.overflow =
-      "";
-
-  }
-
-}
-
-
-/* =====================================================
-   TUTUP FOTO DENGAN TOMBOL ESC
-===================================================== */
-
-document.addEventListener(
-
-  "keydown",
-
-  function(event) {
-
-    if (
-      event.key === "Escape"
-    ) {
-
-      const modal =
-        document.getElementById(
-          "fotoModal"
-        );
-
-
-      if (
-        modal.classList.contains("show")
-      ) {
-
-        tutupFoto();
-
-      }
-
-    }
-
-  }
-
-);
 
 
 /* =====================================================
@@ -3079,6 +3501,7 @@ setInterval(
   60000
 
 );
+
 
 </script>
 
