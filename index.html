@@ -485,11 +485,6 @@ body {
 }
 
 
-/*
-   BAGIAN ATAS DAN BAWAH DIBERI
-   EFEK FADE AGAR TEKS TERLIHAT HALUS
-*/
-
 .ucapan-scroll::before {
 
   content: "";
@@ -1187,6 +1182,67 @@ tr:nth-child(even) {
 
 
 /* =====================================================
+   TOMBOL MUSIK
+   TAMBAHAN SAJA - TIDAK MENGUBAH LAYOUT
+===================================================== */
+
+.music-button {
+
+  position: fixed;
+
+  top: 10px;
+
+  right: 10px;
+
+  width: 38px;
+
+  height: 38px;
+
+  border: none;
+
+  border-radius: 50%;
+
+  background:
+    rgba(46,125,50,.90);
+
+  color: white;
+
+  font-size: 17px;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 500;
+
+  box-shadow:
+    0 2px 7px rgba(0,0,0,.20);
+
+  padding: 0;
+
+  transition: .2s;
+}
+
+
+.music-button:hover {
+
+  transform: scale(1.05);
+
+}
+
+
+.music-button.muted {
+
+  background:
+    rgba(100,100,100,.90);
+}
+
+
+/* =====================================================
    MOBILE
 ===================================================== */
 
@@ -1478,6 +1534,22 @@ tr:nth-child(even) {
     max-height: 85vh;
   }
 
+
+  /* TOMBOL MUSIK MOBILE */
+
+  .music-button {
+
+    top: 7px;
+
+    right: 7px;
+
+    width: 34px;
+
+    height: 34px;
+
+    font-size: 15px;
+  }
+
 }
 
 
@@ -1533,6 +1605,42 @@ tr:nth-child(even) {
 
 
 <body>
+
+
+<!-- =====================================================
+     MUSIK LATAR
+     
+     FILE:
+     musik-maulud.mp3
+
+     Letakkan file musik di folder yang sama
+     dengan index.html di GitHub.
+===================================================== -->
+
+<audio id="bgMusic"
+       autoplay
+       loop
+       preload="auto">
+
+  <source src="musik-maulud.mp3"
+          type="audio/mpeg">
+
+</audio>
+
+
+<!-- =====================================================
+     TOMBOL MUTE / UNMUTE
+===================================================== -->
+
+<button id="musicButton"
+        class="music-button"
+        type="button"
+        aria-label="Mute musik"
+        title="Mute musik">
+
+  🔊
+
+</button>
 
 
 <div class="container">
@@ -2919,6 +3027,7 @@ function tampilkanPengeluaran(
       escapeHTML(
 
         response &&
+
         response.message
 
         ?
@@ -3087,36 +3196,6 @@ function tutupPengeluaran() {
    GALERI FOTO ACARA
 ===================================================== */
 
-
-/*
-   ====================================================
-   MASUKKAN FOTO ACARA DI SINI
-   ====================================================
-
-   Jika foto ada di folder "foto" GitHub:
-
-   "foto/maulud-01.jpg"
-
-   "foto/maulud-02.jpg"
-
-   dan seterusnya.
-
-
-   Contoh:
-
-   const fotoAcara = [
-
-     "foto/maulud-01.jpg",
-     "foto/maulud-02.jpg",
-   
-
-   ];
-
-
-   Anda bisa menambahkan foto sebanyak yang diperlukan.
-*/
-
-
 const fotoAcara = [
 
   "WhatsApp Image 2026-09-17 at 05.43.14 (1).jpeg",
@@ -3127,7 +3206,7 @@ const fotoAcara = [
 
   "WhatsApp Image 2026-09-17 at 05.42.26.jpeg",
 
-  "WhatsApp Image 2026-09-13 at 15.38.30.jpeg"    
+  "WhatsApp Image 2026-09-13 at 15.38.30.jpeg"
 
 ];
 
@@ -3461,6 +3540,302 @@ function refreshSemua() {
   ambilInfo();
 
 }
+
+
+/* =====================================================
+   =====================================================
+   MUSIK LATAR
+   TAMBAHAN SAJA
+   =====================================================
+===================================================== */
+
+const MUSIC_VOLUME = 0.20;
+
+
+const bgMusic =
+  document.getElementById(
+    "bgMusic"
+  );
+
+
+const musicButton =
+  document.getElementById(
+    "musicButton"
+  );
+
+
+let musicMuted = false;
+
+
+/* =====================================================
+   UPDATE TOMBOL MUSIK
+===================================================== */
+
+function updateMusicButton() {
+
+  if (!musicButton) {
+
+    return;
+
+  }
+
+
+  if (musicMuted) {
+
+    musicButton.textContent =
+      "🔇";
+
+    musicButton.title =
+      "Nyalakan musik";
+
+    musicButton.setAttribute(
+      "aria-label",
+      "Nyalakan musik"
+    );
+
+    musicButton.classList.add(
+      "muted"
+    );
+
+  }
+
+  else {
+
+    musicButton.textContent =
+      "🔊";
+
+    musicButton.title =
+      "Mute musik";
+
+    musicButton.setAttribute(
+      "aria-label",
+      "Mute musik"
+    );
+
+    musicButton.classList.remove(
+      "muted"
+    );
+
+  }
+
+}
+
+
+/* =====================================================
+   MULAI MUSIK
+===================================================== */
+
+function mulaiMusik() {
+
+  if (
+    !bgMusic ||
+    musicMuted
+  ) {
+
+    return;
+
+  }
+
+
+  bgMusic.volume =
+    MUSIC_VOLUME;
+
+
+  const promise =
+    bgMusic.play();
+
+
+  if (
+    promise &&
+    typeof promise.then === "function"
+  ) {
+
+    promise
+      .then(
+        function() {
+
+          updateMusicButton();
+
+        }
+      )
+      .catch(
+        function() {
+
+          /*
+            Browser mungkin memblokir
+            autoplay dengan suara.
+
+            Tidak ada masalah.
+            Musik akan dicoba kembali
+            ketika pengguna berinteraksi
+            dengan halaman.
+          */
+
+        }
+      );
+
+  }
+
+}
+
+
+/* =====================================================
+   TOMBOL MUTE / UNMUTE
+===================================================== */
+
+if (musicButton) {
+
+  musicButton.addEventListener(
+
+    "click",
+
+    function() {
+
+
+      if (!bgMusic) {
+
+        return;
+
+      }
+
+
+      if (
+
+        musicMuted ||
+
+        bgMusic.paused ||
+
+        bgMusic.muted
+
+      ) {
+
+
+        musicMuted =
+          false;
+
+
+        bgMusic.muted =
+          false;
+
+
+        bgMusic.volume =
+          MUSIC_VOLUME;
+
+
+        const promise =
+          bgMusic.play();
+
+
+        if (
+          promise &&
+          typeof promise.then === "function"
+        ) {
+
+          promise.catch(
+            function() {}
+          );
+
+        }
+
+      }
+
+      else {
+
+
+        musicMuted =
+          true;
+
+
+        bgMusic.muted =
+          true;
+
+      }
+
+
+      updateMusicButton();
+
+    }
+
+  );
+
+}
+
+
+/* =====================================================
+   AUTOPLAY SETELAH INTERAKSI PERTAMA
+===================================================== */
+
+function mulaiMusikSetelahInteraksi(
+  event
+) {
+
+
+  /*
+    Kalau pengguna langsung menekan
+    tombol musik, biarkan tombol tersebut
+    mengatur musik sendiri.
+  */
+
+  if (
+
+    musicButton &&
+
+    musicButton.contains(
+      event.target
+    )
+
+  ) {
+
+    return;
+
+  }
+
+
+  mulaiMusik();
+
+}
+
+
+document.addEventListener(
+
+  "click",
+
+  mulaiMusikSetelahInteraksi,
+
+  {
+    once: true
+  }
+
+);
+
+
+/* =====================================================
+   MULAI MUSIK SAAT HALAMAN SELESAI DIMUAT
+===================================================== */
+
+window.addEventListener(
+
+  "load",
+
+  function() {
+
+
+    if (bgMusic) {
+
+      bgMusic.volume =
+        MUSIC_VOLUME;
+
+    }
+
+
+    updateMusicButton();
+
+
+    mulaiMusik();
+
+  }
+
+);
 
 
 /* =====================================================
